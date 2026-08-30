@@ -12,7 +12,7 @@
       "username": "guest",
       "password": "guest123",
       "role": "user",
-      "active": true
+      "active": false
     }
   ]
 }

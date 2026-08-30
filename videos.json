@@ -2,19 +2,10 @@
   "videos": [
     {
       "id": 1,
-      "title": "Cybersecurity Introduction",
-      "description": "مقدمة في الأمن السيبراني.",
-      "youtube_id": "https://youtu.be/OR06Ky82kRg?si=qTcL5lRHJDVKmATy",
-      "thumbnail": "",
+      "title": "مقدمة في الأمن السيبراني",
+      "description": "شرح أساسيات الأمن السيبراني",
+      "youtube_id": "https://https://youtu.be/XZmmVqFkLdM?si=tyey-EwOOPCQ_ecT",
       "category": "Cybersecurity"
-    },
-    {
-      "id": 2,
-      "title": "XSS Basics",
-      "description": "شرح أساسيات XSS.",
-      "youtube_id": "https://youtu.be/RqmjkAe8f8w",
-      "thumbnail": "",
-      "category": "Web Security"
     }
   ]
 }

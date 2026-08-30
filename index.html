@@ -1,72 +1,1432 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SAYODA | CYBER FORCE</title>
-<meta name="description" content="SAYODA | CYBER FORCE - Learn. Build. Secure.">
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#030914;color:#eef7ff;font-family:system-ui,Arial,sans-serif}a{text-decoration:none;color:inherit}
-header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:16px 5%;background:#050d19ee;backdrop-filter:blur(14px);border-bottom:1px solid #164268}
-.logo{font-weight:900;color:#29aaff}.logo b{color:#fff}.nav{display:flex;gap:20px}.nav a{color:#a9bbce;font-size:14px}.nav a:hover{color:#fff}.menu{display:none;background:none;border:0;color:white;font-size:24px}
-.container{width:min(1150px,92%);margin:auto}.hero{min-height:72vh;display:grid;place-items:center;text-align:center;padding:70px 5%;background:radial-gradient(circle,#007bff28,transparent 50%)}
-.hero h1{font-size:clamp(42px,8vw,90px);line-height:.95;margin:0;letter-spacing:-3px}.blue{color:#18a7ff}.hero p{color:#a9bdd0;font-size:20px}.eyebrow{font-size:12px;letter-spacing:3px;color:#29aaff;font-weight:900}
-.btn{display:inline-block;padding:13px 20px;border-radius:11px;border:0;cursor:pointer;font-weight:800}.primary{background:linear-gradient(135deg,#087cff,#12baff);color:white}.ghost{background:#091625;border:1px solid #225071;color:white}
-.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:25px}.section{padding:60px 0}.section h2{font-size:clamp(28px,5vw,45px);margin:0 0 12px}.muted{color:#91a6ba}
-.login{width:min(430px,100%);margin:65px auto;padding:30px;background:#081524;border:1px solid #1b4a70;border-radius:20px}.login input,.filters input,.filters select{width:100%;padding:13px;margin:8px 0 15px;border-radius:10px;border:1px solid #234761;background:#030914;color:#fff;outline:0}.login input:focus,.filters input:focus,.filters select:focus{border-color:#18aaff}.error{color:#ff7180;min-height:24px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{background:#081524;border:1px solid #173d5d;border-radius:17px;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-4px);border-color:#159dff}.thumb{aspect-ratio:16/9;background:#06111e;display:grid;place-items:center;color:#20aaff;font-size:40px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.content{padding:16px}.content h3{margin:0 0 7px}.content p{color:#91a6ba;min-height:45px}
-.filters{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin:25px 0}.player{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;margin-top:25px}.player iframe{width:100%;height:100%;border:0}.hidden{display:none!important}.logout{color:#ff7180!important;cursor:pointer}footer{text-align:center;padding:35px;color:#637b91;border-top:1px solid #12324e}
-@media(max-width:700px){header{padding:14px 4%}.menu{display:block}.nav{display:none;position:absolute;top:62px;right:0;left:0;padding:12px 5%;background:#07101c;border-bottom:1px solid #183c59;flex-direction:column}.nav.open{display:flex}.nav a{padding:8px}.filters{grid-template-columns:1fr}.section{padding:45px 0}.logo{font-size:13px}}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#020812;
+    color:#fff;
+    font-family:Arial,Tahoma,sans-serif;
+    min-height:100vh;
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* ================= LOGIN ================= */
+
+.login-screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+
+    background:
+        radial-gradient(circle at 50% 40%,#008cff30,transparent 55%),
+        #020812;
+}
+
+.login-box{
+    width:min(420px,100%);
+    padding:35px;
+
+    background:rgba(7,19,33,.92);
+    border:1px solid #15547d;
+    border-radius:22px;
+
+    box-shadow:
+        0 30px 100px #000,
+        0 0 50px #008cff12;
+
+    backdrop-filter:blur(18px);
+}
+
+.logo{
+    text-align:center;
+    color:#19aaff;
+    font-size:25px;
+    font-weight:900;
+}
+
+.logo span{
+    color:#fff;
+}
+
+.login-subtitle{
+    text-align:center;
+    color:#718ca2;
+    font-size:12px;
+    letter-spacing:3px;
+    margin:10px 0 30px;
+}
+
+.input{
+    width:100%;
+    padding:15px;
+    margin-bottom:14px;
+
+    border:1px solid #1c4663;
+    border-radius:11px;
+
+    background:#020812;
+    color:#fff;
+
+    outline:none;
+    font-size:15px;
+}
+
+.input:focus{
+    border-color:#19aaff;
+    box-shadow:0 0 20px #008cff20;
+}
+
+.login-btn{
+    width:100%;
+    padding:14px;
+
+    border:0;
+    border-radius:11px;
+
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+        135deg,
+        #087cff,
+        #12baff
+    );
+
+    transition:.2s;
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px #008cff35;
+}
+
+.error{
+    min-height:22px;
+    margin-top:14px;
+    text-align:center;
+    color:#ff6678;
+    font-size:14px;
+}
+
+
+/* ================= HEADER ================= */
+
+header{
+    height:70px;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 6%;
+
+    background:#040d18ee;
+    border-bottom:1px solid #123d60;
+
+    backdrop-filter:blur(15px);
+}
+
+.brand{
+    color:#20aaff;
+    font-size:19px;
+    font-weight:900;
+}
+
+.brand span{
+    color:#fff;
+}
+
+nav{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+nav a{
+    color:#91a8bb;
+    text-decoration:none;
+    font-size:14px;
+    cursor:pointer;
+}
+
+nav a:hover{
+    color:#20aaff;
+}
+
+.logout{
+    color:#ff6375 !important;
+}
+
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:430px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+    padding:60px 20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #008cff25,
+            transparent 55%
+        );
+}
+
+.badge{
+    display:inline-block;
+
+    padding:7px 13px;
+
+    border:1px solid #168bd0;
+    border-radius:20px;
+
+    color:#29b4ff;
+
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:2px;
+
+    margin-bottom:18px;
+}
+
+.hero h1{
+    font-size:clamp(42px,8vw,82px);
+    line-height:.95;
+    font-weight:900;
+}
+
+.hero h1 span{
+    color:#18aaff;
+}
+
+.hero p{
+    margin-top:22px;
+    color:#8299ad;
+    font-size:19px;
+}
+
+
+/* ================= CONTENT ================= */
+
+.container{
+    width:min(1150px,92%);
+    margin:auto;
+}
+
+.section{
+    padding:60px 0;
+}
+
+.section-title{
+    margin-bottom:28px;
+}
+
+.section-title h2{
+    font-size:34px;
+}
+
+.section-title p{
+    margin-top:8px;
+    color:#7891a5;
+}
+
+
+/* ================= VIDEOS ================= */
+
+.video-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(270px,1fr));
+    gap:20px;
+}
+
+.video-card{
+    overflow:hidden;
+
+    background:#071321;
+
+    border:1px solid #123c5d;
+    border-radius:18px;
+
+    transition:.25s;
+}
+
+.video-card:hover{
+    transform:translateY(-6px);
+    border-color:#159fff;
+
+    box-shadow:
+        0 15px 45px #008cff25;
+}
+
+.thumbnail{
+    position:relative;
+    aspect-ratio:16/9;
+
+    overflow:hidden;
+
+    background:#01060d;
+}
+
+.thumbnail img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    user-select:none;
+    -webkit-user-drag:none;
+
+    transition:.3s;
+}
+
+.video-card:hover .thumbnail img{
+    transform:scale(1.05);
+}
+
+.play{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    background:#0005;
+}
+
+.play-button{
+    width:68px;
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:#fff;
+    font-size:25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #087cff,
+            #12baff
+        );
+
+    box-shadow:
+        0 0 35px #008cff88;
+
+    transition:.2s;
+}
+
+.play:hover .play-button{
+    transform:scale(1.12);
+}
+
+.video-info{
+    padding:18px;
+}
+
+.video-info h3{
+    margin-bottom:8px;
+    font-size:19px;
+}
+
+.video-info p{
+    min-height:45px;
+
+    color:#849caf;
+
+    font-size:14px;
+    line-height:1.7;
+}
+
+.meta{
+    display:flex;
+    justify-content:space-between;
+
+    margin-top:15px;
+
+    color:#42a9dc;
+    font-size:12px;
+}
+
+
+/* ================= PLAYER ================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:#000e;
+
+    backdrop-filter:blur(10px);
+}
+
+.modal-box{
+    width:min(1050px,96vw);
+
+    background:#050d18;
+
+    border:1px solid #1c6b9e;
+    border-radius:20px;
+
+    padding:12px;
+
+    box-shadow:
+        0 30px 120px #000;
+}
+
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:4px 5px 12px;
+}
+
+.modal-header h3{
+    color:#20aaff;
+    font-size:17px;
+}
+
+.close{
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    border:1px solid #285775;
+
+    background:#071321;
+
+    color:#fff;
+
+    font-size:25px;
+
+    cursor:pointer;
+}
+
+.close:hover{
+    background:#102b42;
+}
+
+.player-wrapper{
+    position:relative;
+
+    width:100%;
+
+    aspect-ratio:16/9;
+
+    overflow:hidden;
+
+    border-radius:13px;
+
+    background:#000;
+}
+
+.player-wrapper iframe{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    border:0;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer{
+    margin-top:30px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    color:#60788c;
+
+    border-top:1px solid #12324d;
+}
+
+footer a{
+    color:#29aaff;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:650px){
+
+    header{
+        height:60px;
+        padding:0 5%;
+    }
+
+    .brand{
+        font-size:14px;
+    }
+
+    nav{
+        gap:9px;
+    }
+
+    nav a{
+        font-size:11px;
+    }
+
+    .hero{
+        min-height:350px;
+    }
+
+    .section{
+        padding:45px 0;
+    }
+
+    .section-title h2{
+        font-size:28px;
+    }
+
+    .modal{
+        padding:8px;
+    }
+
+    .modal-box{
+        padding:7px;
+        border-radius:14px;
+    }
+
+}
 </style>
 </head>
+
 <body>
-<header><a class="logo" href="#home">⌁ SAYODA <b>|</b> CYBER FORCE</a><button class="menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
-<nav id="nav" class="nav"><a href="#home">الرئيسية</a><a href="#videos">الفيديوهات</a><a href="#about">عن المنصة</a><a href="#login" id="loginLink">تسجيل الدخول</a><a id="logoutLink" class="logout hidden" onclick="logout()">خروج</a></nav></header>
 
-<main>
-<section id="home" class="hero"><div><p class="eyebrow">CYBER LEARNING PLATFORM</p><h1>SAYODA <span class="blue">|</span><br>CYBER FORCE</h1><p>Learn. Build. Secure.</p><div class="actions"><a class="btn primary" href="#videos">استكشف الفيديوهات</a><a class="btn ghost" href="#login">تسجيل الدخول</a></div></div></section>
 
-<section id="login" class="container section"><div class="login"><p class="eyebrow">SECURE ACCESS</p><h2>تسجيل الدخول</h2><input id="username" placeholder="اسم المستخدم"><input id="password" type="password" placeholder="كلمة المرور"><button class="btn primary" style="width:100%" onclick="login()">دخول</button><p id="error" class="error"></p></div></section>
+<!-- ================= LOGIN ================= -->
 
-<section id="platform" class="container hidden">
-<section id="about" class="section"><p class="eyebrow">ABOUT</p><h2>مرحبًا بك في SAYODA.</h2><p class="muted">منصة تجريبية لمحتوى الأمن السيبراني.</p></section>
-<section id="videos" class="section"><p class="eyebrow">VIDEO LIBRARY</p><h2>الفيديوهات</h2><div class="filters"><input id="search" placeholder="ابحث عن فيديو..."><select id="category"><option value="">كل التصنيفات</option></select></div><div id="videoGrid" class="grid"></div><div id="watch"></div></section>
+<section id="loginScreen" class="login-screen">
+
+    <div class="login-box">
+
+        <div class="logo">
+            SAYODA <span>|</span> CYBER FORCE
+        </div>
+
+        <div class="login-subtitle">
+            SECURE ACCESS
+        </div>
+
+        <input
+            id="username"
+            class="input"
+            type="text"
+            placeholder="اسم المستخدم"
+            autocomplete="username"
+        >
+
+        <input
+            id="password"
+            class="input"
+            type="password"
+            placeholder="كلمة المرور"
+            autocomplete="current-password"
+        >
+
+        <button
+            class="login-btn"
+            onclick="login()"
+        >
+            دخول
+        </button>
+
+        <div id="loginError" class="error"></div>
+
+    </div>
+
 </section>
-</main>
-<footer>© 2026 SAYODA | CYBER FORCE</footer>
+
+
+<!-- ================= APP ================= -->
+
+<div id="app" class="hidden">
+
+
+<header>
+
+    <div class="brand">
+        SAYODA <span>|</span> CYBER FORCE
+    </div>
+
+    <nav>
+
+        <a href="#home">
+            الرئيسية
+        </a>
+
+        <a href="#videos">
+            الفيديوهات
+        </a>
+
+        <a href="#about">
+            عن المنصة
+        </a>
+
+        <a
+            class="logout"
+            onclick="logout()"
+        >
+            خروج
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- HERO -->
+
+<section id="home" class="hero">
+
+    <div>
+
+        <div class="badge">
+            CYBER LEARNING PLATFORM
+        </div>
+
+        <h1>
+            SAYODA
+            <span>|</span>
+            <br>
+            CYBER FORCE
+        </h1>
+
+        <p>
+            Learn. Build. Secure.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- VIDEOS -->
+
+<section id="videos" class="section">
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>
+            🎬 مكتبة الفيديوهات
+        </h2>
+
+        <p>
+            محتوى SAYODA | CYBER FORCE
+        </p>
+
+    </div>
+
+    <div
+        id="videoGrid"
+        class="video-grid"
+    ></div>
+
+</div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section id="about" class="section">
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>
+            عن المنصة
+        </h2>
+
+        <p>
+            منصة تعليمية لمحتوى الأمن السيبراني والتقنية.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+    © 2026 SAYODA | CYBER FORCE
+
+    <br><br>
+
+    <a
+        href="https://t.me/sayoda_elgadar"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+         EL-SAYED HASAN
+    </a>
+
+</footer>
+
+</div>
+
+
+<!-- ================= VIDEO MODAL ================= -->
+
+<div
+    id="videoModal"
+    class="modal hidden"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3 id="videoTitle">
+                SAYODA | CYBER FORCE
+            </h3>
+
+            <button
+                class="close"
+                onclick="closeVideo()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="player-wrapper">
+
+            <iframe
+                id="player"
+                src=""
+                title="SAYODA | CYBER FORCE"
+                frameborder="0"
+                allow="
+                    accelerometer;
+                    autoplay;
+                    clipboard-write;
+                    encrypted-media;
+                    gyroscope;
+                    picture-in-picture;
+                    web-share
+                "
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <script>
-let users=[], videos=[];
+
+/* =========================================
+   DATA
+========================================= */
+
+let users = [];
+let videos = [];
+let currentUser = null;
+
+
+/* =========================================
+   LOAD JSON (محسن)
+========================================= */
+
 async function loadData(){
-  const [u,v]=await Promise.all([fetch("users.json"),fetch("videos.json")]);
-  if(!u.ok||!v.ok) throw new Error("JSON");
-  users=(await u.json()).users||[]; videos=(await v.json()).videos||[];
+
+    const [usersResponse, videosResponse] = await Promise.allSettled([
+        fetch("users.json", { cache: "no-store" }),
+        fetch("videos.json", { cache: "no-store" })
+    ]);
+
+    // التحقق من نجاح تحميل ملف users
+    if(usersResponse.status === "fulfilled" && usersResponse.value.ok){
+        const usersData = await usersResponse.value.json();
+        users = Array.isArray(usersData?.users) ? usersData.users : [];
+    } else {
+        users = [];
+        console.warn("⚠️ فشل تحميل users.json");
+    }
+
+    // التحقق من نجاح تحميل ملف videos
+    if(videosResponse.status === "fulfilled" && videosResponse.value.ok){
+        const videosData = await videosResponse.value.json();
+        videos = Array.isArray(videosData?.videos) ? videosData.videos : [];
+    } else {
+        videos = [];
+        console.warn("⚠️ فشل تحميل videos.json");
+    }
+
+    // التحقق من وجود بيانات على الأقل
+    if(users.length === 0 || videos.length === 0){
+        console.warn("⚠️ بعض الملفات فارغة أو غير موجودة");
+        return false;
+    }
+
+    return true;
 }
-function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+
+/* =========================================
+   🆕 استخراج YouTube ID من الرابط الكامل
+========================================= */
+
+function extractYouTubeID(input){
+    // لو دخل ID مباشر (11 حرف)
+    if(/^[a-zA-Z0-9_-]{11}$/.test(input)){
+        return input;
+    }
+
+    // لو دخل رابط كامل
+    const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+        /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+        /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/
+    ];
+
+    for(const pattern of patterns){
+        const match = input.match(pattern);
+        if(match){
+            return match[1];
+        }
+    }
+
+    // لو في params زي ?si=...
+    const urlParams = new URLSearchParams(input.split('?')[1] || '');
+    const v = urlParams.get('v');
+    if(v && /^[a-zA-Z0-9_-]{11}$/.test(v)){
+        return v;
+    }
+
+    return null;
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
 async function login(){
-  const error=document.getElementById("error");
-  try{
-    if(!users.length) await loadData();
-    const u=users.find(x=>x.username===document.getElementById("username").value.trim()&&x.password===document.getElementById("password").value&&x.active!==false);
-    if(!u){error.textContent="اسم المستخدم أو كلمة المرور غير صحيحة.";return}
-    sessionStorage.setItem("sayoda_user",JSON.stringify({username:u.username,role:u.role||"user"})); showPlatform(u);
-  }catch(e){error.textContent="تعذر قراءة ملفات JSON. ارفع الملفات الثلاثة معًا على GitHub Pages أو شغّل Static Server."}
+
+    const username =
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    const error =
+        document
+        .getElementById("loginError");
+
+
+    error.textContent = "";
+
+
+    if(!username || !password){
+
+        error.textContent =
+            "اكتب اسم المستخدم وكلمة المرور.";
+
+        return;
+
+    }
+
+
+    try{
+
+        const loaded = await loadData();
+
+        if(!loaded){
+            error.textContent =
+                "تعذر قراءة ملفات البيانات. تأكد من وجود users.json و videos.json";
+
+            return;
+        }
+
+
+        const user =
+            users.find(
+                item =>
+                    item?.username === username &&
+                    item?.password === password &&
+                    item?.active !== false
+            );
+
+
+        if(!user){
+
+            error.textContent =
+                "اسم المستخدم أو كلمة المرور غير صحيحة.";
+
+            return;
+
+        }
+
+
+        currentUser = user;
+
+
+        sessionStorage.setItem(
+            "sayoda_user",
+            user.username
+        );
+
+
+        showPlatform();
+
+
+    }catch(errorObject){
+
+        console.error(errorObject);
+
+
+        error.textContent =
+            "حدث خطأ غير متوقع. تأكد من تشغيل الموقع عبر خادم محلي (Live Server).";
+
+    }
+
 }
-function showPlatform(u){
- document.getElementById("login").classList.add("hidden");document.getElementById("platform").classList.remove("hidden");
- document.getElementById("loginLink").classList.add("hidden");document.getElementById("logoutLink").classList.remove("hidden");render();
+
+
+/* =========================================
+   SHOW PLATFORM
+========================================= */
+
+function showPlatform(){
+
+    document
+        .getElementById("loginScreen")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("app")
+        .classList.remove("hidden");
+
+
+    renderVideos();
+
 }
-function logout(){sessionStorage.removeItem("sayoda_user");location.reload()}
-function render(){
- const grid=document.getElementById("videoGrid"),q=(document.getElementById("search").value||"").toLowerCase(),c=document.getElementById("category").value;
- const list=videos.filter(v=>(!q||JSON.stringify(v).toLowerCase().includes(q))&&(!c||v.category===c));
- grid.innerHTML=list.length?list.map(v=>`<article class="card"><div class="thumb">${v.thumbnail?`<img src="${esc(v.thumbnail)}" alt="">`:"▶"}</div><div class="content"><h3>${esc(v.title)}</h3><p>${esc(v.description||"")}</p><small>${esc(v.category||"General")}</small><br><br><button class="btn primary" onclick="watch('${encodeURIComponent(v.youtube_id)}')">مشاهدة داخل الموقع</button></div></article>`).join(""):"<div>لا توجد فيديوهات.</div>";
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logout(){
+
+    sessionStorage.removeItem(
+        "sayoda_user"
+    );
+
+    currentUser = null;
+
+    location.reload();
+
 }
-function watch(id){
- const v=decodeURIComponent(id);if(!v||v.startsWith("YOUR_")){alert("ضع YouTube Video ID في videos.json");return}
- document.getElementById("watch").innerHTML=`<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v)}?rel=0&modestbranding=1" title="SAYODA | CYBER FORCE" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
- document.getElementById("watch").scrollIntoView({behavior:"smooth"});
+
+
+/* =========================================
+   RENDER VIDEOS (محسن)
+========================================= */
+
+function renderVideos(){
+
+    const grid =
+        document.getElementById(
+            "videoGrid"
+        );
+
+
+    if(!videos || videos.length === 0){
+
+        grid.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                padding:45px;
+                text-align:center;
+                color:#7891a5;
+                border:1px dashed #214765;
+                border-radius:16px;
+            ">
+                📹 لا توجد فيديوهات حاليًا.
+                <br>
+                <small style="color:#5a7488;">
+                    تأكد من وجود ملف videos.json
+                </small>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+        videos.map(
+            (video, index) => {
+
+                const title =
+                    escapeHTML(
+                        video?.title ??
+                        `فيديو ${index + 1}`
+                    );
+
+
+                const description =
+                    escapeHTML(
+                        video?.description ??
+                        ""
+                    );
+
+
+                const category =
+                    escapeHTML(
+                        video?.category ??
+                        "Cybersecurity"
+                    );
+
+
+                // 🆕 استخراج ID من الرابط الكامل
+                const rawYoutube = video?.youtube_id ?? "";
+                const youtubeId = extractYouTubeID(rawYoutube) || "";
+
+
+                const thumbnail =
+                    escapeHTML(
+                        video?.thumbnail ??
+                        "sayed.png"
+                    );
+
+
+                return `
+
+                <article class="video-card">
+
+                    <div class="thumbnail">
+
+                        <img
+                            src="${thumbnail}"
+                            alt="${title}"
+                            draggable="false"
+                            loading="lazy"
+                            onerror="this.src='sayed.png'"
+                        >
+
+                        <div
+                            class="play"
+                            data-id="${youtubeId}"
+                            data-title="${title}"
+                            onclick="playFromCard(this)"
+                        >
+
+                            <div class="play-button">
+                                ▶
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="video-info">
+
+                        <h3>
+                            ${title}
+                        </h3>
+
+                        <p>
+                            ${description || "لا يوجد وصف لهذا الفيديو."}
+                        </p>
+
+
+                        <div class="meta">
+
+                            <span>
+                                ${category}
+                            </span>
+
+                            <span>
+                                ▶ مشاهدة
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+                `;
+
+            }
+        ).join("");
+
 }
-document.getElementById("search").addEventListener("input",()=>render());document.getElementById("category").addEventListener("change",()=>render());
-(async()=>{try{await loadData();[...new Set(videos.map(v=>v.category).filter(Boolean))].forEach(c=>document.getElementById("category").insertAdjacentHTML("beforeend",`<option value="${esc(c)}">${esc(c)}</option>`));const s=JSON.parse(sessionStorage.getItem("sayoda_user")||"null");if(s){const u=users.find(x=>x.username===s.username);if(u)showPlatform(u)}}catch(e){}})();
+
+
+/* =========================================
+   PLAY VIDEO
+========================================= */
+
+function playFromCard(element){
+
+    const videoId =
+        element?.dataset?.id ?? "";
+
+
+    const title =
+        element?.dataset?.title ?? "SAYODA | CYBER FORCE";
+
+
+    openVideo(
+        videoId,
+        title
+    );
+
+}
+
+
+/* =========================================
+   OPEN VIDEO (محسن)
+========================================= */
+
+function openVideo(videoId, title){
+
+    const id =
+        String(videoId ?? "")
+        .trim();
+
+
+    if(id === ""){
+
+        alert(
+            "⚠️ لم يتم العثور على YouTube Video ID صحيح."
+        );
+
+        return;
+
+    }
+
+
+    const titleText =
+        title ||
+        "SAYODA | CYBER FORCE";
+
+
+    document
+        .getElementById("videoTitle")
+        .textContent =
+            titleText;
+
+
+    const player =
+        document
+        .getElementById("player");
+
+
+    // إزالة المشغل القديم
+    player.src = "";
+
+
+    // بناء رابط YouTube
+    const url =
+        "https://www.youtube.com/embed/" +
+        encodeURIComponent(id) +
+        "?autoplay=1" +
+        "&rel=0" +
+        "&playsinline=1" +
+        "&modestbranding=1";
+
+
+    player.src = url;
+
+
+    document
+        .getElementById("videoModal")
+        .classList.remove("hidden");
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+/* =========================================
+   CLOSE VIDEO
+========================================= */
+
+function closeVideo(){
+
+    const player =
+        document
+        .getElementById("player");
+
+
+    // إيقاف الفيديو عند الإغلاق
+    player.src = "";
+
+
+    document
+        .getElementById("videoModal")
+        .classList.add("hidden");
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    };
+
+    return String(value).replace(
+        /[&<>"']/g,
+        character => map[character] ?? character
+    );
+
+}
+
+
+/* =========================================
+   CLOSE WITH ESC
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Escape"
+        ){
+
+            closeVideo();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE WHEN CLICKING OUTSIDE
+========================================= */
+
+document
+    .getElementById("videoModal")
+    .addEventListener(
+        "click",
+        event => {
+
+            const modal =
+                document.getElementById(
+                    "videoModal"
+                );
+
+            if(
+                event.target === modal
+            ){
+
+                closeVideo();
+
+            }
+
+        }
+    );
+
+
+/* =========================================
+   BASIC IMAGE PROTECTION
+========================================= */
+
+document.addEventListener(
+    "contextmenu",
+    event => {
+
+        if(
+            event?.target?.tagName === "IMG"
+        ){
+
+            event.preventDefault();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "dragstart",
+    event => {
+
+        if(
+            event?.target?.tagName === "IMG"
+        ){
+
+            event.preventDefault();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   ENTER TO LOGIN
+========================================= */
+
+document
+    .getElementById("password")
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key === "Enter"
+            ){
+
+                login();
+
+            }
+
+        }
+    );
+
+
+/* =========================================
+   AUTO LOGIN FROM SESSION
+========================================= */
+
+(async function(){
+
+    try{
+
+        await loadData();
+
+
+        const savedUsername =
+            sessionStorage.getItem(
+                "sayoda_user"
+            );
+
+
+        if(savedUsername){
+
+            const user =
+                users.find(
+                    item =>
+                        item?.username ===
+                            savedUsername &&
+                        item?.active !== false
+                );
+
+
+            if(user){
+
+                currentUser = user;
+
+                showPlatform();
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "⏳ انتظار تحميل الملفات..."
+        );
+
+    }
+
+})();
+
 </script>
-</body></html>
+
+</body>
+</html>
