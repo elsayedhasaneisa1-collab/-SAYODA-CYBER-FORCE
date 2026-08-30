@@ -1,11 +1,20 @@
 {
-  "videos": [
-    {
-      "id": 1,
-      "title": "ثغره XSS وانواعها",
-      "description": "جميع الحقوق محفوظة 🐺",
-      "youtube_id": "https://youtu.be/WmpUip1l8eo?si=jT9k1BsUu2W63O7R",
-      "category": "Cybersecurity"
-    }
-  ]
+    "videos": [
+        {
+            "id": 1,
+            "title": "تعلم الأمن السيبراني",
+            "description": "جميع الحقوق محفوظة",
+            "youtube_id": "https://youtu.be/XZmmVqFkLdM?si=tyey-EwOOPCQ_ecT",
+            "category": "Cybersecurity",
+            "thumbnail": "sayed.png"
+        },
+        {
+            "id": 2,
+            "title": "تغذية XSS وأنواعها",
+            "description": "جميع الحقوق محفوظة",
+            "youtube_id": "https://youtu.be/WmpUpI18eo?si=jT9k1BsUu2W6307R",
+            "category": "Cybersecurity",
+            "thumbnail": "sayed.png"
+        }
+    ]
 }
