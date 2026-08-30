@@ -282,6 +282,30 @@ nav a:hover{
     border-radius:18px;
 
     transition:.25s;
+
+    position:relative;
+}
+
+.video-card.locked::after{
+    content: "🔒";
+    position:absolute;
+    top:10px;
+    right:10px;
+    font-size:24px;
+    z-index:5;
+    background:#00000088;
+    padding:5px 10px;
+    border-radius:10px;
+}
+
+.video-card.locked .play{
+    opacity:0.5;
+    pointer-events:none;
+}
+
+.video-card.locked .play-button{
+    background:#555;
+    box-shadow:none;
 }
 
 .video-card:hover{
@@ -386,6 +410,15 @@ nav a:hover{
 
     color:#42a9dc;
     font-size:12px;
+}
+
+.progress-badge{
+    display:inline-block;
+    background:#1a4d6e;
+    color:#7fc9ff;
+    padding:2px 10px;
+    border-radius:10px;
+    font-size:11px;
 }
 
 
@@ -789,6 +822,42 @@ let users = [];
 let videos = [];
 let currentUser = null;
 
+// 🆕 تخزين تقدم المشاهدة لكل فيديو
+let videoProgress = {};
+
+// تحميل التقدم من localStorage
+function loadProgress(){
+    try{
+        const saved = localStorage.getItem('sayoda_video_progress');
+        if(saved){
+            videoProgress = JSON.parse(saved);
+        }
+    }catch(e){
+        videoProgress = {};
+    }
+}
+
+// حفظ التقدم في localStorage
+function saveProgress(){
+    try{
+        localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress));
+    }catch(e){}
+}
+
+// 🆕 التحقق من أن الفيديو متاح (تم مشاهدة 30% من السابق)
+function isVideoUnlocked(index){
+    if(index === 0) return true; // أول فيديو مفتوح دائماً
+    
+    // الفيديوهات السابقة
+    const previousVideos = videos.slice(0, index);
+    
+    // كل الفيديوهات السابقة لازم يكون عندهم تقدم >= 30%
+    return previousVideos.every((video, i) => {
+        const progress = videoProgress[video.youtube_id] || 0;
+        return progress >= 30;
+    });
+}
+
 
 /* =========================================
    LOAD JSON (محسن)
@@ -941,6 +1010,10 @@ async function login(){
         );
 
 
+        // تحميل التقدم
+        loadProgress();
+
+
         showPlatform();
 
 
@@ -1056,7 +1129,6 @@ function renderVideos(){
                     );
 
 
-                // 🆕 استخراج ID من الرابط الكامل
                 const rawYoutube = video?.youtube_id ?? "";
                 const youtubeId = extractYouTubeID(rawYoutube) || "";
 
@@ -1067,10 +1139,15 @@ function renderVideos(){
                         "sayed.png"
                     );
 
+                // 🆕 التحقق من القفل
+                const unlocked = isVideoUnlocked(index);
+                const progress = videoProgress[youtubeId] || 0;
+                const lockedClass = unlocked ? '' : 'locked';
+                const progressText = progress > 0 ? `${Math.round(progress)}%` : '';
 
                 return `
 
-                <article class="video-card">
+                <article class="video-card ${lockedClass}">
 
                     <div class="thumbnail">
 
@@ -1086,11 +1163,12 @@ function renderVideos(){
                             class="play"
                             data-id="${youtubeId}"
                             data-title="${title}"
+                            data-index="${index}"
                             onclick="playFromCard(this)"
                         >
 
                             <div class="play-button">
-                                ▶
+                                ${unlocked ? '▶' : '🔒'}
                             </div>
 
                         </div>
@@ -1102,10 +1180,12 @@ function renderVideos(){
 
                         <h3>
                             ${title}
+                            ${progressText ? `<span class="progress-badge">${progressText}</span>` : ''}
                         </h3>
 
                         <p>
                             ${description || "لا يوجد وصف لهذا الفيديو."}
+                            ${!unlocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة الفيديوهات السابقة أولاً</small>' : ''}
                         </p>
 
 
@@ -1116,7 +1196,7 @@ function renderVideos(){
                             </span>
 
                             <span>
-                                ▶ مشاهدة
+                                ${unlocked ? '▶ مشاهدة' : '🔒 مغلق'}
                             </span>
 
                         </div>
@@ -1147,9 +1227,21 @@ function playFromCard(element){
         element?.dataset?.title ?? "SAYODA | CYBER FORCE";
 
 
+    const index =
+        parseInt(element?.dataset?.index ?? 0);
+
+
+    // 🆕 التحقق من القفل
+    if(!isVideoUnlocked(index)){
+        alert('🔒 هذا الفيديو مقفل!\nيجب مشاهدة 30% من الفيديوهات السابقة أولاً.');
+        return;
+    }
+
+
     openVideo(
         videoId,
-        title
+        title,
+        index
     );
 
 }
@@ -1159,7 +1251,7 @@ function playFromCard(element){
    OPEN VIDEO (محسن)
 ========================================= */
 
-function openVideo(videoId, title){
+function openVideo(videoId, title, index){
 
     const id =
         String(videoId ?? "")
@@ -1197,14 +1289,20 @@ function openVideo(videoId, title){
     player.src = "";
 
 
-    // بناء رابط YouTube
+    // 🆕 إضافة event listener لتتبع التقدم
+    // نستخدم postMessage من iframe لتتبع التقدم (حل بديل)
+    // أو نستخدم interval لتقدير التقدم
+
+
+    // بناء رابط YouTube مع تفعيل التتبع
     const url =
         "https://www.youtube.com/embed/" +
         encodeURIComponent(id) +
         "?autoplay=1" +
         "&rel=0" +
         "&playsinline=1" +
-        "&modestbranding=1";
+        "&modestbranding=1" +
+        "&enablejsapi=1"; // تفعيل YouTube API
 
 
     player.src = url;
@@ -1218,11 +1316,78 @@ function openVideo(videoId, title){
     document.body.style.overflow =
         "hidden";
 
+
+    // 🆕 بدأ تتبع التقدم
+    startProgressTracking(id, index);
+
 }
 
 
 /* =========================================
-   CLOSE VIDEO
+   🆕 تتبع تقدم المشاهدة
+========================================= */
+
+let progressInterval = null;
+let currentVideoId = null;
+let currentVideoIndex = null;
+
+function startProgressTracking(videoId, index){
+
+    // إيقاف التتبع السابق
+    stopProgressTracking();
+
+    currentVideoId = videoId;
+    currentVideoIndex = index;
+
+    // نبدأ بـ 0
+    if(!videoProgress[videoId]){
+        videoProgress[videoId] = 0;
+    }
+
+    // كل 5 ثواني نزيد التقدم 5%
+    progressInterval = setInterval(() => {
+
+        if(!currentVideoId) return;
+
+        // زيادة التقدم
+        let current = videoProgress[currentVideoId] || 0;
+        current = Math.min(current + 5, 100);
+        videoProgress[currentVideoId] = current;
+
+        // حفظ التقدم
+        saveProgress();
+
+        // تحديث العرض
+        renderVideos();
+
+        // لو وصل 30% أو أكتر، نحرر الفيديوهات التالية
+        if(current >= 30){
+            // نعيد عرض الفيديوهات عشان تظهر مفتوحة
+            renderVideos();
+        }
+
+        // لو وصل 100% نوقف التتبع
+        if(current >= 100){
+            stopProgressTracking();
+        }
+
+    }, 5000); // كل 5 ثواني
+
+}
+
+
+function stopProgressTracking(){
+    if(progressInterval){
+        clearInterval(progressInterval);
+        progressInterval = null;
+    }
+    currentVideoId = null;
+    currentVideoIndex = null;
+}
+
+
+/* =========================================
+   CLOSE VIDEO (معدل)
 ========================================= */
 
 function closeVideo(){
@@ -1243,6 +1408,16 @@ function closeVideo(){
 
     document.body.style.overflow =
         "";
+
+
+    // 🆕 إيقاف تتبع التقدم
+    stopProgressTracking();
+
+    // حفظ التقدم
+    saveProgress();
+
+    // تحديث العرض
+    renderVideos();
 
 }
 
@@ -1387,6 +1562,9 @@ document
     try{
 
         await loadData();
+
+        // تحميل التقدم
+        loadProgress();
 
 
         const savedUsername =

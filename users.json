@@ -9,10 +9,10 @@
     },
     {
       "id": 2,
-      "username": "guest",
-      "password": "guest123",
+      "username": "rawan.vibes",
+      "password": "246813479",
       "role": "user",
-      "active": false
+      "active": true
     }
   ]
 }
