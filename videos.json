@@ -4,7 +4,7 @@
       "id": 1,
       "title": "Cybersecurity Introduction",
       "description": "مقدمة في الأمن السيبراني.",
-      "youtube_id": "YOUR_VIDEO_ID",
+      "youtube_id": "https://youtu.be/OR06Ky82kRg?si=qTcL5lRHJDVKmATy",
       "thumbnail": "",
       "category": "Cybersecurity"
     },
@@ -12,7 +12,7 @@
       "id": 2,
       "title": "XSS Basics",
       "description": "شرح أساسيات XSS.",
-      "youtube_id": "YOUR_SECOND_VIDEO_ID",
+      "youtube_id": "https://youtu.be/RqmjkAe8f8w",
       "thumbnail": "",
       "category": "Web Security"
     }
