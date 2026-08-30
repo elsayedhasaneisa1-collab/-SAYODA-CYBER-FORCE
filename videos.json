@@ -1,0 +1,20 @@
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "Cybersecurity Introduction",
+      "description": "مقدمة في الأمن السيبراني.",
+      "youtube_id": "YOUR_VIDEO_ID",
+      "thumbnail": "",
+      "category": "Cybersecurity"
+    },
+    {
+      "id": 2,
+      "title": "XSS Basics",
+      "description": "شرح أساسيات XSS.",
+      "youtube_id": "YOUR_SECOND_VIDEO_ID",
+      "thumbnail": "",
+      "category": "Web Security"
+    }
+  ]
+}

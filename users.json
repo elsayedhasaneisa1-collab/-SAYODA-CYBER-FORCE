@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "sayed",
+      "password": "123456",
+      "role": "admin",
+      "active": true
+    },
+    {
+      "id": 2,
+      "username": "guest",
+      "password": "guest123",
+      "role": "user",
+      "active": true
+    }
+  ]
+}

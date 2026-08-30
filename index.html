@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAYODA | CYBER FORCE</title>
+<meta name="description" content="SAYODA | CYBER FORCE - Learn. Build. Secure.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#030914;color:#eef7ff;font-family:system-ui,Arial,sans-serif}a{text-decoration:none;color:inherit}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:16px 5%;background:#050d19ee;backdrop-filter:blur(14px);border-bottom:1px solid #164268}
+.logo{font-weight:900;color:#29aaff}.logo b{color:#fff}.nav{display:flex;gap:20px}.nav a{color:#a9bbce;font-size:14px}.nav a:hover{color:#fff}.menu{display:none;background:none;border:0;color:white;font-size:24px}
+.container{width:min(1150px,92%);margin:auto}.hero{min-height:72vh;display:grid;place-items:center;text-align:center;padding:70px 5%;background:radial-gradient(circle,#007bff28,transparent 50%)}
+.hero h1{font-size:clamp(42px,8vw,90px);line-height:.95;margin:0;letter-spacing:-3px}.blue{color:#18a7ff}.hero p{color:#a9bdd0;font-size:20px}.eyebrow{font-size:12px;letter-spacing:3px;color:#29aaff;font-weight:900}
+.btn{display:inline-block;padding:13px 20px;border-radius:11px;border:0;cursor:pointer;font-weight:800}.primary{background:linear-gradient(135deg,#087cff,#12baff);color:white}.ghost{background:#091625;border:1px solid #225071;color:white}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:25px}.section{padding:60px 0}.section h2{font-size:clamp(28px,5vw,45px);margin:0 0 12px}.muted{color:#91a6ba}
+.login{width:min(430px,100%);margin:65px auto;padding:30px;background:#081524;border:1px solid #1b4a70;border-radius:20px}.login input,.filters input,.filters select{width:100%;padding:13px;margin:8px 0 15px;border-radius:10px;border:1px solid #234761;background:#030914;color:#fff;outline:0}.login input:focus,.filters input:focus,.filters select:focus{border-color:#18aaff}.error{color:#ff7180;min-height:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{background:#081524;border:1px solid #173d5d;border-radius:17px;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-4px);border-color:#159dff}.thumb{aspect-ratio:16/9;background:#06111e;display:grid;place-items:center;color:#20aaff;font-size:40px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.content{padding:16px}.content h3{margin:0 0 7px}.content p{color:#91a6ba;min-height:45px}
+.filters{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin:25px 0}.player{width:100%;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;margin-top:25px}.player iframe{width:100%;height:100%;border:0}.hidden{display:none!important}.logout{color:#ff7180!important;cursor:pointer}footer{text-align:center;padding:35px;color:#637b91;border-top:1px solid #12324e}
+@media(max-width:700px){header{padding:14px 4%}.menu{display:block}.nav{display:none;position:absolute;top:62px;right:0;left:0;padding:12px 5%;background:#07101c;border-bottom:1px solid #183c59;flex-direction:column}.nav.open{display:flex}.nav a{padding:8px}.filters{grid-template-columns:1fr}.section{padding:45px 0}.logo{font-size:13px}}
+</style>
+</head>
+<body>
+<header><a class="logo" href="#home">⌁ SAYODA <b>|</b> CYBER FORCE</a><button class="menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+<nav id="nav" class="nav"><a href="#home">الرئيسية</a><a href="#videos">الفيديوهات</a><a href="#about">عن المنصة</a><a href="#login" id="loginLink">تسجيل الدخول</a><a id="logoutLink" class="logout hidden" onclick="logout()">خروج</a></nav></header>
+
+<main>
+<section id="home" class="hero"><div><p class="eyebrow">CYBER LEARNING PLATFORM</p><h1>SAYODA <span class="blue">|</span><br>CYBER FORCE</h1><p>Learn. Build. Secure.</p><div class="actions"><a class="btn primary" href="#videos">استكشف الفيديوهات</a><a class="btn ghost" href="#login">تسجيل الدخول</a></div></div></section>
+
+<section id="login" class="container section"><div class="login"><p class="eyebrow">SECURE ACCESS</p><h2>تسجيل الدخول</h2><input id="username" placeholder="اسم المستخدم"><input id="password" type="password" placeholder="كلمة المرور"><button class="btn primary" style="width:100%" onclick="login()">دخول</button><p id="error" class="error"></p></div></section>
+
+<section id="platform" class="container hidden">
+<section id="about" class="section"><p class="eyebrow">ABOUT</p><h2>مرحبًا بك في SAYODA.</h2><p class="muted">منصة تجريبية لمحتوى الأمن السيبراني.</p></section>
+<section id="videos" class="section"><p class="eyebrow">VIDEO LIBRARY</p><h2>الفيديوهات</h2><div class="filters"><input id="search" placeholder="ابحث عن فيديو..."><select id="category"><option value="">كل التصنيفات</option></select></div><div id="videoGrid" class="grid"></div><div id="watch"></div></section>
+</section>
+</main>
+<footer>© 2026 SAYODA | CYBER FORCE</footer>
+
+<script>
+let users=[], videos=[];
+async function loadData(){
+  const [u,v]=await Promise.all([fetch("users.json"),fetch("videos.json")]);
+  if(!u.ok||!v.ok) throw new Error("JSON");
+  users=(await u.json()).users||[]; videos=(await v.json()).videos||[];
+}
+function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+async function login(){
+  const error=document.getElementById("error");
+  try{
+    if(!users.length) await loadData();
+    const u=users.find(x=>x.username===document.getElementById("username").value.trim()&&x.password===document.getElementById("password").value&&x.active!==false);
+    if(!u){error.textContent="اسم المستخدم أو كلمة المرور غير صحيحة.";return}
+    sessionStorage.setItem("sayoda_user",JSON.stringify({username:u.username,role:u.role||"user"})); showPlatform(u);
+  }catch(e){error.textContent="تعذر قراءة ملفات JSON. ارفع الملفات الثلاثة معًا على GitHub Pages أو شغّل Static Server."}
+}
+function showPlatform(u){
+ document.getElementById("login").classList.add("hidden");document.getElementById("platform").classList.remove("hidden");
+ document.getElementById("loginLink").classList.add("hidden");document.getElementById("logoutLink").classList.remove("hidden");render();
+}
+function logout(){sessionStorage.removeItem("sayoda_user");location.reload()}
+function render(){
+ const grid=document.getElementById("videoGrid"),q=(document.getElementById("search").value||"").toLowerCase(),c=document.getElementById("category").value;
+ const list=videos.filter(v=>(!q||JSON.stringify(v).toLowerCase().includes(q))&&(!c||v.category===c));
+ grid.innerHTML=list.length?list.map(v=>`<article class="card"><div class="thumb">${v.thumbnail?`<img src="${esc(v.thumbnail)}" alt="">`:"▶"}</div><div class="content"><h3>${esc(v.title)}</h3><p>${esc(v.description||"")}</p><small>${esc(v.category||"General")}</small><br><br><button class="btn primary" onclick="watch('${encodeURIComponent(v.youtube_id)}')">مشاهدة داخل الموقع</button></div></article>`).join(""):"<div>لا توجد فيديوهات.</div>";
+}
+function watch(id){
+ const v=decodeURIComponent(id);if(!v||v.startsWith("YOUR_")){alert("ضع YouTube Video ID في videos.json");return}
+ document.getElementById("watch").innerHTML=`<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v)}?rel=0&modestbranding=1" title="SAYODA | CYBER FORCE" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+ document.getElementById("watch").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("search").addEventListener("input",()=>render());document.getElementById("category").addEventListener("change",()=>render());
+(async()=>{try{await loadData();[...new Set(videos.map(v=>v.category).filter(Boolean))].forEach(c=>document.getElementById("category").insertAdjacentHTML("beforeend",`<option value="${esc(c)}">${esc(c)}</option>`));const s=JSON.parse(sessionStorage.getItem("sayoda_user")||"null");if(s){const u=users.find(x=>x.username===s.username);if(u)showPlatform(u)}}catch(e){}})();
+</script>
+</body></html>
