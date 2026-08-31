@@ -27,6 +27,20 @@
             "password": "147258",
             "role": "user",
             "active": true
+        }, 
+        {
+            "id": 5,
+            "username": "Adam",
+            "password": "654191",
+            "role": "user",
+            "active": true
+        }, 
+        {
+            "id": 6,
+            "username": "sex",
+            "password": "572010",
+            "role": "user",
+            "active": true
         }
     ]
 }
