@@ -2,8 +2,8 @@
   "users": [
     {
       "id": 1,
-      "username": "sayed",
-      "password": "123456",
+      "username": "admin",
+      "password": "01041254010",
       "role": "admin",
       "active": true
     },
@@ -13,6 +13,13 @@
       "password": "246813479",
       "role": "user",
       "active": true
-    }
+    }, 
+    {
+      "id": 3,
+      "username": "Abdelrahman Wazer",
+      "password": "123123",
+      "role": "user",
+      "active": true
+    },
   ]
 }
