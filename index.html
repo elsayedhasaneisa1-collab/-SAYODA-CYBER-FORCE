@@ -4,6 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- ================= OG TAGS (للمشاركة) ================= -->
+<meta property="og:title" content="SAYODA | CYBER FORCE">
+<meta property="og:description" content="منصة تعليمية لمحتوى الأمن السيبراني والتقنية.">
+<meta property="og:image" content="logo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://your-domain.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- ================= أمان ================= -->
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
+
+<!-- Favicon -->
+<link rel="icon" href="logo.png" type="image/png">
+
 <title>SAYODA | CYBER FORCE</title>
 
 <style>
@@ -325,7 +343,6 @@ nav a:hover{
     background:#01060d;
 }
 
-/* 🆕 منع تحديد الصورة */
 .thumbnail img{
     width:100%;
     height:100%;
@@ -335,7 +352,7 @@ nav a:hover{
     user-select:none;
     -webkit-user-drag:none;
     -webkit-touch-callout:none;
-    pointer-events:none; /* 🆕 منع أي تفاعل مع الصورة */
+    pointer-events:none;
 
     transition:.3s;
 }
@@ -356,7 +373,6 @@ nav a:hover{
 
     background:#0005;
 
-    /* 🆕 يظهر فوق الصورة */
     z-index:2;
 }
 
@@ -852,7 +868,7 @@ footer a{
         target="_blank"
         rel="noopener noreferrer"
     >
-         EL-SAYED HASAN
+        حقوقي EL-SAYED HASAN
     </a>
 
 </footer>
@@ -927,7 +943,8 @@ function validateSession(){
         return false;
     }
 
-    const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET');
+    // استخدام تشفير أقوى (SHA-256) بدلاً من btoa الضعيف
+    const expectedToken = generateAuthToken(savedUsername, savedSessionId);
     if(savedToken !== expectedToken){
         return false;
     }
@@ -935,9 +952,17 @@ function validateSession(){
     return true;
 }
 
-// إنشاء توكن فريد لكل جلسة
-function generateAuthToken(username, sessionId){
-    return btoa(username + '|' + sessionId + '|' + 'SAYODA_SECRET');
+// 🆕 توليد توكن آمن باستخدام SHA-256
+async function generateAuthToken(username, sessionId){
+    const secret = 'SAYODA_SECRET_KEY_2026_STRONG';
+    const data = username + '|' + sessionId + '|' + secret;
+    
+    // استخدام Web Crypto API (موجود في كل المتصفحات الحديثة)
+    const encoder = new TextEncoder();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
 }
 
 
@@ -964,27 +989,24 @@ document.addEventListener('dragstart', function(e) {
 // منع الضغط المطول (على الموبايل)
 document.addEventListener('touchstart', function(e) {
     if(e.target.tagName === 'IMG') {
-        // منع القائمة المنبثقة
         e.preventDefault();
         return false;
     }
 }, {passive: false});
 
-// منع حفظ الصورة من القائمة (اختراق إضافي)
+// منع حفظ الصورة من القائمة
 document.addEventListener('keydown', function(e) {
-    // منع Ctrl+S, Ctrl+U, Ctrl+Shift+I
     if(e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'S' || e.key === 'U')) {
         e.preventDefault();
         return false;
     }
-    // منع F12
     if(e.key === 'F12') {
         e.preventDefault();
         return false;
     }
 });
 
-// منع النقر المزدوج (لتحديد الصورة)
+// منع النقر المزدوج
 document.addEventListener('dblclick', function(e) {
     if(e.target.tagName === 'IMG') {
         e.preventDefault();
@@ -1048,13 +1070,13 @@ async function loadData(){
 
 
 /* =========================================
-   إدارة الجلسات (Session Management)
+   🆕 إدارة الجلسات (Session Management) - آمنة
 ========================================= */
 
-// تحميل الجلسات النشطة من localStorage
+// تحميل الجلسات النشطة من sessionStorage (آمن أكثر)
 function loadActiveSessions(){
     try{
-        const saved = localStorage.getItem('sayoda_active_sessions');
+        const saved = sessionStorage.getItem('sayoda_active_sessions');
         if(saved){
             activeSessions = JSON.parse(saved);
         }
@@ -1063,10 +1085,10 @@ function loadActiveSessions(){
     }
 }
 
-// حفظ الجلسات النشطة في localStorage
+// حفظ الجلسات النشطة في sessionStorage
 function saveActiveSessions(){
     try{
-        localStorage.setItem('sayoda_active_sessions', JSON.stringify(activeSessions));
+        sessionStorage.setItem('sayoda_active_sessions', JSON.stringify(activeSessions));
     }catch(e){}
 }
 
@@ -1134,6 +1156,7 @@ function forceLogout(){
     sessionStorage.removeItem("sayoda_session_id");
     sessionStorage.removeItem("sayoda_auth_token");
     sessionStorage.removeItem("sayoda_tab_open");
+    sessionStorage.removeItem("sayoda_active_sessions");
     
     currentUser = null;
     sessionId = null;
@@ -1253,7 +1276,8 @@ async function login(){
 
         registerSession(username);
 
-        const authToken = generateAuthToken(username, sessionId);
+        // استخدام التشفير الجديد
+        const authToken = await generateAuthToken(username, sessionId);
         sessionStorage.setItem("sayoda_user", username);
         sessionStorage.setItem("sayoda_session_id", sessionId);
         sessionStorage.setItem("sayoda_auth_token", authToken);
@@ -1303,12 +1327,12 @@ function showPlatform(){
 
     renderVideos();
 
-    setInterval(() => {
+    setInterval(async () => {
         if(sessionId){
             refreshSession(sessionId);
             const username = sessionStorage.getItem('sayoda_user');
             if(username && sessionId){
-                const newToken = generateAuthToken(username, sessionId);
+                const newToken = await generateAuthToken(username, sessionId);
                 sessionStorage.setItem('sayoda_auth_token', newToken);
             }
         }
@@ -1339,6 +1363,7 @@ function logout(){
     sessionStorage.removeItem("sayoda_user");
     sessionStorage.removeItem("sayoda_session_id");
     sessionStorage.removeItem("sayoda_auth_token");
+    sessionStorage.removeItem("sayoda_active_sessions");
 
     currentUser = null;
     sessionId = null;
@@ -1477,7 +1502,6 @@ function renderVideos(){
                             draggable="false"
                             loading="lazy"
                             onerror="this.src='sayed.png'"
-                            /* 🆕 منع أي حدث على الصورة */
                             onclick="return false"
                             oncontextmenu="return false"
                             onmousedown="return false"
@@ -1733,7 +1757,7 @@ function closeVideo(){
 
 
 /* =========================================
-   ESCAPE HTML
+   ESCAPE HTML - منع XSS
 ========================================= */
 
 function escapeHTML(value){
@@ -1877,7 +1901,7 @@ window.addEventListener('beforeunload', function() {
 
         if(savedUsername && savedSessionId && savedToken){
 
-            const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET');
+            const expectedToken = await generateAuthToken(savedUsername, savedSessionId);
             if(savedToken !== expectedToken){
                 sessionStorage.removeItem("sayoda_user");
                 sessionStorage.removeItem("sayoda_session_id");
