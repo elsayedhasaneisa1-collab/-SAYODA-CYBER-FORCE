@@ -325,6 +325,7 @@ nav a:hover{
     background:#01060d;
 }
 
+/* 🆕 منع تحديد الصورة */
 .thumbnail img{
     width:100%;
     height:100%;
@@ -333,6 +334,8 @@ nav a:hover{
 
     user-select:none;
     -webkit-user-drag:none;
+    -webkit-touch-callout:none;
+    pointer-events:none; /* 🆕 منع أي تفاعل مع الصورة */
 
     transition:.3s;
 }
@@ -352,6 +355,9 @@ nav a:hover{
     cursor:pointer;
 
     background:#0005;
+
+    /* 🆕 يظهر فوق الصورة */
+    z-index:2;
 }
 
 .play-button{
@@ -578,10 +584,103 @@ footer a{
     }
 
 }
+
+/* ================= رسالة الطرد ================= */
+
+#kickMessage {
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:#000000dd;
+    backdrop-filter:blur(15px);
+    padding:20px;
+}
+
+#kickMessage.show {
+    display:flex;
+}
+
+.kick-box {
+    background:#0a1a2e;
+    border:2px solid #ff3344;
+    border-radius:25px;
+    padding:45px 35px;
+    max-width:450px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 0 80px #ff334455;
+    animation:shake 0.5s ease-in-out;
+}
+
+.kick-box .icon {
+    font-size:70px;
+    margin-bottom:15px;
+}
+
+.kick-box h2 {
+    color:#ff4455;
+    font-size:26px;
+    margin-bottom:12px;
+}
+
+.kick-box p {
+    color:#99b5cc;
+    font-size:16px;
+    line-height:1.8;
+    margin-bottom:25px;
+}
+
+.kick-box .btn {
+    padding:14px 40px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#ff3344,#cc2233);
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.kick-box .btn:hover {
+    transform:scale(1.05);
+    box-shadow:0 0 30px #ff334466;
+}
+
+@keyframes shake {
+    0%,100% { transform:translateX(0); }
+    10% { transform:translateX(-15px); }
+    20% { transform:translateX(15px); }
+    30% { transform:translateX(-10px); }
+    40% { transform:translateX(10px); }
+    50% { transform:translateX(-5px); }
+    60% { transform:translateX(5px); }
+    70% { transform:translateX(-3px); }
+    80% { transform:translateX(3px); }
+    90% { transform:translateX(-1px); }
+}
 </style>
 </head>
 
 <body>
+
+
+<!-- ================= رسالة الطرد ================= -->
+
+<div id="kickMessage">
+    <div class="kick-box">
+        <div class="icon">🚫</div>
+        <h2>تم تسجيل الخروج</h2>
+        <p>
+            ⚠️ تم تسجيل دخول شخص آخر بنفس الحساب.<br>
+            لا يمكن استخدام نفس الحساب من جهازين في نفس الوقت.
+        </p>
+        <button class="btn" onclick="forceLogout()">تسجيل الدخول مرة أخرى</button>
+    </div>
+</div>
 
 
 <!-- ================= LOGIN ================= -->
@@ -753,7 +852,7 @@ footer a{
         target="_blank"
         rel="noopener noreferrer"
     >
-         EL-SAYED HASAN
+        حقوقي EL-SAYED HASAN
     </a>
 
 </footer>
@@ -818,18 +917,16 @@ footer a{
    🔐 منع مشاركة الرابط - التحقق من الجلسة
 ========================================= */
 
-// 🆕 دالة للتحقق من أن المستخدم داخل من نفس الجهاز والجلسة
+// دالة للتحقق من أن المستخدم داخل من نفس الجهاز والجلسة
 function validateSession(){
     const savedUsername = sessionStorage.getItem('sayoda_user');
     const savedSessionId = sessionStorage.getItem('sayoda_session_id');
     const savedToken = sessionStorage.getItem('sayoda_auth_token');
 
-    // لو مفيش بيانات جلسة، ارجع login
     if(!savedUsername || !savedSessionId || !savedToken){
         return false;
     }
 
-    // التحقق من التوكن (يمنع استخدام الرابط من جهاز تاني)
     const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET');
     if(savedToken !== expectedToken){
         return false;
@@ -838,10 +935,62 @@ function validateSession(){
     return true;
 }
 
-// 🆕 إنشاء توكن فريد لكل جلسة
+// إنشاء توكن فريد لكل جلسة
 function generateAuthToken(username, sessionId){
     return btoa(username + '|' + sessionId + '|' + 'SAYODA_SECRET');
 }
+
+
+/* =========================================
+   🆕 حماية الصور - منع التحميل
+========================================= */
+
+// منع النقر بزر الماوس الأيمن على الصور
+document.addEventListener('contextmenu', function(e) {
+    if(e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// منع السحب
+document.addEventListener('dragstart', function(e) {
+    if(e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// منع الضغط المطول (على الموبايل)
+document.addEventListener('touchstart', function(e) {
+    if(e.target.tagName === 'IMG') {
+        // منع القائمة المنبثقة
+        e.preventDefault();
+        return false;
+    }
+}, {passive: false});
+
+// منع حفظ الصورة من القائمة (اختراق إضافي)
+document.addEventListener('keydown', function(e) {
+    // منع Ctrl+S, Ctrl+U, Ctrl+Shift+I
+    if(e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'S' || e.key === 'U')) {
+        e.preventDefault();
+        return false;
+    }
+    // منع F12
+    if(e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// منع النقر المزدوج (لتحديد الصورة)
+document.addEventListener('dblclick', function(e) {
+    if(e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+    }
+});
 
 
 /* =========================================
@@ -858,6 +1007,9 @@ let videoProgress = {};
 
 // تخزين الجلسات النشطة
 let activeSessions = {};
+
+// معرف الجلسة الحالية في localStorage
+let currentSessionKey = null;
 
 /* =========================================
    LOAD JSON (محسن)
@@ -918,29 +1070,24 @@ function saveActiveSessions(){
     }catch(e){}
 }
 
-// التحقق من أن المستخدم ليس مسجلاً دخول في جهاز آخر
-function isUserLoggedIn(username){
-    // تنظيف الجلسات القديمة (أكثر من ساعة)
-    const now = Date.now();
+// التحقق من أن الجلسة الحالية لسه صالحة
+function isMySessionStillValid(){
+    if(!currentSessionKey) return true;
+    loadActiveSessions();
+    return activeSessions[currentSessionKey] !== undefined;
+}
+
+// تسجيل جلسة جديدة (وإزالة أي جلسة سابقة لنفس المستخدم)
+function registerSession(username){
+    loadActiveSessions();
     for(const [key, data] of Object.entries(activeSessions)){
-        if(now - data.timestamp > 3600000){ // ساعة واحدة
+        if(data.username === username){
             delete activeSessions[key];
         }
     }
-    saveActiveSessions();
-
-    // التحقق من وجود المستخدم
-    for(const [key, data] of Object.entries(activeSessions)){
-        if(data.username === username){
-            return true;
-        }
-    }
-    return false;
-}
-
-// تسجيل جلسة جديدة
-function registerSession(username){
+    
     const newSessionId = generateSessionId();
+    currentSessionKey = newSessionId;
     activeSessions[newSessionId] = {
         username: username,
         timestamp: Date.now()
@@ -951,9 +1098,9 @@ function registerSession(username){
 }
 
 // إلغاء الجلسة
-function unregisterSession(sessionId){
-    if(sessionId && activeSessions[sessionId]){
-        delete activeSessions[sessionId];
+function unregisterSession(sessionKey){
+    if(sessionKey && activeSessions[sessionKey]){
+        delete activeSessions[sessionKey];
         saveActiveSessions();
     }
 }
@@ -963,12 +1110,42 @@ function generateSessionId(){
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-// تجديد الجلسة (لمنع انتهائها)
-function refreshSession(sessionId){
-    if(sessionId && activeSessions[sessionId]){
-        activeSessions[sessionId].timestamp = Date.now();
+// تجديد الجلسة
+function refreshSession(sessionKey){
+    if(sessionKey && activeSessions[sessionKey]){
+        activeSessions[sessionKey].timestamp = Date.now();
         saveActiveSessions();
     }
+}
+
+
+/* =========================================
+   رسالة الطرد
+========================================= */
+
+function showKickMessage(){
+    document.getElementById('kickMessage').classList.add('show');
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('loginScreen').classList.add('hidden');
+}
+
+function forceLogout(){
+    sessionStorage.removeItem("sayoda_user");
+    sessionStorage.removeItem("sayoda_session_id");
+    sessionStorage.removeItem("sayoda_auth_token");
+    sessionStorage.removeItem("sayoda_tab_open");
+    
+    currentUser = null;
+    sessionId = null;
+    currentSessionKey = null;
+    
+    document.getElementById('kickMessage').classList.remove('show');
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+    
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('loginError').textContent = '';
 }
 
 
@@ -1072,24 +1249,10 @@ async function login(){
         }
 
 
-        // التحقق من أن المستخدم مش مسجل دخول في جهاز تاني
-        loadActiveSessions();
-        if(isUserLoggedIn(username)){
-            error.textContent =
-                "⚠️ هذا الحساب مسجل دخول بالفعل على جهاز آخر.\nلا يمكن تسجيل الدخول من جهازين بنفس الحساب.";
-
-            return;
-        }
-
-
         currentUser = user;
 
-
-        // تسجيل الجلسة
         registerSession(username);
 
-
-        // 🆕 تخزين بيانات الجلسة مع توكن
         const authToken = generateAuthToken(username, sessionId);
         sessionStorage.setItem("sayoda_user", username);
         sessionStorage.setItem("sayoda_session_id", sessionId);
@@ -1116,17 +1279,17 @@ async function login(){
 
 
 /* =========================================
-   SHOW PLATFORM (معدل)
+   SHOW PLATFORM
 ========================================= */
 
 function showPlatform(){
 
-    // 🆕 التحقق من صحة الجلسة قبل عرض المحتوى
     if(!validateSession()){
-        // لو الجلسة مش صحيحة، اخرج وارجع للوجين
         logout();
         return;
     }
+
+    document.getElementById('kickMessage').classList.remove('show');
 
     document
         .getElementById("loginScreen")
@@ -1140,11 +1303,9 @@ function showPlatform(){
 
     renderVideos();
 
-    // تجديد الجلسة كل دقيقة
     setInterval(() => {
         if(sessionId){
             refreshSession(sessionId);
-            // تجديد التوكن
             const username = sessionStorage.getItem('sayoda_user');
             if(username && sessionId){
                 const newToken = generateAuthToken(username, sessionId);
@@ -1153,18 +1314,26 @@ function showPlatform(){
         }
     }, 60000);
 
+    // التحقق المستمر من صحة الجلسة (كل 3 ثواني)
+    setInterval(() => {
+        if(!document.getElementById('app').classList.contains('hidden')){
+            if(!isMySessionStillValid() || !validateSession()){
+                showKickMessage();
+            }
+        }
+    }, 3000);
+
 }
 
 
 /* =========================================
-   LOGOUT (معدل)
+   LOGOUT
 ========================================= */
 
 function logout(){
 
-    // إلغاء الجلسة
-    if(sessionId){
-        unregisterSession(sessionId);
+    if(currentSessionKey){
+        unregisterSession(currentSessionKey);
     }
 
     sessionStorage.removeItem("sayoda_user");
@@ -1173,6 +1342,7 @@ function logout(){
 
     currentUser = null;
     sessionId = null;
+    currentSessionKey = null;
 
     location.reload();
 
@@ -1203,7 +1373,7 @@ function saveProgress(){
 
 
 /* =========================================
-   التحقق من أن الفيديو متاح
+   التحقق من أن الفيديو متاح (5%)
 ========================================= */
 
 function isVideoUnlocked(index){
@@ -1214,7 +1384,7 @@ function isVideoUnlocked(index){
     return previousVideos.every((video, i) => {
         const youtubeId = extractYouTubeID(video.youtube_id) || video.youtube_id || '';
         const progress = videoProgress[youtubeId] || 0;
-        return progress >= 30;
+        return progress >= 5;
     });
 }
 
@@ -1307,6 +1477,11 @@ function renderVideos(){
                             draggable="false"
                             loading="lazy"
                             onerror="this.src='sayed.png'"
+                            /* 🆕 منع أي حدث على الصورة */
+                            onclick="return false"
+                            oncontextmenu="return false"
+                            onmousedown="return false"
+                            onselectstart="return false"
                         >
 
                         <div
@@ -1335,7 +1510,7 @@ function renderVideos(){
 
                         <p>
                             ${description || "لا يوجد وصف لهذا الفيديو."}
-                            ${!unlocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة الفيديوهات السابقة أولاً</small>' : ''}
+                            ${!unlocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة 5% من الفيديو السابق أولاً</small>' : ''}
                         </p>
 
 
@@ -1369,10 +1544,8 @@ function renderVideos(){
 
 function playFromCard(element){
 
-    // 🆕 التحقق من الجلسة قبل التشغيل
     if(!validateSession()){
-        alert('⚠️ جلسة غير صالحة. سيتم إعادة التوجيه لتسجيل الدخول.');
-        logout();
+        showKickMessage();
         return;
     }
 
@@ -1389,7 +1562,7 @@ function playFromCard(element){
 
 
     if(!isVideoUnlocked(index)){
-        alert('🔒 هذا الفيديو مقفل!\nيجب مشاهدة 30% من الفيديوهات السابقة أولاً.');
+        alert('🔒 هذا الفيديو مقفل!\nيجب مشاهدة 5% من الفيديو السابق أولاً.');
         return;
     }
 
@@ -1409,10 +1582,8 @@ function playFromCard(element){
 
 function openVideo(videoId, title, index){
 
-    // 🆕 التحقق من الجلسة قبل فتح الفيديو
     if(!validateSession()){
-        alert('⚠️ جلسة غير صالحة. سيتم إعادة التوجيه لتسجيل الدخول.');
-        logout();
+        showKickMessage();
         return;
     }
 
@@ -1508,7 +1679,7 @@ function startProgressTracking(videoId, index){
         saveProgress();
         renderVideos();
 
-        if(current >= 30){
+        if(current >= 5){
             renderVideos();
         }
 
@@ -1635,42 +1806,6 @@ document
 
 
 /* =========================================
-   BASIC IMAGE PROTECTION
-========================================= */
-
-document.addEventListener(
-    "contextmenu",
-    event => {
-
-        if(
-            event?.target?.tagName === "IMG"
-        ){
-
-            event.preventDefault();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "dragstart",
-    event => {
-
-        if(
-            event?.target?.tagName === "IMG"
-        ){
-
-            event.preventDefault();
-
-        }
-
-    }
-);
-
-
-/* =========================================
    ENTER TO LOGIN
 ========================================= */
 
@@ -1693,38 +1828,18 @@ document
 
 
 /* =========================================
-   🆕 منع مشاركة الرابط - التحقق المستمر
+   منع فتح التبويبات الجديدة من نفس الجلسة
 ========================================= */
 
-// التحقق من الجلسة كل 5 ثواني
-setInterval(() => {
-    if(document.getElementById('app').classList.contains('hidden') === false){
-        if(!validateSession()){
-            alert('⚠️ تم اكتشاف محاولة استخدام رابط من جهاز آخر.\nسيتم تسجيل الخروج.');
-            logout();
-        }
-    }
-}, 5000);
-
-
-/* =========================================
-   🆕 منع فتح التبويبات الجديدة من نفس الجلسة
-========================================= */
-
-// منع فتح الصفحة في أكثر من تبويب
 window.addEventListener('load', function() {
-    // التحقق من وجود تبويب مفتوح بالفعل
     if(sessionStorage.getItem('sayoda_tab_open')){
-        // لو في تبويب مفتوح، نغلق الحالي
         alert('⚠️ هذه الصفحة مفتوحة بالفعل في تبويب آخر.\nلا يمكن فتح أكثر من تبويب بنفس الجلسة.');
         window.close();
     } else {
-        // تسجيل أن التبويب مفتوح
         sessionStorage.setItem('sayoda_tab_open', 'true');
     }
 });
 
-// عند إغلاق التبويب، نحرر القفل
 window.addEventListener('beforeunload', function() {
     sessionStorage.removeItem('sayoda_tab_open');
 });
@@ -1762,7 +1877,6 @@ window.addEventListener('beforeunload', function() {
 
         if(savedUsername && savedSessionId && savedToken){
 
-            // 🆕 التحقق من صحة التوكن
             const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET');
             if(savedToken !== expectedToken){
                 sessionStorage.removeItem("sayoda_user");
@@ -1771,7 +1885,6 @@ window.addEventListener('beforeunload', function() {
                 return;
             }
 
-            // التحقق من أن الجلسة لسه موجودة
             if(activeSessions[savedSessionId] && 
                activeSessions[savedSessionId].username === savedUsername){
                 
@@ -1788,18 +1901,18 @@ window.addEventListener('beforeunload', function() {
 
                     currentUser = user;
                     sessionId = savedSessionId;
+                    currentSessionKey = savedSessionId;
 
-                    // تجديد الجلسة
                     refreshSession(sessionId);
 
                     showPlatform();
 
                 }
             } else {
-                // الجلسة انتهت أو اتحذفت
                 sessionStorage.removeItem("sayoda_user");
                 sessionStorage.removeItem("sayoda_session_id");
                 sessionStorage.removeItem("sayoda_auth_token");
+                showKickMessage();
             }
 
         }
