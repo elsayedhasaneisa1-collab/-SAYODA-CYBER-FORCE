@@ -4,13 +4,13 @@
             "id": 1,
             "title": "تعلم الأمن السيبراني",
             "description": "جميع الحقوق محفوظة",
-            "youtube_id": "https://youtu.be/rYTPa1n6LHo?si=fNQdmNicCxOYunyI",
+            "youtube_id": "https://youtu.be/rYTPaIn6LHo?si=fNQdmNicCxOYunyl",
             "category": "Cybersecurity",
             "thumbnail": "sayed.png"
         },
         {
             "id": 2,
-            "title": "تغذية XSS وأنواعها",
+            "title": "ثغره XSS وأنواعها",
             "description": "جميع الحقوق محفوظة",
             "youtube_id": "https://youtu.be/WmpUpI18eo?si=jT9k1BsUu2W6307R",
             "category": "Cybersecurity",
