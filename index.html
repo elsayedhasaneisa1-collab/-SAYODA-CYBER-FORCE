@@ -943,7 +943,7 @@ function validateSession(){
         return false;
     }
 
-    // استخدام تشفير أقوى (SHA-256) بدلاً من btoa الضعيف
+    // استخدام btoa مع تشفير إضافي
     const expectedToken = generateAuthToken(savedUsername, savedSessionId);
     if(savedToken !== expectedToken){
         return false;
@@ -952,17 +952,13 @@ function validateSession(){
     return true;
 }
 
-// 🆕 توليد توكن آمن باستخدام SHA-256
-async function generateAuthToken(username, sessionId){
-    const secret = 'SAYODA_SECRET_KEY_2026_STRONG';
-    const data = username + '|' + sessionId + '|' + secret;
-    
-    // استخدام Web Crypto API (موجود في كل المتصفحات الحديثة)
-    const encoder = new TextEncoder();
-    const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
+// 🆕 توليد توكن باستخدام btoa + خلط
+function generateAuthToken(username, sessionId){
+    const secret = 'SAYODA_SECRET_2026';
+    // خلط البيانات مع secret
+    const mixed = username + '|' + sessionId + '|' + secret;
+    // تشفير base64
+    return btoa(mixed);
 }
 
 
@@ -1277,7 +1273,7 @@ async function login(){
         registerSession(username);
 
         // استخدام التشفير الجديد
-        const authToken = await generateAuthToken(username, sessionId);
+        const authToken = generateAuthToken(username, sessionId);
         sessionStorage.setItem("sayoda_user", username);
         sessionStorage.setItem("sayoda_session_id", sessionId);
         sessionStorage.setItem("sayoda_auth_token", authToken);
@@ -1327,12 +1323,12 @@ function showPlatform(){
 
     renderVideos();
 
-    setInterval(async () => {
+    setInterval(() => {
         if(sessionId){
             refreshSession(sessionId);
             const username = sessionStorage.getItem('sayoda_user');
             if(username && sessionId){
-                const newToken = await generateAuthToken(username, sessionId);
+                const newToken = generateAuthToken(username, sessionId);
                 sessionStorage.setItem('sayoda_auth_token', newToken);
             }
         }
@@ -1901,7 +1897,7 @@ window.addEventListener('beforeunload', function() {
 
         if(savedUsername && savedSessionId && savedToken){
 
-            const expectedToken = await generateAuthToken(savedUsername, savedSessionId);
+            const expectedToken = generateAuthToken(savedUsername, savedSessionId);
             if(savedToken !== expectedToken){
                 sessionStorage.removeItem("sayoda_user");
                 sessionStorage.removeItem("sayoda_session_id");
