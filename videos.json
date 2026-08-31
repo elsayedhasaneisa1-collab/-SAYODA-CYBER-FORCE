@@ -2,9 +2,9 @@
     "videos": [
         {
             "id": 1,
-            "title": "تعلم الأمن السيبراني",
+            "title": "تعلم الامن السيبراني من الصفر ",
             "description": "جميع الحقوق محفوظة",
-            "youtube_id": "https://youtu.be/rYTPaIn6LHo?si=fNQdmNicCxOYunyl",
+            "youtube_id": "https://youtu.be/rYTPa1n6LHo?si=XXsNscCQ68BaI09H",
             "category": "Cybersecurity",
             "thumbnail": "sayed.png"
         },
@@ -12,7 +12,7 @@
             "id": 2,
             "title": "ثغره XSS وأنواعها",
             "description": "جميع الحقوق محفوظة",
-            "youtube_id": "https://youtu.be/WmpUpI18eo?si=jT9k1BsUu2W6307R",
+            "youtube_id": "https://youtu.be/WmpUip1l8eo?si=ezNDOQNBTS26THl-",
             "category": "Cybersecurity",
             "thumbnail": "sayed.png"
         }
