@@ -815,49 +815,49 @@ footer a{
 <script>
 
 /* =========================================
+   🔐 منع مشاركة الرابط - التحقق من الجلسة
+========================================= */
+
+// 🆕 دالة للتحقق من أن المستخدم داخل من نفس الجهاز والجلسة
+function validateSession(){
+    const savedUsername = sessionStorage.getItem('sayoda_user');
+    const savedSessionId = sessionStorage.getItem('sayoda_session_id');
+    const savedToken = sessionStorage.getItem('sayoda_auth_token');
+
+    // لو مفيش بيانات جلسة، ارجع login
+    if(!savedUsername || !savedSessionId || !savedToken){
+        return false;
+    }
+
+    // التحقق من التوكن (يمنع استخدام الرابط من جهاز تاني)
+    const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET');
+    if(savedToken !== expectedToken){
+        return false;
+    }
+
+    return true;
+}
+
+// 🆕 إنشاء توكن فريد لكل جلسة
+function generateAuthToken(username, sessionId){
+    return btoa(username + '|' + sessionId + '|' + 'SAYODA_SECRET');
+}
+
+
+/* =========================================
    DATA
 ========================================= */
 
 let users = [];
 let videos = [];
 let currentUser = null;
+let sessionId = null;
 
-// 🆕 تخزين تقدم المشاهدة لكل فيديو
+// تخزين التقدم لكل فيديو
 let videoProgress = {};
 
-// تحميل التقدم من localStorage
-function loadProgress(){
-    try{
-        const saved = localStorage.getItem('sayoda_video_progress');
-        if(saved){
-            videoProgress = JSON.parse(saved);
-        }
-    }catch(e){
-        videoProgress = {};
-    }
-}
-
-// حفظ التقدم في localStorage
-function saveProgress(){
-    try{
-        localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress));
-    }catch(e){}
-}
-
-// 🆕 التحقق من أن الفيديو متاح (تم مشاهدة 30% من السابق)
-function isVideoUnlocked(index){
-    if(index === 0) return true; // أول فيديو مفتوح دائماً
-    
-    // الفيديوهات السابقة
-    const previousVideos = videos.slice(0, index);
-    
-    // كل الفيديوهات السابقة لازم يكون عندهم تقدم >= 30%
-    return previousVideos.every((video, i) => {
-        const progress = videoProgress[video.youtube_id] || 0;
-        return progress >= 30;
-    });
-}
-
+// تخزين الجلسات النشطة
+let activeSessions = {};
 
 /* =========================================
    LOAD JSON (محسن)
@@ -870,7 +870,6 @@ async function loadData(){
         fetch("videos.json", { cache: "no-store" })
     ]);
 
-    // التحقق من نجاح تحميل ملف users
     if(usersResponse.status === "fulfilled" && usersResponse.value.ok){
         const usersData = await usersResponse.value.json();
         users = Array.isArray(usersData?.users) ? usersData.users : [];
@@ -879,7 +878,6 @@ async function loadData(){
         console.warn("⚠️ فشل تحميل users.json");
     }
 
-    // التحقق من نجاح تحميل ملف videos
     if(videosResponse.status === "fulfilled" && videosResponse.value.ok){
         const videosData = await videosResponse.value.json();
         videos = Array.isArray(videosData?.videos) ? videosData.videos : [];
@@ -888,7 +886,6 @@ async function loadData(){
         console.warn("⚠️ فشل تحميل videos.json");
     }
 
-    // التحقق من وجود بيانات على الأقل
     if(users.length === 0 || videos.length === 0){
         console.warn("⚠️ بعض الملفات فارغة أو غير موجودة");
         return false;
@@ -899,16 +896,91 @@ async function loadData(){
 
 
 /* =========================================
-   🆕 استخراج YouTube ID من الرابط الكامل
+   إدارة الجلسات (Session Management)
+========================================= */
+
+// تحميل الجلسات النشطة من localStorage
+function loadActiveSessions(){
+    try{
+        const saved = localStorage.getItem('sayoda_active_sessions');
+        if(saved){
+            activeSessions = JSON.parse(saved);
+        }
+    }catch(e){
+        activeSessions = {};
+    }
+}
+
+// حفظ الجلسات النشطة في localStorage
+function saveActiveSessions(){
+    try{
+        localStorage.setItem('sayoda_active_sessions', JSON.stringify(activeSessions));
+    }catch(e){}
+}
+
+// التحقق من أن المستخدم ليس مسجلاً دخول في جهاز آخر
+function isUserLoggedIn(username){
+    // تنظيف الجلسات القديمة (أكثر من ساعة)
+    const now = Date.now();
+    for(const [key, data] of Object.entries(activeSessions)){
+        if(now - data.timestamp > 3600000){ // ساعة واحدة
+            delete activeSessions[key];
+        }
+    }
+    saveActiveSessions();
+
+    // التحقق من وجود المستخدم
+    for(const [key, data] of Object.entries(activeSessions)){
+        if(data.username === username){
+            return true;
+        }
+    }
+    return false;
+}
+
+// تسجيل جلسة جديدة
+function registerSession(username){
+    const newSessionId = generateSessionId();
+    activeSessions[newSessionId] = {
+        username: username,
+        timestamp: Date.now()
+    };
+    sessionId = newSessionId;
+    saveActiveSessions();
+    return newSessionId;
+}
+
+// إلغاء الجلسة
+function unregisterSession(sessionId){
+    if(sessionId && activeSessions[sessionId]){
+        delete activeSessions[sessionId];
+        saveActiveSessions();
+    }
+}
+
+// توليد Session ID عشوائي
+function generateSessionId(){
+    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+// تجديد الجلسة (لمنع انتهائها)
+function refreshSession(sessionId){
+    if(sessionId && activeSessions[sessionId]){
+        activeSessions[sessionId].timestamp = Date.now();
+        saveActiveSessions();
+    }
+}
+
+
+/* =========================================
+   استخراج YouTube ID من الرابط الكامل
 ========================================= */
 
 function extractYouTubeID(input){
-    // لو دخل ID مباشر (11 حرف)
     if(/^[a-zA-Z0-9_-]{11}$/.test(input)){
         return input;
     }
 
-    // لو دخل رابط كامل
     const patterns = [
         /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
         /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
@@ -922,7 +994,6 @@ function extractYouTubeID(input){
         }
     }
 
-    // لو في params زي ?si=...
     const urlParams = new URLSearchParams(input.split('?')[1] || '');
     const v = urlParams.get('v');
     if(v && /^[a-zA-Z0-9_-]{11}$/.test(v)){
@@ -934,7 +1005,7 @@ function extractYouTubeID(input){
 
 
 /* =========================================
-   LOGIN
+   LOGIN (معدل)
 ========================================= */
 
 async function login(){
@@ -1001,16 +1072,30 @@ async function login(){
         }
 
 
+        // التحقق من أن المستخدم مش مسجل دخول في جهاز تاني
+        loadActiveSessions();
+        if(isUserLoggedIn(username)){
+            error.textContent =
+                "⚠️ هذا الحساب مسجل دخول بالفعل على جهاز آخر.\nلا يمكن تسجيل الدخول من جهازين بنفس الحساب.";
+
+            return;
+        }
+
+
         currentUser = user;
 
 
-        sessionStorage.setItem(
-            "sayoda_user",
-            user.username
-        );
+        // تسجيل الجلسة
+        registerSession(username);
 
 
-        // تحميل التقدم
+        // 🆕 تخزين بيانات الجلسة مع توكن
+        const authToken = generateAuthToken(username, sessionId);
+        sessionStorage.setItem("sayoda_user", username);
+        sessionStorage.setItem("sayoda_session_id", sessionId);
+        sessionStorage.setItem("sayoda_auth_token", authToken);
+
+
         loadProgress();
 
 
@@ -1031,10 +1116,17 @@ async function login(){
 
 
 /* =========================================
-   SHOW PLATFORM
+   SHOW PLATFORM (معدل)
 ========================================= */
 
 function showPlatform(){
+
+    // 🆕 التحقق من صحة الجلسة قبل عرض المحتوى
+    if(!validateSession()){
+        // لو الجلسة مش صحيحة، اخرج وارجع للوجين
+        logout();
+        return;
+    }
 
     document
         .getElementById("loginScreen")
@@ -1048,20 +1140,39 @@ function showPlatform(){
 
     renderVideos();
 
+    // تجديد الجلسة كل دقيقة
+    setInterval(() => {
+        if(sessionId){
+            refreshSession(sessionId);
+            // تجديد التوكن
+            const username = sessionStorage.getItem('sayoda_user');
+            if(username && sessionId){
+                const newToken = generateAuthToken(username, sessionId);
+                sessionStorage.setItem('sayoda_auth_token', newToken);
+            }
+        }
+    }, 60000);
+
 }
 
 
 /* =========================================
-   LOGOUT
+   LOGOUT (معدل)
 ========================================= */
 
 function logout(){
 
-    sessionStorage.removeItem(
-        "sayoda_user"
-    );
+    // إلغاء الجلسة
+    if(sessionId){
+        unregisterSession(sessionId);
+    }
+
+    sessionStorage.removeItem("sayoda_user");
+    sessionStorage.removeItem("sayoda_session_id");
+    sessionStorage.removeItem("sayoda_auth_token");
 
     currentUser = null;
+    sessionId = null;
 
     location.reload();
 
@@ -1069,7 +1180,47 @@ function logout(){
 
 
 /* =========================================
-   RENDER VIDEOS (محسن)
+   تحميل التقدم من localStorage
+========================================= */
+
+function loadProgress(){
+    try{
+        const saved = localStorage.getItem('sayoda_video_progress');
+        if(saved){
+            videoProgress = JSON.parse(saved);
+        }
+    }catch(e){
+        videoProgress = {};
+    }
+}
+
+
+function saveProgress(){
+    try{
+        localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress));
+    }catch(e){}
+}
+
+
+/* =========================================
+   التحقق من أن الفيديو متاح
+========================================= */
+
+function isVideoUnlocked(index){
+    if(index === 0) return true;
+    
+    const previousVideos = videos.slice(0, index);
+    
+    return previousVideos.every((video, i) => {
+        const youtubeId = extractYouTubeID(video.youtube_id) || video.youtube_id || '';
+        const progress = videoProgress[youtubeId] || 0;
+        return progress >= 30;
+    });
+}
+
+
+/* =========================================
+   RENDER VIDEOS
 ========================================= */
 
 function renderVideos(){
@@ -1130,7 +1281,7 @@ function renderVideos(){
 
 
                 const rawYoutube = video?.youtube_id ?? "";
-                const youtubeId = extractYouTubeID(rawYoutube) || "";
+                const youtubeId = extractYouTubeID(rawYoutube) || rawYoutube;
 
 
                 const thumbnail =
@@ -1139,7 +1290,6 @@ function renderVideos(){
                         "sayed.png"
                     );
 
-                // 🆕 التحقق من القفل
                 const unlocked = isVideoUnlocked(index);
                 const progress = videoProgress[youtubeId] || 0;
                 const lockedClass = unlocked ? '' : 'locked';
@@ -1219,6 +1369,13 @@ function renderVideos(){
 
 function playFromCard(element){
 
+    // 🆕 التحقق من الجلسة قبل التشغيل
+    if(!validateSession()){
+        alert('⚠️ جلسة غير صالحة. سيتم إعادة التوجيه لتسجيل الدخول.');
+        logout();
+        return;
+    }
+
     const videoId =
         element?.dataset?.id ?? "";
 
@@ -1231,7 +1388,6 @@ function playFromCard(element){
         parseInt(element?.dataset?.index ?? 0);
 
 
-    // 🆕 التحقق من القفل
     if(!isVideoUnlocked(index)){
         alert('🔒 هذا الفيديو مقفل!\nيجب مشاهدة 30% من الفيديوهات السابقة أولاً.');
         return;
@@ -1248,10 +1404,17 @@ function playFromCard(element){
 
 
 /* =========================================
-   OPEN VIDEO (محسن)
+   OPEN VIDEO
 ========================================= */
 
 function openVideo(videoId, title, index){
+
+    // 🆕 التحقق من الجلسة قبل فتح الفيديو
+    if(!validateSession()){
+        alert('⚠️ جلسة غير صالحة. سيتم إعادة التوجيه لتسجيل الدخول.');
+        logout();
+        return;
+    }
 
     const id =
         String(videoId ?? "")
@@ -1285,16 +1448,9 @@ function openVideo(videoId, title, index){
         .getElementById("player");
 
 
-    // إزالة المشغل القديم
     player.src = "";
 
 
-    // 🆕 إضافة event listener لتتبع التقدم
-    // نستخدم postMessage من iframe لتتبع التقدم (حل بديل)
-    // أو نستخدم interval لتقدير التقدم
-
-
-    // بناء رابط YouTube مع تفعيل التتبع
     const url =
         "https://www.youtube.com/embed/" +
         encodeURIComponent(id) +
@@ -1302,7 +1458,7 @@ function openVideo(videoId, title, index){
         "&rel=0" +
         "&playsinline=1" +
         "&modestbranding=1" +
-        "&enablejsapi=1"; // تفعيل YouTube API
+        "&enablejsapi=1";
 
 
     player.src = url;
@@ -1317,14 +1473,13 @@ function openVideo(videoId, title, index){
         "hidden";
 
 
-    // 🆕 بدأ تتبع التقدم
     startProgressTracking(id, index);
 
 }
 
 
 /* =========================================
-   🆕 تتبع تقدم المشاهدة
+   تتبع تقدم المشاهدة
 ========================================= */
 
 let progressInterval = null;
@@ -1333,45 +1488,35 @@ let currentVideoIndex = null;
 
 function startProgressTracking(videoId, index){
 
-    // إيقاف التتبع السابق
     stopProgressTracking();
 
     currentVideoId = videoId;
     currentVideoIndex = index;
 
-    // نبدأ بـ 0
     if(!videoProgress[videoId]){
         videoProgress[videoId] = 0;
     }
 
-    // كل 5 ثواني نزيد التقدم 5%
     progressInterval = setInterval(() => {
 
         if(!currentVideoId) return;
 
-        // زيادة التقدم
         let current = videoProgress[currentVideoId] || 0;
         current = Math.min(current + 5, 100);
         videoProgress[currentVideoId] = current;
 
-        // حفظ التقدم
         saveProgress();
-
-        // تحديث العرض
         renderVideos();
 
-        // لو وصل 30% أو أكتر، نحرر الفيديوهات التالية
         if(current >= 30){
-            // نعيد عرض الفيديوهات عشان تظهر مفتوحة
             renderVideos();
         }
 
-        // لو وصل 100% نوقف التتبع
         if(current >= 100){
             stopProgressTracking();
         }
 
-    }, 5000); // كل 5 ثواني
+    }, 5000);
 
 }
 
@@ -1387,7 +1532,7 @@ function stopProgressTracking(){
 
 
 /* =========================================
-   CLOSE VIDEO (معدل)
+   CLOSE VIDEO
 ========================================= */
 
 function closeVideo(){
@@ -1397,7 +1542,6 @@ function closeVideo(){
         .getElementById("player");
 
 
-    // إيقاف الفيديو عند الإغلاق
     player.src = "";
 
 
@@ -1410,13 +1554,8 @@ function closeVideo(){
         "";
 
 
-    // 🆕 إيقاف تتبع التقدم
     stopProgressTracking();
-
-    // حفظ التقدم
     saveProgress();
-
-    // تحديث العرض
     renderVideos();
 
 }
@@ -1554,6 +1693,44 @@ document
 
 
 /* =========================================
+   🆕 منع مشاركة الرابط - التحقق المستمر
+========================================= */
+
+// التحقق من الجلسة كل 5 ثواني
+setInterval(() => {
+    if(document.getElementById('app').classList.contains('hidden') === false){
+        if(!validateSession()){
+            alert('⚠️ تم اكتشاف محاولة استخدام رابط من جهاز آخر.\nسيتم تسجيل الخروج.');
+            logout();
+        }
+    }
+}, 5000);
+
+
+/* =========================================
+   🆕 منع فتح التبويبات الجديدة من نفس الجلسة
+========================================= */
+
+// منع فتح الصفحة في أكثر من تبويب
+window.addEventListener('load', function() {
+    // التحقق من وجود تبويب مفتوح بالفعل
+    if(sessionStorage.getItem('sayoda_tab_open')){
+        // لو في تبويب مفتوح، نغلق الحالي
+        alert('⚠️ هذه الصفحة مفتوحة بالفعل في تبويب آخر.\nلا يمكن فتح أكثر من تبويب بنفس الجلسة.');
+        window.close();
+    } else {
+        // تسجيل أن التبويب مفتوح
+        sessionStorage.setItem('sayoda_tab_open', 'true');
+    }
+});
+
+// عند إغلاق التبويب، نحرر القفل
+window.addEventListener('beforeunload', function() {
+    sessionStorage.removeItem('sayoda_tab_open');
+});
+
+
+/* =========================================
    AUTO LOGIN FROM SESSION
 ========================================= */
 
@@ -1563,8 +1740,8 @@ document
 
         await loadData();
 
-        // تحميل التقدم
         loadProgress();
+        loadActiveSessions();
 
 
         const savedUsername =
@@ -1572,24 +1749,57 @@ document
                 "sayoda_user"
             );
 
+        const savedSessionId =
+            sessionStorage.getItem(
+                "sayoda_session_id"
+            );
 
-        if(savedUsername){
-
-            const user =
-                users.find(
-                    item =>
-                        item?.username ===
-                            savedUsername &&
-                        item?.active !== false
-                );
+        const savedToken =
+            sessionStorage.getItem(
+                "sayoda_auth_token"
+            );
 
 
-            if(user){
+        if(savedUsername && savedSessionId && savedToken){
 
-                currentUser = user;
+            // 🆕 التحقق من صحة التوكن
+            const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET');
+            if(savedToken !== expectedToken){
+                sessionStorage.removeItem("sayoda_user");
+                sessionStorage.removeItem("sayoda_session_id");
+                sessionStorage.removeItem("sayoda_auth_token");
+                return;
+            }
 
-                showPlatform();
+            // التحقق من أن الجلسة لسه موجودة
+            if(activeSessions[savedSessionId] && 
+               activeSessions[savedSessionId].username === savedUsername){
+                
+                const user =
+                    users.find(
+                        item =>
+                            item?.username ===
+                                savedUsername &&
+                            item?.active !== false
+                    );
 
+
+                if(user){
+
+                    currentUser = user;
+                    sessionId = savedSessionId;
+
+                    // تجديد الجلسة
+                    refreshSession(sessionId);
+
+                    showPlatform();
+
+                }
+            } else {
+                // الجلسة انتهت أو اتحذفت
+                sessionStorage.removeItem("sayoda_user");
+                sessionStorage.removeItem("sayoda_session_id");
+                sessionStorage.removeItem("sayoda_auth_token");
             }
 
         }
