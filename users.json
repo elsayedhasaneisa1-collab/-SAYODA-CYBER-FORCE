@@ -2,45 +2,51 @@
     "users": [
         {
             "id": 1,
-            "username": "S@yed",
+            "username": "admin",
             "password": "01041254010",
             "role": "admin",
-            "active": true
+            "active": true,
+            "watermark": "0001"
         },
         {
             "id": 2,
             "username": "rawan.vibes",
             "password": "246813479",
             "role": "user",
-            "active": true
+            "active": true,
+            "watermark": "0002"
         },
         {
             "id": 3,
             "username": "Abdelrahman Wazer",
             "password": "123123",
             "role": "user",
-            "active": true
+            "active": true,
+            "watermark": "0003"
         }, 
-        {
+       {
             "id": 4,
             "username": "Basmala",
             "password": "147258",
             "role": "user",
-            "active": true
+            "active": true,
+            "watermark": "0004"
         }, 
         {
             "id": 5,
             "username": "Adam",
             "password": "654191",
             "role": "user",
-            "active": true
+            "active": true,
+            "watermark": "0005"
         }, 
         {
             "id": 6,
             "username": "sex",
             "password": "572010",
             "role": "user",
-            "active": true
+            "active": true,
+            "watermark": "0006"
         }
     ]
 }
