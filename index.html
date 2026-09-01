@@ -1726,19 +1726,19 @@
         }
 
         /* =========================================
-           ☁️ npoint.io - التخزين السحابي
+           ☁️ npoint.io - التخزين السحابي الجديد
         ========================================= */
-        const BIN_ID = '48abf829d8b17214271b';
+        const BIN_ID = '236a0cba99c4b3b09322';
         const API_URL = `https://api.npoint.io/${BIN_ID}`;
 
         async function fetchCloudData() {
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) return {};
+                if (!response.ok) return { users: {}, comments: {} };
                 return await response.json();
             } catch (e) {
                 console.warn('⚠️ فشل جلب البيانات:', e);
-                return {};
+                return { users: {}, comments: {} };
             }
         }
 
@@ -1757,12 +1757,6 @@
                 return false;
             }
         }
-
-        /* =========================================
-           🚫 SYSTEM - منع الدخول بدون صلاحية
-        ========================================= */
-        // المستخدمين المسموح لهم (admin فقط)
-        // يتم التحقق في login و playCard و openVideo
 
         /* =========================================
            💬 COMMENTS
@@ -2124,7 +2118,6 @@
             }).join('');
         }
 
-        // دالة تبديل حالة المستخدم (تفعيل/تعطيل)
         async function toggleUserStatus(username) {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
@@ -2147,7 +2140,6 @@
             }
         }
 
-        // دالة حذف مستخدم
         async function deleteUser(username) {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
@@ -2368,35 +2360,7 @@
 
             try {
                 const cloud = await fetchCloudData();
-                let users = cloud.users || {};
-
-                // لو مفيش مستخدمين في السحابة، جرب من users.json (نسخة احتياطية)
-                if (Object.keys(users).length === 0) {
-                    try {
-                        const r = await fetch('users.json', { cache: 'no-store' });
-                        const d = await r.json();
-                        const usersArray = d.users || [];
-                        users = {};
-                        usersArray.forEach(u2 => {
-                            users[u2.username] = {
-                                password: u2.password,
-                                role: u2.role || 'user',
-                                active: u2.active !== false,
-                                phone: u2.phone || '',
-                                xp: 0,
-                                level: 'مبتدئ',
-                                levelEmoji: '🟢',
-                                streak: 0,
-                                badges: [],
-                                videosWatched: [],
-                                totalRating: 0,
-                                ratingCount: 0
-                            };
-                        });
-                        cloud.users = users;
-                        await saveCloudData(cloud);
-                    } catch (e) { console.warn('⚠️ فشل تحميل users.json'); }
-                }
+                const users = cloud.users || {};
 
                 const userData = users[u];
                 if (userData && userData.password === p && userData.active !== false) {
