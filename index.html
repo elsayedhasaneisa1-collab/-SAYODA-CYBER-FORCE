@@ -1726,10 +1726,10 @@
         }
 
         /* =========================================
-           ☁️ JSONBIN
+           ☁️ JSONBIN - NEW CONFIG
         ========================================= */
-        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/67d4f8ca8a456b79667e3c8a';
-        const JSONBIN_MASTER_KEY = '$2a$10$pD1lYgEoH5RgEoH5RgEoH5RgEoH5RgEoH5RgEoH5';
+        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a971172f5f4af5e295da875';
+        const JSONBIN_MASTER_KEY = '$2a$10$6g/5/xiiCP0LQNueGQ4zGeSVdciE7k0P/wVb/7XNdftLEGJEVGqAW';
 
         async function fetchCloudData() {
             try {
@@ -2279,7 +2279,6 @@
                         document.getElementById('adminPanelLink').style.display = 'flex';
                         document.getElementById('adminBadge').style.display = 'inline';
                         document.getElementById('adminPanel').style.display = 'block';
-                        // تحميل بيانات اللوحة
                         setTimeout(async () => {
                             const cloud = await fetchCloudData();
                             renderAdminPanel(cloud);
