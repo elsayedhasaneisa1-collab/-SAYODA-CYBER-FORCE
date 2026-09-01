@@ -138,19 +138,45 @@ body {
     transform: translateY(0);
     opacity: 1;
 }
-.logo {
+
+/* ===== شعار دائري ===== */
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.login-logo img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid #19aaff55;
+    box-shadow: 0 0 40px #008cff30, 0 0 80px #008cff15;
+    object-fit: cover;
+    transition: all 0.3s;
+    background: #020812;
+}
+.login-logo img:hover {
+    transform: scale(1.05);
+    border-color: #19aaff;
+    box-shadow: 0 0 60px #008cff50;
+}
+
+.logo-text {
     text-align: center;
     color: #19aaff;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 900;
+    margin-bottom: 4px;
 }
-.logo span { color: #fff; }
+.logo-text span {
+    color: #fff;
+}
 .login-subtitle {
     text-align: center;
     color: #718ca2;
     font-size: 12px;
     letter-spacing: 4px;
-    margin: 12px 0 32px;
+    margin-bottom: 25px;
 }
 
 /* ===== INPUTS ===== */
@@ -674,31 +700,56 @@ footer a {
     font-size: 14px;
     margin-bottom: 15px;
 }
-.whatsapp-btn {
+
+/* ===== أزرار الدعم ===== */
+.support-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+}
+.support-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
-    padding: 14px 30px;
-    background: linear-gradient(135deg, #25D366, #128C7E);
+    padding: 14px 20px;
     border-radius: 50px;
     color: #fff;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
     transition: all 0.3s;
+    font-family: 'Tajawal', Arial, sans-serif;
 }
-.whatsapp-btn:hover {
-    transform: translateY(-3px);
+.support-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+.support-btn.whatsapp {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    box-shadow: 0 0 30px #25D36620;
+}
+.support-btn.whatsapp:hover {
     box-shadow: 0 15px 40px #25D36640;
 }
-.whatsapp-btn .wa-icon { font-size: 28px; }
-.whatsapp-btn .wa-text {
+.support-btn.team {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    box-shadow: 0 0 30px #f7971e20;
+    color: #1a1a2e;
+}
+.support-btn.team:hover {
+    box-shadow: 0 15px 40px #f7971e40;
+}
+.support-btn .btn-icon {
+    font-size: 24px;
+}
+.support-btn .btn-text {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     line-height: 1.3;
 }
-.whatsapp-btn .wa-text small {
+.support-btn .btn-text small {
     font-size: 11px;
     font-weight: normal;
     opacity: 0.8;
@@ -826,15 +877,13 @@ footer a {
     nav a { font-size: 11px; padding: 6px 10px; }
     .logout-btn { padding: 6px 12px !important; font-size: 11px !important; }
     .video-grid { gap: 18px; }
-    .whatsapp-btn {
-        padding: 12px 20px;
-        font-size: 14px;
-        width: 100%;
-        justify-content: center;
-    }
+    .support-btn { font-size: 14px; padding: 12px 16px; }
+    .support-btn .btn-icon { font-size: 20px; }
     #toast { font-size: 14px; padding: 14px 22px; bottom: 80px; width: 90%; }
     .hero h1 { font-size: clamp(32px, 8vw, 45px); }
     .watermark-text { font-size: 14px !important; letter-spacing: 3px; }
+    .login-logo img { width: 70px; height: 70px; }
+    .logo-text { font-size: 18px; }
 }
 </style>
 </head>
@@ -866,7 +915,13 @@ footer a {
 <!-- ===== LOGIN ===== -->
 <section id="loginScreen" class="login-screen">
     <div class="login-box">
-        <div class="logo">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
+        
+        <!-- ===== شعار دائري ===== -->
+        <div class="login-logo">
+            <img src="logo.png" alt="SAYODA Logo" onerror="this.style.display='none'">
+        </div>
+        
+        <div class="logo-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
         <div class="login-subtitle">SECURE ACCESS</div>
 
         <!-- تسجيل الدخول -->
@@ -958,11 +1013,29 @@ footer a {
         <div style="max-width:500px;margin:0 auto;">
             <div class="support-section">
                 <div class="support-title">💬 <span>الدعم الفني</span></div>
-                <div class="support-desc">للإستفسارات والمساعدة، تواصل معنا عبر واتساب</div>
-                <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" target="_blank" class="whatsapp-btn">
-                    <span class="wa-icon">💬</span>
-                    <span class="wa-text">تواصل عبر واتساب <small>01128351702</small></span>
-                </a>
+                <div class="support-desc">للإستفسارات والمساعدة، تواصل معنا</div>
+                
+                <div class="support-buttons">
+                    <!-- واتساب -->
+                    <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" 
+                       target="_blank" class="support-btn whatsapp">
+                        <span class="btn-icon">💬</span>
+                        <span class="btn-text">
+                            تواصل عبر واتساب
+                            <small>01128351702</small>
+                        </span>
+                    </a>
+                    
+                    <!-- كن جزء من الفريق -->
+                    <a href="https://chat.whatsapp.com/FvCcHqSmDEq7bKtCPKrScm" 
+                       target="_blank" class="support-btn team">
+                        <span class="btn-icon">💪🏻</span>
+                        <span class="btn-text">
+                            كن جزء من الفريق
+                            <small>انضم لجروب الواتساب</small>
+                        </span>
+                    </a>
+                </div>
             </div>
             <div style="margin-top:25px;padding-top:20px;border-top:1px solid #12324d33;">
                 © 2026 SAYODA | CYBER FORCE<br><br>
@@ -1174,7 +1247,7 @@ async function submitRegistration() {
             return;
         }
 
-        // تحضير رسالة التيليجرام (من غير العلامة المائية)
+        // تحضير رسالة التيليجرام
         const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
         const ip = await getIP();
         const device = getDevice();
