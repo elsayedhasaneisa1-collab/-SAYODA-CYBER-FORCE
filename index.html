@@ -200,16 +200,16 @@ body {
 
 /* ===== HEADER ===== */
 header {
-    height: 75px;
+    height: 80px;
     position: sticky;
     top: 0;
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 6%;
+    padding: 0 5%;
     background: rgba(4, 13, 24, 0.85);
-    border-bottom: 1px solid rgba(18, 61, 96, 0.2);
+    border-bottom: 1px solid rgba(18, 61, 96, 0.15);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     transition: all 0.4s ease;
@@ -223,48 +223,52 @@ header.scrolled {
 .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     text-decoration: none;
 }
 .brand-icon {
-    font-size: 28px;
+    font-size: 32px;
     animation: pulseGlow 2s ease-in-out infinite;
 }
 .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+.brand-name {
     color: #20aaff;
     font-size: 22px;
     font-weight: 900;
     letter-spacing: 1px;
 }
-.brand-text span {
+.brand-name span {
     color: #fff;
 }
 .brand-sub {
-    font-size: 11px;
+    font-size: 10px;
     color: #4a8aaf;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     font-weight: 400;
-    display: block;
-    margin-top: -2px;
+    text-transform: uppercase;
 }
 
 @keyframes pulseGlow {
-    0%, 100% { text-shadow: 0 0 10px rgba(32, 170, 255, 0.2); }
-    50% { text-shadow: 0 0 25px rgba(32, 170, 255, 0.5), 0 0 50px rgba(32, 170, 255, 0.1); }
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(32, 170, 255, 0.2)); }
+    50% { filter: drop-shadow(0 0 20px rgba(32, 170, 255, 0.5)); }
 }
 
 /* ===== NAV ===== */
 nav {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 nav a {
     color: #8aa8c4;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
-    padding: 8px 16px;
+    padding: 8px 18px;
     border-radius: 30px;
     transition: all 0.3s ease;
     position: relative;
@@ -289,13 +293,21 @@ nav a:hover::after {
     width: 60%;
     right: 20%;
 }
+nav a.active {
+    color: #20aaff;
+    background: rgba(32, 170, 255, 0.1);
+}
+nav a.active::after {
+    width: 60%;
+    right: 20%;
+}
 
 /* ===== LOGOUT BUTTON ===== */
 .logout-btn {
     color: #ff6375 !important;
     border: 1px solid rgba(255, 99, 117, 0.2) !important;
     background: rgba(255, 99, 117, 0.05) !important;
-    padding: 8px 20px !important;
+    padding: 8px 22px !important;
     border-radius: 30px !important;
     transition: all 0.3s ease !important;
 }
@@ -686,30 +698,54 @@ footer a {
     white-space: nowrap;
     user-select: none;
     pointer-events: none;
-    animation: watermarkFloat 25s ease-in-out infinite;
     font-family: 'Tajawal', Arial, sans-serif;
+    /* الحركة البطيئة الكلاسيكية */
+    animation: watermarkClassic 60s linear infinite;
 }
-.watermark-text.color-1 { color: rgba(25, 170, 255, 0.12); }
-.watermark-text.color-2 { color: rgba(255, 107, 107, 0.12); }
-.watermark-text.color-3 { color: rgba(0, 255, 200, 0.12); }
-.watermark-text.color-4 { color: rgba(255, 215, 0, 0.12); }
+.watermark-text.color-1 { color: rgba(25, 170, 255, 0.08); }
+.watermark-text.color-2 { color: rgba(255, 107, 107, 0.08); }
+.watermark-text.color-3 { color: rgba(0, 255, 200, 0.08); }
+.watermark-text.color-4 { color: rgba(255, 215, 0, 0.08); }
 
-@keyframes watermarkFloat {
-    0% { transform: translate(0, 0) rotate(-8deg); }
-    25% { transform: translate(calc(80vw - 200px), calc(10vh)) rotate(5deg); }
-    50% { transform: translate(calc(40vw - 100px), calc(75vh - 50px)) rotate(-10deg); }
-    75% { transform: translate(calc(10vw), calc(50vh - 30px)) rotate(7deg); }
-    100% { transform: translate(0, 0) rotate(-8deg); }
+/* حركة كلاسيكية بسيطة - تتحرك ببطء شديد في مسار دائري */
+@keyframes watermarkClassic {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate(calc(70vw - 200px), calc(20vh)) rotate(2deg) scale(1.02);
+    }
+    50% {
+        transform: translate(calc(40vw - 100px), calc(75vh - 50px)) rotate(-1deg) scale(0.98);
+    }
+    75% {
+        transform: translate(calc(10vw), calc(50vh - 30px)) rotate(3deg) scale(1.01);
+    }
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
 }
+
+/* توزيع زمني مختلف لكل علامة */
+.watermark-text:nth-child(1) { animation-duration: 65s; animation-delay: 0s; }
+.watermark-text:nth-child(2) { animation-duration: 70s; animation-delay: 5s; }
+.watermark-text:nth-child(3) { animation-duration: 60s; animation-delay: 10s; }
+.watermark-text:nth-child(4) { animation-duration: 75s; animation-delay: 3s; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #020812; }
+::-webkit-scrollbar-thumb { background: #1a3a55; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #19aaff; }
 
 /* ===== MOBILE ===== */
 @media (max-width: 650px) {
-    header { height: 60px; padding: 0 4%; }
-    .brand-text { font-size: 16px; }
-    .brand-sub { font-size: 9px; }
-    .brand-icon { font-size: 20px; }
-    nav a { font-size: 12px; padding: 6px 10px; }
-    .logout-btn { padding: 6px 14px !important; font-size: 12px !important; }
+    header { height: 65px; padding: 0 4%; }
+    .brand-icon { font-size: 24px; }
+    .brand-name { font-size: 16px; }
+    .brand-sub { font-size: 8px; letter-spacing: 2px; }
+    nav a { font-size: 11px; padding: 6px 10px; }
+    .logout-btn { padding: 6px 12px !important; font-size: 11px !important; }
     .video-grid { gap: 18px; }
     .whatsapp-btn {
         padding: 12px 20px;
@@ -719,6 +755,7 @@ footer a {
     }
     #toast { font-size: 14px; padding: 14px 22px; bottom: 80px; width: 90%; }
     .hero h1 { font-size: clamp(32px, 8vw, 45px); }
+    .watermark-text { font-size: 14px !important; letter-spacing: 3px; }
 }
 </style>
 </head>
@@ -764,13 +801,13 @@ footer a {
     <header>
         <a class="brand" href="#home">
             <span class="brand-icon">🛡️</span>
-            <div>
-                <div class="brand-text">SAYODA <span>|</span> CYBER FORCE</div>
-                <div class="brand-sub">SECURE LEARNING PLATFORM</div>
+            <div class="brand-text">
+                <span class="brand-name">SAYODA <span>|</span> CYBER FORCE</span>
+                <span class="brand-sub">Secure Learning Platform</span>
             </div>
         </a>
         <nav>
-            <a href="#home">الرئيسية</a>
+            <a href="#home" class="active">الرئيسية</a>
             <a href="#videos">الفيديوهات</a>
             <a href="#about">عن المنصة</a>
             <a class="logout-btn" onclick="logout()">خروج</a>
@@ -892,21 +929,41 @@ function showToast(msg, icon = '✅') {
 }
 
 /* =========================================
-   WATERMARK
+   WATERMARK - Classic & Simple
 ========================================= */
 function createWatermark(text) {
-    const c = document.getElementById('watermarkContainer');
-    c.innerHTML = '';
+    const container = document.getElementById('watermarkContainer');
+    container.innerHTML = '';
     if (!text) return;
+    
+    // 4 ألوان كلاسيكية بسيطة
     const colors = ['color-1', 'color-2', 'color-3', 'color-4'];
-    const pos = [{ x: 8, y: 8 }, { x: 72, y: 18 }, { x: 42, y: 58 }, { x: 20, y: 78 }];
+    
+    // توزيع في زوايا الصفحة
+    const positions = [
+        { x: 5, y: 5 },
+        { x: 75, y: 10 },
+        { x: 40, y: 70 },
+        { x: 10, y: 80 }
+    ];
+    
+    // أحجام متنوعة
+    const sizes = [22, 18, 20, 16];
+    
     for (let i = 0; i < 4; i++) {
-        const s = document.createElement('span');
-        s.className = `watermark-text ${colors[i]}`;
-        s.textContent = text;
-        s.style.left = pos[i].x + '%';
-        s.style.top = pos[i].y + '%';
-        c.appendChild(s);
+        const span = document.createElement('span');
+        span.className = `watermark-text ${colors[i]}`;
+        span.textContent = text;
+        span.style.left = positions[i].x + '%';
+        span.style.top = positions[i].y + '%';
+        span.style.fontSize = sizes[i] + 'px';
+        span.style.opacity = '0.07';
+        
+        // إضافة دوران طفيف لكل واحدة عشان تبقى كلاسيكية
+        const rotations = [-5, 3, -2, 4];
+        span.style.transform = `rotate(${rotations[i]}deg)`;
+        
+        container.appendChild(span);
     }
 }
 
@@ -917,6 +974,16 @@ window.addEventListener('scroll', function() {
     const h = document.querySelector('header');
     if (window.scrollY > 50) h.classList.add('scrolled');
     else h.classList.remove('scrolled');
+});
+
+/* =========================================
+   NAV ACTIVE
+========================================= */
+document.querySelectorAll('nav a:not(.logout-btn)').forEach(link => {
+    link.addEventListener('click', function(e) {
+        document.querySelectorAll('nav a:not(.logout-btn)').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+    });
 });
 
 /* =========================================
@@ -1181,6 +1248,7 @@ function showPlatform() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').classList.remove('hidden');
 
+    // إنشاء العلامة المائية
     if (currentUser?.watermark) {
         createWatermark(currentUser.watermark);
     }
