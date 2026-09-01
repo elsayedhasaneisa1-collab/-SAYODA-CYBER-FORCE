@@ -1,2202 +1,2506 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAYODA | CYBER FORCE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SAYODA | CYBER FORCE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #020812;
+            --bg-secondary: rgba(7, 19, 33, .85);
+            --text-primary: #fff;
+            --text-secondary: #c0d0e0;
+            --text-muted: #60788c;
+            --accent: #19aaff;
+            --accent-glow: #008cff30;
+            --border-color: #123d6033;
+            --card-bg: rgba(7, 19, 33, .85);
+            --danger: #ff3344;
+            --success: #25D366;
+            --gold: #ffd700;
+        }
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Tajawal', Arial, sans-serif;
+            min-height: 100vh;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+        body.light-mode {
+            --bg-primary: #f0f4f8;
+            --bg-secondary: rgba(255, 255, 255, .9);
+            --text-primary: #1a1a2e;
+            --text-secondary: #444;
+            --text-muted: #888;
+            --card-bg: rgba(255, 255, 255, .9);
+            --border-color: rgba(0, 0, 0, .1);
+        }
+        .hidden {
+            display: none !important;
+        }
 
-<style>
-/* ===== RESET ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body {
-    background: #020812;
-    color: #fff;
-    font-family: 'Tajawal', Arial, sans-serif;
-    min-height: 100vh;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    transition: background 0.3s, color 0.3s;
-}
-body.light-mode {
-    background: #f0f4f8;
-    color: #1a1a2e;
-}
-body.light-mode .login-box,
-body.light-mode .video-card,
-body.light-mode .support-section,
-body.light-mode .modal-box,
-body.light-mode header {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border-color: rgba(0, 0, 0, 0.1) !important;
-    color: #1a1a2e !important;
-}
-body.light-mode .input {
-    background: #fff !important;
-    color: #1a1a2e !important;
-    border-color: #ccc !important;
-}
-body.light-mode .brand-name,
-body.light-mode .logo-text,
-body.light-mode .support-title,
-body.light-mode .section-title h2 span {
-    color: #087cff !important;
-}
-body.light-mode .brand-name span,
-body.light-mode .logo-text span {
-    color: #1a1a2e !important;
-}
-body.light-mode .hero p,
-body.light-mode .video-info p,
-body.light-mode .support-desc,
-body.light-mode .meta,
-body.light-mode .section-title p {
-    color: #555 !important;
-}
-body.light-mode nav a {
-    color: #555 !important;
-}
-body.light-mode nav a:hover,
-body.light-mode nav a.active {
-    color: #087cff !important;
-    background: rgba(8, 124, 255, 0.08) !important;
-}
-body.light-mode .logout-btn {
-    color: #ff3344 !important;
-    border-color: rgba(255, 51, 68, 0.2) !important;
-}
-.hidden {
-    display: none !important;
-}
-img {
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    -webkit-touch-callout: none;
-    pointer-events: none;
-}
-p, h1, h2, h3, h4, h5, h6, span, div, a {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #020812; }
-::-webkit-scrollbar-thumb { background: #1a3a55; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #19aaff; }
-body.light-mode ::-webkit-scrollbar-track { background: #e0e0e0; }
-body.light-mode ::-webkit-scrollbar-thumb { background: #087cff; }
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
 
-/* ===== SPLASH ===== */
-#splash {
-    position: fixed;
-    inset: 0;
-    z-index: 999999;
-    background: #020812;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.8s ease;
-}
-#splash.fade {
-    opacity: 0;
-    pointer-events: none;
-}
-.splash-container {
-    text-align: center;
-    max-width: 700px;
-    padding: 20px;
-}
-.splash-title {
-    font-size: clamp(28px, 5vw, 50px);
-    font-weight: 900;
-    color: #19aaff;
-    min-height: 70px;
-}
-.splash-title .highlight { color: #fff; }
-.splash-title .cursor {
-    display: inline-block;
-    width: 3px;
-    height: clamp(28px, 5vw, 50px);
-    background: #19aaff;
-    animation: blink 0.8s step-end infinite;
-    vertical-align: middle;
-}
-.splash-sub {
-    font-size: clamp(14px, 1.5vw, 18px);
-    color: #c0d0e0;
-    margin-top: 20px;
-    line-height: 2;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideUp 0.8s ease 1.5s forwards;
-}
-.splash-tag {
-    font-size: clamp(16px, 1.8vw, 22px);
-    color: #19aaff;
-    margin-top: 25px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideUp 0.8s ease 2.2s forwards;
-}
-.splash-loader {
-    width: 45px;
-    height: 45px;
-    margin-top: 25px;
-    border: 3px solid #1a3a55;
-    border-top-color: #19aaff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    opacity: 0;
-    animation: spin 1s linear infinite, fadeIn 0.5s ease 2.8s forwards;
-}
-@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-@keyframes slideUp { to { opacity:1; transform:translateY(0); } }
-@keyframes fadeIn { to { opacity:1; } }
-@keyframes spin { to { transform:rotate(360deg); } }
+        /* ===== UTILITY ===== */
+        .container {
+            width: min(1100px, 94%);
+            margin: auto;
+        }
+        .section {
+            padding: 40px 0;
+        }
+        .section-title h2 {
+            font-size: clamp(20px, 3vw, 30px);
+            font-weight: 900;
+        }
+        .section-title h2 span {
+            color: var(--accent);
+        }
+        .section-title p {
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: clamp(13px, 1.2vw, 16px);
+        }
 
-/* ===== LOGIN ===== */
-.login-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: radial-gradient(circle at 30% 40%, #008cff15, transparent 60%),
+        /* ===== IMAGE PROTECTION ===== */
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+            pointer-events: none;
+        }
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        span,
+        div,
+        a {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* ===== SPLASH ===== */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        #splash.fade {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .splash-container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+        .splash-title {
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 900;
+            color: var(--accent);
+            min-height: 60px;
+        }
+        .splash-title .highlight {
+            color: #fff;
+        }
+        .splash-title .cursor {
+            display: inline-block;
+            width: 2px;
+            height: clamp(24px, 4vw, 40px);
+            background: var(--accent);
+            animation: blink 0.8s step-end infinite;
+            vertical-align: middle;
+        }
+        .splash-sub {
+            font-size: clamp(13px, 1.2vw, 16px);
+            color: var(--text-secondary);
+            margin-top: 15px;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.8s ease 1.5s forwards;
+        }
+        .splash-tag {
+            font-size: clamp(14px, 1.5vw, 20px);
+            color: var(--accent);
+            margin-top: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.8s ease 2.2s forwards;
+        }
+        .splash-loader {
+            width: 35px;
+            height: 35px;
+            margin-top: 20px;
+            border: 3px solid #1a3a55;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            opacity: 0;
+            animation: spin 1s linear infinite, fadeIn 0.5s ease 2.8s forwards;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== LOGIN ===== */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: radial-gradient(circle at 30% 40%, #008cff15, transparent 60%),
                 radial-gradient(circle at 70% 60%, #12baff08, transparent 50%),
-                #020812;
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.login-screen.show {
-    transform: translateY(0);
-    opacity: 1;
-}
-.login-box {
-    width: min(420px, 100%);
-    padding: 40px 35px;
-    background: rgba(7, 19, 33, .85);
-    border: 1px solid #15547d55;
-    border-radius: 24px;
-    box-shadow: 0 30px 100px #00000080;
-    backdrop-filter: blur(20px);
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
-}
-.login-screen.show .login-box {
-    transform: translateY(0);
-    opacity: 1;
-}
-.login-logo {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-.login-logo img {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    border: 4px solid #19aaff55;
-    box-shadow: 0 0 60px #008cff30, 0 0 120px #008cff15;
-    object-fit: cover;
-    transition: all 0.3s;
-    background: #020812;
-    pointer-events: none;
-    -webkit-user-drag: none;
-    -webkit-touch-callout: none;
-}
-.login-logo img:hover {
-    transform: scale(1.05);
-    border-color: #19aaff;
-    box-shadow: 0 0 100px #008cff50, 0 0 200px #008cff20;
-}
-.logo-text {
-    text-align: center;
-    color: #19aaff;
-    font-size: 22px;
-    font-weight: 900;
-    margin-bottom: 4px;
-}
-.logo-text span { color: #fff; }
-.login-subtitle {
-    text-align: center;
-    color: #718ca2;
-    font-size: 12px;
-    letter-spacing: 4px;
-    margin-bottom: 25px;
-}
-.input {
-    width: 100%;
-    padding: 16px 18px;
-    margin-bottom: 14px;
-    border: 2px solid #1c466355;
-    border-radius: 12px;
-    background: #020812cc;
-    color: #fff;
-    outline: none;
-    font-size: 15px;
-    font-family: 'Tajawal', Arial, sans-serif;
-    transition: all 0.3s;
-}
-.input:focus {
-    border-color: #19aaff;
-    box-shadow: 0 0 30px #008cff20;
-    transform: scale(1.02);
-}
-.login-btn {
-    width: 100%;
-    padding: 16px;
-    border: 0;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 17px;
-    font-weight: bold;
-    font-family: 'Tajawal', Arial, sans-serif;
-    cursor: pointer;
-    background: linear-gradient(135deg, #087cff, #12baff);
-    transition: all 0.3s;
-    margin-top: 8px;
-}
-.login-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px #008cff25;
-}
-.login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.error {
-    min-height: 22px;
-    margin-top: 14px;
-    text-align: center;
-    color: #ff6678;
-    font-size: 14px;
-}
-.register-form {
-    display: none;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #123d6033;
-}
-.register-form.show { display: block; }
-.register-form .input { margin-bottom: 10px; }
-.register-form .register-title {
-    color: #19aaff;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    text-align: center;
-}
-.register-form .register-title span { color: #fff; }
-.register-btn {
-    width: 100%;
-    padding: 16px;
-    border: 0;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 17px;
-    font-weight: bold;
-    font-family: 'Tajawal', Arial, sans-serif;
-    cursor: pointer;
-    background: linear-gradient(135deg, #25D366, #128C7E);
-    transition: all 0.3s;
-    margin-top: 5px;
-}
-.register-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px #25D36640;
-}
-.register-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-#confirmationMessage {
-    display: none;
-    margin-top: 20px;
-    padding: 20px;
-    background: rgba(7, 19, 33, .6);
-    border: 1px solid #25D36655;
-    border-radius: 16px;
-    text-align: center;
-}
-#confirmationMessage.show { display: block; }
-#confirmationMessage .icon { font-size: 50px; margin-bottom: 10px; }
-#confirmationMessage h3 { color: #25D366; font-size: 20px; margin-bottom: 8px; }
-#confirmationMessage p { color: #91a8bb; font-size: 15px; line-height: 1.8; }
-#confirmationMessage .support-link {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 10px 25px;
-    background: linear-gradient(135deg, #25D366, #128C7E);
-    border-radius: 50px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-#confirmationMessage .support-link:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 30px #25D36630;
-}
+                var(--bg-primary);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .login-screen.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .login-box {
+            width: min(380px, 100%);
+            padding: 30px 25px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px #00000060;
+            backdrop-filter: blur(16px);
+            transform: translateY(15px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
+        }
+        .login-screen.show .login-box {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .login-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .login-logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #19aaff55;
+            box-shadow: 0 0 40px #008cff25;
+            object-fit: cover;
+            background: var(--bg-primary);
+            pointer-events: none;
+        }
+        .logo-text {
+            text-align: center;
+            color: var(--accent);
+            font-size: clamp(18px, 2.5vw, 22px);
+            font-weight: 900;
+        }
+        .logo-text span {
+            color: #fff;
+        }
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        .input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(2, 8, 18, .7);
+            color: var(--text-primary);
+            outline: none;
+            font-size: clamp(14px, 1.1vw, 15px);
+            font-family: 'Tajawal', Arial, sans-serif;
+            transition: all 0.3s;
+        }
+        .input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px #008cff20;
+            transform: scale(1.01);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            border: 0;
+            border-radius: 12px;
+            color: #fff;
+            font-size: clamp(15px, 1.2vw, 17px);
+            font-weight: bold;
+            font-family: 'Tajawal', Arial, sans-serif;
+            cursor: pointer;
+            background: linear-gradient(135deg, #087cff, #12baff);
+            transition: all 0.3s;
+            margin-top: 6px;
+        }
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px #008cff25;
+        }
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .error {
+            min-height: 20px;
+            margin-top: 10px;
+            text-align: center;
+            color: #ff6678;
+            font-size: 13px;
+        }
+        .register-form {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        .register-form.show {
+            display: block;
+        }
+        .register-form .input {
+            margin-bottom: 8px;
+        }
+        .register-title {
+            color: var(--accent);
+            font-size: clamp(14px, 1.1vw, 16px);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .register-title span {
+            color: #fff;
+        }
+        .register-btn {
+            width: 100%;
+            padding: 13px;
+            border: 0;
+            border-radius: 12px;
+            color: #fff;
+            font-size: clamp(15px, 1.2vw, 17px);
+            font-weight: bold;
+            font-family: 'Tajawal', Arial, sans-serif;
+            cursor: pointer;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            transition: all 0.3s;
+            margin-top: 4px;
+        }
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px #25D36630;
+        }
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        #confirmationMessage {
+            display: none;
+            margin-top: 15px;
+            padding: 16px;
+            background: rgba(7, 19, 33, .6);
+            border: 1px solid #25D36655;
+            border-radius: 14px;
+            text-align: center;
+        }
+        #confirmationMessage.show {
+            display: block;
+        }
+        #confirmationMessage .icon {
+            font-size: 40px;
+            margin-bottom: 6px;
+        }
+        #confirmationMessage h3 {
+            color: #25D366;
+            font-size: clamp(16px, 1.3vw, 18px);
+        }
+        #confirmationMessage p {
+            color: var(--text-secondary);
+            font-size: clamp(13px, 1vw, 14px);
+            line-height: 1.6;
+        }
+        #confirmationMessage .support-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: clamp(13px, 1vw, 14px);
+            transition: all 0.3s;
+        }
+        #confirmationMessage .support-link:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px #25D36630;
+        }
 
-/* ===== HEADER ===== */
-header {
-    height: 80px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 5%;
-    background: rgba(4, 13, 24, 0.85);
-    border-bottom: 1px solid rgba(18, 61, 96, 0.15);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    transition: all 0.4s ease;
-}
-header.scrolled {
-    background: rgba(4, 13, 24, 0.95);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-}
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-}
-.brand-icon {
-    font-size: 32px;
-    animation: pulseGlow 2s ease-in-out infinite;
-}
-.brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-.brand-name {
-    color: #20aaff;
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-.brand-name span { color: #fff; }
-.brand-sub {
-    font-size: 10px;
-    color: #4a8aaf;
-    letter-spacing: 3px;
-    font-weight: 400;
-    text-transform: uppercase;
-}
-@keyframes pulseGlow {
-    0%,100% { filter: drop-shadow(0 0 5px rgba(32,170,255,0.2)); }
-    50% { filter: drop-shadow(0 0 20px rgba(32,170,255,0.5)); }
-}
-nav {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-nav a {
-    color: #8aa8c4;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 8px 18px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    position: relative;
-    letter-spacing: 0.5px;
-}
-nav a:hover {
-    color: #20aaff;
-    background: rgba(32, 170, 255, 0.08);
-}
-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    right: 50%;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #20aaff, #087cff);
-    transition: all 0.3s ease;
-    border-radius: 2px;
-}
-nav a:hover::after {
-    width: 60%;
-    right: 20%;
-}
-nav a.active {
-    color: #20aaff;
-    background: rgba(32, 170, 255, 0.1);
-}
-nav a.active::after {
-    width: 60%;
-    right: 20%;
-}
-.logout-btn {
-    color: #ff6375 !important;
-    border: 1px solid rgba(255, 99, 117, 0.2) !important;
-    background: rgba(255, 99, 117, 0.05) !important;
-    padding: 8px 22px !important;
-    border-radius: 30px !important;
-    transition: all 0.3s ease !important;
-}
-.logout-btn:hover {
-    background: rgba(255, 99, 117, 0.15) !important;
-    border-color: rgba(255, 99, 117, 0.4) !important;
-    color: #ff6375 !important;
-    transform: scale(1.05);
-}
-.logout-btn::after { display: none !important; }
-.theme-toggle {
-    background: none;
-    border: none;
-    color: #8aa8c4;
-    font-size: 22px;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 50%;
-    transition: all 0.3s;
-}
-.theme-toggle:hover {
-    color: #20aaff;
-    background: rgba(32, 170, 255, 0.08);
-}
+        /* ===== SIDEBAR ===== */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: min(280px, 80%);
+            height: 100%;
+            z-index: 10000;
+            background: rgba(4, 13, 24, .97);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-color);
+            padding: 20px 16px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.open {
+            right: 0;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+        .sidebar-header .brand-text {
+            color: var(--accent);
+            font-size: clamp(16px, 1.8vw, 20px);
+            font-weight: 900;
+        }
+        .sidebar-header .brand-text span {
+            color: #fff;
+        }
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: all 0.3s;
+        }
+        .sidebar-close:hover {
+            color: #ff6678;
+            transform: rotate(90deg);
+        }
+        .sidebar-nav {
+            flex: 1;
+        }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: clamp(14px, 1.1vw, 15px);
+            transition: all 0.3s;
+            margin-bottom: 4px;
+        }
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(25, 170, 255, .1);
+            color: var(--accent);
+        }
+        .sidebar-nav a .icon {
+            font-size: 20px;
+            width: 28px;
+            text-align: center;
+        }
+        .sidebar-nav a .badge {
+            margin-right: auto;
+            background: var(--accent);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 30px;
+        }
+        .sidebar-footer {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+        .sidebar-footer .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px 14px;
+            border-radius: 12px;
+            width: 100%;
+            text-align: right;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-footer .theme-toggle:hover {
+            background: rgba(25, 170, 255, .1);
+            color: var(--accent);
+        }
+        .sidebar-footer .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: #ff6375;
+            text-decoration: none;
+            font-size: clamp(14px, 1.1vw, 15px);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: right;
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+        .sidebar-footer .logout-btn:hover {
+            background: rgba(255, 99, 117, .1);
+        }
 
-/* ===== HERO ===== */
-.hero {
-    min-height: 430px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 70px 20px;
-    background: radial-gradient(circle at center, #008cff10, transparent 60%);
-}
-.badge {
-    display: inline-block;
-    padding: 8px 22px;
-    border: 1px solid #168bd055;
-    border-radius: 30px;
-    color: #29b4ff;
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    margin-bottom: 20px;
-    background: #008cff08;
-}
-.hero h1 {
-    font-size: clamp(46px, 9vw, 80px);
-    line-height: .95;
-    font-weight: 900;
-}
-.hero h1 .highlight {
-    color: #18aaff;
-    text-shadow: 0 0 30px #008cff30;
-}
-.hero p {
-    margin-top: 25px;
-    color: #8299ad;
-    font-size: 20px;
-}
+        /* ===== HEADER ===== */
+        header {
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4%;
+            background: rgba(4, 13, 24, .85);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.3s;
+        }
+        header.scrolled {
+            background: rgba(4, 13, 24, .95);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.4);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .brand-icon {
+            font-size: clamp(22px, 2.5vw, 28px);
+        }
+        .brand-name {
+            color: var(--accent);
+            font-size: clamp(14px, 1.6vw, 18px);
+            font-weight: 900;
+        }
+        .brand-name span {
+            color: #fff;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: clamp(24px, 2.5vw, 28px);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .menu-btn:hover {
+            background: rgba(25, 170, 255, .1);
+            color: var(--accent);
+        }
+        .header-theme-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: clamp(18px, 2vw, 22px);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .header-theme-btn:hover {
+            background: rgba(25, 170, 255, .1);
+            color: var(--accent);
+        }
+        .admin-badge {
+            background: var(--gold);
+            color: #1a1a2e;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 30px;
+            margin-right: 6px;
+        }
 
-/* ===== VIDEOS ===== */
-.container {
-    width: min(1150px, 92%);
-    margin: auto;
-}
-.section {
-    padding: 70px 0;
-}
-.section-title h2 {
-    font-size: 36px;
-    font-weight: 900;
-}
-.section-title h2 span { color: #19aaff; }
-.section-title p {
-    margin-top: 8px;
-    color: #7891a5;
-    font-size: 16px;
-}
-.video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-.video-card {
-    overflow: hidden;
-    background: rgba(7, 19, 33, .85);
-    border: 1px solid #123d5d33;
-    border-radius: 20px;
-    transition: all 0.4s;
-    position: relative;
-    backdrop-filter: blur(10px);
-}
-.video-card:hover {
-    transform: translateY(-10px);
-    border-color: #19aaff55;
-    box-shadow: 0 25px 60px #008cff15;
-}
-.video-card.locked { opacity: 0.6; }
-.thumbnail {
-    position: relative;
-    aspect-ratio: 16/9;
-    overflow: hidden;
-    background: #01060d;
-}
-.thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    -webkit-user-drag: none;
-    -webkit-touch-callout: none;
-    transition: transform 0.6s;
-}
-.video-card:hover .thumbnail img { transform: scale(1.08); }
-.play-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background: #0003;
-    z-index: 2;
-}
-.play-btn {
-    width: 72px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 28px;
-    background: linear-gradient(135deg, #087cff, #12baff);
-    box-shadow: 0 0 40px #008cff55;
-    transition: all 0.3s;
-}
-.play-btn:hover {
-    transform: scale(1.12);
-    box-shadow: 0 0 60px #008cff88;
-}
-.video-info {
-    padding: 20px;
-}
-.video-info h3 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-.video-info p {
-    color: #849caf;
-    font-size: 14px;
-    line-height: 1.8;
-    min-height: 45px;
-}
-.meta {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    color: #42a9dc;
-    font-size: 13px;
-}
-.progress-bar {
-    width: 100%;
-    height: 3px;
-    background: #1a3a5544;
-    border-radius: 2px;
-    margin-top: 12px;
-    overflow: hidden;
-}
-.progress-bar .fill {
-    height: 100%;
-    background: linear-gradient(90deg, #087cff, #12baff);
-    border-radius: 2px;
-    transition: width 0.5s;
-}
-.progress-badge {
-    display: inline-block;
-    background: #1a4d6e55;
-    color: #7fc9ff;
-    padding: 3px 14px;
-    border-radius: 30px;
-    font-size: 11px;
-    font-weight: bold;
-}
-.xp-badge {
-    display: inline-block;
-    background: #f7971e55;
-    color: #ffd700;
-    padding: 3px 14px;
-    border-radius: 30px;
-    font-size: 11px;
-    font-weight: bold;
-    margin-right: 6px;
-}
-.streak-badge {
-    display: inline-block;
-    background: #ff334455;
-    color: #ff6678;
-    padding: 3px 14px;
-    border-radius: 30px;
-    font-size: 11px;
-    font-weight: bold;
-    margin-right: 6px;
-}
-.level-badge {
-    display: inline-block;
-    padding: 3px 14px;
-    border-radius: 30px;
-    font-size: 11px;
-    font-weight: bold;
-    margin-right: 6px;
-}
-.level-1 { background: #4a6a8a55; color: #7fc9ff; }
-.level-2 { background: #4a8a8a55; color: #7fffd4; }
-.level-3 { background: #8a4a8a55; color: #d47fff; }
-.level-4 { background: #8a8a4a55; color: #ffd77f; }
-.level-5 { background: #8a4a4a55; color: #ff7f7f; }
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: radial-gradient(circle at center, #008cff10, transparent 60%);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border: 1px solid #168bd055;
+            border-radius: 30px;
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            background: #008cff08;
+        }
+        .hero h1 {
+            font-size: clamp(32px, 6vw, 60px);
+            line-height: .95;
+            font-weight: 900;
+        }
+        .hero h1 .highlight {
+            color: var(--accent);
+            text-shadow: 0 0 30px #008cff30;
+        }
+        .hero p {
+            margin-top: 16px;
+            color: var(--text-muted);
+            font-size: clamp(16px, 1.5vw, 20px);
+        }
 
-/* ===== STARS ===== */
-.stars {
-    display: flex;
-    gap: 4px;
-    margin-top: 8px;
-}
-.star {
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: #4a6a8a;
-}
-.star.active { color: #ffd700; }
-.star:hover { transform: scale(1.2); }
+        /* ===== VIDEOS ===== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .video-card {
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s;
+            position: relative;
+            backdrop-filter: blur(8px);
+        }
+        .video-card:hover {
+            transform: translateY(-6px);
+            border-color: #19aaff55;
+            box-shadow: 0 15px 40px #008cff12;
+        }
+        .video-card.locked {
+            opacity: 0.6;
+        }
+        .thumbnail {
+            position: relative;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            background: #01060d;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            transition: transform 0.4s;
+        }
+        .video-card:hover .thumbnail img {
+            transform: scale(1.04);
+        }
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: #0003;
+            z-index: 2;
+        }
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 20px;
+            background: linear-gradient(135deg, #087cff, #12baff);
+            box-shadow: 0 0 30px #008cff55;
+            transition: all 0.3s;
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 45px #008cff88;
+        }
+        .video-info {
+            padding: 14px;
+        }
+        .video-info h3 {
+            font-size: clamp(14px, 1.1vw, 16px);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .video-info p {
+            color: var(--text-muted);
+            font-size: clamp(12px, 0.9vw, 13px);
+            line-height: 1.6;
+            min-height: 35px;
+        }
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: var(--accent);
+            font-size: clamp(11px, 0.8vw, 12px);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 2px;
+            background: #1a3a5544;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #087cff, #12baff);
+            border-radius: 2px;
+            transition: width 0.5s;
+        }
+        .progress-badge {
+            display: inline-block;
+            background: #1a4d6e55;
+            color: var(--accent);
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .xp-badge,
+        .streak-badge,
+        .level-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+        .xp-badge {
+            background: #f7971e55;
+            color: #ffd700;
+        }
+        .streak-badge {
+            background: #ff334455;
+            color: #ff6678;
+        }
+        .level-badge {
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .level-1 {
+            background: #4a6a8a55;
+            color: #7fc9ff;
+        }
+        .level-2 {
+            background: #4a8a8a55;
+            color: #7fffd4;
+        }
+        .level-3 {
+            background: #8a4a8a55;
+            color: #d47fff;
+        }
+        .level-4 {
+            background: #8a8a4a55;
+            color: #ffd77f;
+        }
+        .level-5 {
+            background: #8a4a4a55;
+            color: #ff7f7f;
+        }
 
-/* ===== LEADERBOARD ===== */
-.leaderboard-entry {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: rgba(7, 19, 33, .4);
-    border-radius: 12px;
-    margin-bottom: 8px;
-    border: 1px solid #123d6033;
-    transition: all 0.3s;
-}
-.leaderboard-entry:hover {
-    background: rgba(7, 19, 33, .7);
-    border-color: #19aaff33;
-}
-.leaderboard-entry .rank {
-    font-size: 18px;
-    font-weight: bold;
-    color: #19aaff;
-    width: 40px;
-}
-.leaderboard-entry .user {
-    flex: 1;
-    font-weight: 500;
-}
-.leaderboard-entry .score {
-    color: #ffd700;
-    font-weight: bold;
-}
-.leaderboard-entry .badges-count {
-    color: #7fc9ff;
-    font-size: 13px;
-}
+        /* ===== STARS ===== */
+        .stars {
+            display: flex;
+            gap: 3px;
+            margin-top: 6px;
+        }
+        .star {
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #4a6a8a;
+        }
+        .star.active {
+            color: #ffd700;
+        }
+        .star:hover {
+            transform: scale(1.15);
+        }
 
-/* ===== COMMENTS ===== */
-.comments-section {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #123d6033;
-}
-.comments-section .comments-title {
-    color: #718ca2;
-    font-size: 14px;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-.comment-item {
-    padding: 8px 12px;
-    background: rgba(7, 19, 33, .4);
-    border-radius: 10px;
-    margin-bottom: 6px;
-    border: 1px solid #123d6033;
-}
-.comment-item .comment-user {
-    color: #19aaff;
-    font-weight: bold;
-    font-size: 13px;
-}
-.comment-item .comment-time {
-    color: #60788c;
-    font-size: 11px;
-    margin-right: 8px;
-}
-.comment-item .comment-text {
-    color: #c0d0e0;
-    font-size: 14px;
-    margin-top: 2px;
-    word-break: break-word;
-}
-.comment-input-area {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-.comment-input-area input {
-    flex: 1;
-    padding: 10px 14px;
-    border: 1px solid #1c466355;
-    border-radius: 30px;
-    background: rgba(2, 8, 18, .8);
-    color: #fff;
-    outline: none;
-    font-size: 14px;
-    font-family: 'Tajawal', Arial, sans-serif;
-    transition: all 0.3s;
-}
-.comment-input-area input:focus {
-    border-color: #19aaff;
-    box-shadow: 0 0 20px #008cff20;
-}
-.comment-input-area button {
-    padding: 10px 20px;
-    border: 0;
-    border-radius: 30px;
-    background: linear-gradient(135deg, #087cff, #12baff);
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-family: 'Tajawal', Arial, sans-serif;
-    font-size: 14px;
-}
-.comment-input-area button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px #008cff30;
-}
-.comment-input-area button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+        /* ===== LEADERBOARD ===== */
+        .leaderboard-entry {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(7, 19, 33, .4);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        .leaderboard-entry:hover {
+            background: rgba(7, 19, 33, .7);
+            border-color: #19aaff33;
+        }
+        .leaderboard-entry .rank {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent);
+            width: 32px;
+        }
+        .leaderboard-entry .user {
+            flex: 1;
+            font-weight: 500;
+            font-size: clamp(13px, 1vw, 14px);
+        }
+        .leaderboard-entry .score {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: clamp(13px, 1vw, 14px);
+        }
+        .leaderboard-entry .badges-count {
+            color: var(--accent);
+            font-size: 12px;
+        }
 
-/* ===== MODAL ===== */
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: #000c;
-    backdrop-filter: blur(20px);
-}
-.modal-box {
-    width: min(1050px, 96vw);
-    background: #050d18ee;
-    border: 1px solid #1c6b9e55;
-    border-radius: 22px;
-    padding: 14px;
-    box-shadow: 0 30px 120px #000000cc;
-}
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4px 8px 14px;
-}
-.modal-header h3 {
-    color: #20aaff;
-    font-size: 18px;
-    font-weight: 700;
-}
-.close-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 1px solid #28577555;
-    background: #071321cc;
-    color: #fff;
-    font-size: 26px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-.close-btn:hover {
-    background: #102b42;
-    transform: rotate(90deg);
-}
-.player-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    overflow: hidden;
-    border-radius: 14px;
-    background: #000;
-}
-.player-wrapper iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+        .admin-user-card {
+            background: rgba(7, 19, 33, .4);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 16px;
+        }
+        .admin-user-card:hover {
+            background: rgba(7, 19, 33, .7);
+            border-color: #19aaff33;
+        }
+        .admin-user-card .username {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: clamp(14px, 1.1vw, 16px);
+            min-width: 100px;
+        }
+        .admin-user-card .detail {
+            color: var(--text-secondary);
+            font-size: clamp(12px, 0.9vw, 13px);
+        }
+        .admin-user-card .detail .label {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+        .admin-user-card .detail .value {
+            font-weight: bold;
+        }
+        .admin-user-card .badges-list {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .admin-user-card .badges-list .badge-item {
+            background: rgba(25, 170, 255, .15);
+            padding: 1px 8px;
+            border-radius: 30px;
+            font-size: 10px;
+            color: var(--accent);
+        }
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .admin-stat-box {
+            background: rgba(7, 19, 33, .4);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .admin-stat-box .num {
+            font-size: clamp(20px, 2vw, 26px);
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .admin-stat-box .label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .admin-search {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: rgba(2, 8, 18, .7);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 14px;
+            font-family: 'Tajawal', Arial, sans-serif;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        .admin-search:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px #008cff20;
+        }
 
-/* ===== FOOTER ===== */
-footer {
-    margin-top: 30px;
-    padding: 40px 20px;
-    text-align: center;
-    color: #60788c;
-    border-top: 1px solid #12324d33;
-}
-footer a {
-    color: #29aaff;
-    text-decoration: none;
-    font-weight: bold;
-}
+        /* ===== COMMENTS ===== */
+        .comments-section {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+        .comments-section .comments-title {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .comment-item {
+            padding: 6px 10px;
+            background: rgba(7, 19, 33, .4);
+            border-radius: 8px;
+            margin-bottom: 4px;
+            border: 1px solid var(--border-color);
+        }
+        .comment-item .comment-user {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .comment-item .comment-time {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-right: 6px;
+        }
+        .comment-item .comment-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+        .comment-input-area {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .comment-input-area input {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background: rgba(2, 8, 18, .7);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 13px;
+            font-family: 'Tajawal', Arial, sans-serif;
+            transition: all 0.3s;
+        }
+        .comment-input-area input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px #008cff20;
+        }
+        .comment-input-area button {
+            padding: 8px 16px;
+            border: 0;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #087cff, #12baff);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Tajawal', Arial, sans-serif;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .comment-input-area button:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 15px #008cff30;
+        }
+        .comment-input-area button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-/* ===== SUPPORT ===== */
-.support-section {
-    margin-top: 20px;
-    padding: 25px 20px;
-    background: rgba(7, 19, 33, .6);
-    border: 1px solid #123d6033;
-    border-radius: 16px;
-}
-.support-title {
-    color: #19aaff;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-.support-title span { color: #fff; }
-.support-desc {
-    color: #91a8bb;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-.support-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
-}
-.support-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 14px 20px;
-    border-radius: 50px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: all 0.3s;
-    font-family: 'Tajawal', Arial, sans-serif;
-}
-.support-btn:hover {
-    transform: translateY(-3px) scale(1.02);
-}
-.support-btn.whatsapp {
-    background: linear-gradient(135deg, #25D366, #128C7E);
-    box-shadow: 0 0 30px #25D36620;
-}
-.support-btn.whatsapp:hover {
-    box-shadow: 0 15px 40px #25D36640;
-}
-.support-btn.team {
-    background: linear-gradient(135deg, #f7971e, #ffd200);
-    box-shadow: 0 0 30px #f7971e20;
-    color: #1a1a2e;
-}
-.support-btn.team:hover {
-    box-shadow: 0 15px 40px #f7971e40;
-}
-.support-btn .btn-icon { font-size: 24px; }
-.support-btn .btn-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.3;
-}
-.support-btn .btn-text small {
-    font-size: 11px;
-    font-weight: normal;
-    opacity: 0.8;
-}
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background: #000c;
+            backdrop-filter: blur(16px);
+        }
+        .modal-box {
+            width: min(900px, 98vw);
+            max-height: 98vh;
+            background: rgba(5, 13, 24, .95);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 20px 80px #000000cc;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px 4px 10px;
+            flex-shrink: 0;
+        }
+        .modal-header h3 {
+            color: var(--accent);
+            font-size: clamp(14px, 1.2vw, 16px);
+            font-weight: 700;
+        }
+        .close-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: rgba(7, 19, 33, .8);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .close-btn:hover {
+            background: #102b42;
+            transform: rotate(90deg);
+        }
+        .player-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+            flex-shrink: 0;
+        }
+        .player-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        #commentsContainer {
+            margin-top: 12px;
+            padding: 0 4px;
+            flex-shrink: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        #commentsContainer .comments-section {
+            margin-top: 0;
+            padding-top: 8px;
+        }
+        #commentsContainer .comment-item {
+            padding: 4px 8px;
+            margin-bottom: 3px;
+        }
+        #commentsContainer .comment-item .comment-user {
+            font-size: 11px;
+        }
+        #commentsContainer .comment-item .comment-text {
+            font-size: 12px;
+        }
+        #commentsContainer .comment-input-area input {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+        #commentsContainer .comment-input-area button {
+            font-size: 12px;
+            padding: 6px 14px;
+        }
 
-/* ===== TOAST ===== */
-#toast {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    padding: 16px 35px;
-    background: #071321ee;
-    border: 1px solid #19aaff55;
-    border-radius: 14px;
-    backdrop-filter: blur(15px);
-    color: #fff;
-    z-index: 99999;
-    transition: all 0.5s;
-    opacity: 0;
-    pointer-events: none;
-    font-size: 16px;
-}
-#toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-    pointer-events: auto;
-}
+        /* ===== PROFILE ===== */
+        .profile-content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .profile-avatar {
+            font-size: 48px;
+        }
+        .profile-name {
+            font-size: clamp(18px, 2vw, 22px);
+            color: var(--accent);
+        }
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .profile-stat {
+            background: rgba(7, 19, 33, .5);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .profile-stat .num {
+            font-size: clamp(18px, 2vw, 22px);
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .profile-stat .label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .profile-badges {
+            margin-top: 16px;
+        }
+        .profile-badges-title {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .profile-badges-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .profile-badge-item {
+            background: rgba(7, 19, 33, .5);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            border: 1px solid #19aaff33;
+        }
 
-/* ===== CONFETTI ===== */
-.confetti-container {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 99998;
-    overflow: hidden;
-}
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    animation: confettiFall linear forwards;
-}
-@keyframes confettiFall {
-    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
+        /* ===== FOOTER ===== */
+        footer {
+            margin-top: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-/* ===== MOBILE ===== */
-@media (max-width: 650px) {
-    header { height: 65px; padding: 0 4%; }
-    .brand-icon { font-size: 24px; }
-    .brand-name { font-size: 16px; }
-    .brand-sub { font-size: 8px; letter-spacing: 2px; }
-    nav a { font-size: 11px; padding: 6px 10px; }
-    .logout-btn { padding: 6px 12px !important; font-size: 11px !important; }
-    .video-grid { gap: 18px; }
-    .support-btn { font-size: 14px; padding: 12px 16px; }
-    .support-btn .btn-icon { font-size: 20px; }
-    #toast { font-size: 14px; padding: 14px 22px; bottom: 80px; width: 90%; }
-    .hero h1 { font-size: clamp(32px, 8vw, 45px); }
-    .login-logo img { width: 130px; height: 130px; }
-    .logo-text { font-size: 18px; }
-    .theme-toggle { font-size: 18px; }
-    .comment-input-area { flex-direction: column; }
-    .comment-input-area button { width: 100%; }
-}
-</style>
+        /* ===== SUPPORT ===== */
+        .support-section {
+            margin-top: 16px;
+            padding: 20px;
+            background: rgba(7, 19, 33, .6);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+        }
+        .support-title {
+            color: var(--accent);
+            font-size: clamp(15px, 1.2vw, 17px);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .support-title span {
+            color: #fff;
+        }
+        .support-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .support-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .support-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 50px;
+            color: #fff;
+            font-size: clamp(13px, 1vw, 14px);
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+        .support-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+        .support-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+        .support-btn.team {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+        }
+        .support-btn .btn-icon {
+            font-size: 20px;
+        }
+        .support-btn .btn-text small {
+            font-size: 10px;
+            font-weight: normal;
+            opacity: 0.8;
+            display: block;
+        }
+
+        /* ===== TOAST ===== */
+        #toast {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            padding: 12px 24px;
+            background: rgba(7, 19, 33, .95);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            color: #fff;
+            z-index: 99999;
+            transition: all 0.4s;
+            opacity: 0;
+            pointer-events: none;
+            font-size: clamp(13px, 1vw, 14px);
+            max-width: 90%;
+            text-align: center;
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* ===== CONFETTI ===== */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 99998;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ===== KICK ===== */
+        #kickMessage {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            background: #000000dd;
+            backdrop-filter: blur(12px);
+            padding: 16px;
+        }
+        #kickMessage.show {
+            display: flex !important;
+        }
+        .kick-box {
+            background: #0a1a2e;
+            border: 2px solid #ff3344;
+            border-radius: 20px;
+            padding: 30px 25px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+        .kick-box .icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        .kick-box h2 {
+            color: #ff4455;
+            font-size: clamp(20px, 2.5vw, 24px);
+        }
+        .kick-box p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .kick-box .btn {
+            padding: 10px 30px;
+            border: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ff3344, #cc2233);
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+        .kick-box .btn:hover {
+            transform: scale(1.04);
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 650px) {
+            .hero {
+                min-height: 220px;
+                padding: 30px 16px;
+            }
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+            .video-info {
+                padding: 10px;
+            }
+            .video-info h3 {
+                font-size: 13px;
+            }
+            .video-info p {
+                font-size: 11px;
+                min-height: 28px;
+            }
+            .meta {
+                font-size: 10px;
+            }
+            .login-box {
+                padding: 20px 16px;
+            }
+            .login-logo img {
+                width: 70px;
+                height: 70px;
+            }
+            .section {
+                padding: 25px 0;
+            }
+            .profile-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .profile-stat {
+                padding: 8px;
+            }
+            .profile-stat .num {
+                font-size: 16px;
+            }
+            .modal-box {
+                padding: 8px;
+            }
+            .comment-input-area {
+                flex-direction: column;
+            }
+            .comment-input-area button {
+                width: 100%;
+            }
+            .support-btn {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            .sidebar {
+                width: min(250px, 80%);
+            }
+            #commentsContainer {
+                max-height: 150px;
+            }
+            .admin-user-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .admin-user-card .username {
+                min-width: auto;
+            }
+            .admin-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .video-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .play-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .brand-name {
+                font-size: 12px;
+            }
+            .header-actions {
+                gap: 4px;
+            }
+            .menu-btn {
+                font-size: 20px;
+            }
+            .header-theme-btn {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- ===== SPLASH ===== -->
-<div id="splash">
-    <div class="splash-container">
-        <div class="splash-title" id="splashTitle">
-            <span class="highlight">🛡️</span> SAYODA <span class="highlight">|</span> CYBER FORCE
-            <span class="cursor"></span>
-        </div>
-        <div class="splash-sub">💻 منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking 🔐<br>هدفنا إنك تتعلم، تفهم، وتطور مهاراتك في حماية الأنظمة واكتشاف الثغرات بشكل قانوني وآمن.</div>
-        <div class="splash-tag">🚀 اتعلم • طبّق • احمي</div>
-        <div class="splash-loader"></div>
-    </div>
-</div>
-
-<!-- ===== TOAST ===== -->
-<div id="toast">✅ <span id="toastMessage"></span></div>
-
-<!-- ===== CONFETTI ===== -->
-<div id="confettiContainer" class="confetti-container"></div>
-
-<!-- ===== LOGIN ===== -->
-<section id="loginScreen" class="login-screen">
-    <div class="login-box">
-        <div class="login-logo"><img src="logo.png" alt="SAYODA Logo" onerror="this.style.display='none'"></div>
-        <div class="logo-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
-        <div class="login-subtitle">SECURE ACCESS</div>
-        <input id="username" class="input" type="text" placeholder="👤 اسم المستخدم" autocomplete="username">
-        <input id="password" class="input" type="password" placeholder="🔑 كلمة المرور" autocomplete="current-password">
-        <button class="login-btn" onclick="login()">دخول</button>
-        <div id="loginError" class="error"></div>
-        <button class="register-btn" onclick="showRegisterForm()" style="margin-top:10px;background:linear-gradient(135deg,#f7971e,#ffd200);">📝 إنشاء حساب جديد</button>
-        <div class="register-form" id="registerForm">
-            <div class="register-title">📝 <span>إنشاء حساب جديد</span></div>
-            <input id="regUsername" class="input" type="text" placeholder="👤 اسم المستخدم المطلوب">
-            <input id="regPassword" class="input" type="password" placeholder="🔑 كلمة المرور المطلوبة">
-            <input id="regPhone" class="input" type="tel" placeholder="📱 رقم الهاتف (للتواصل)">
-            <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn">✅ إضافة الحساب</button>
-        </div>
-        <div id="confirmationMessage">
-            <div class="icon">✅</div>
-            <h3>تم إرسال طلبك بنجاح!</h3>
-            <p>سيتم مراجعة طلبك قريباً من قبل فريق الدعم.<br>تواصل مع دعم المنصة لمتابعة الطلب.</p>
-            <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20قدمت%20طلب%20إنشاء%20حساب%20على%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأريد%20متابعة%20الطلب" target="_blank" class="support-link">💬 تواصل مع الدعم</a>
-        </div>
-    </div>
-</section>
-
-<!-- ===== APP ===== -->
-<div id="app" class="hidden">
-    <header>
-        <a class="brand" href="#home">
-            <span class="brand-icon">🛡️</span>
-            <div class="brand-text">
-                <span class="brand-name">SAYODA <span>|</span> CYBER FORCE</span>
-                <span class="brand-sub">Secure Learning Platform</span>
+    <!-- ===== SPLASH ===== -->
+    <div id="splash">
+        <div class="splash-container">
+            <div class="splash-title" id="splashTitle">
+                <span class="highlight">🛡️</span> SAYODA <span class="highlight">|</span> CYBER FORCE
+                <span class="cursor"></span>
             </div>
-        </a>
-        <nav>
-            <a href="#home" class="active">الرئيسية</a>
-            <a href="#videos">الفيديوهات</a>
-            <a href="#leaderboard">🏆 المتصدرين</a>
-            <a href="#profile">ملفي</a>
-            <a href="#about">عن المنصة</a>
-            <button class="theme-toggle" onclick="toggleTheme()" title="تغيير الثيم">🌙</button>
-            <a class="logout-btn" onclick="logout()">خروج</a>
-        </nav>
-    </header>
+            <div class="splash-sub">💻 منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking 🔐<br>هدفنا إنك تتعلم، تفهم، وتطور مهاراتك في حماية الأنظمة واكتشاف الثغرات بشكل قانوني وآمن.</div>
+            <div class="splash-tag">🚀 اتعلم • طبّق • احمي</div>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
 
-    <section id="home" class="hero">
-        <div>
-            <div class="badge">CYBER LEARNING PLATFORM</div>
-            <h1>🛡️ SAYODA <span class="highlight">|</span><br>CYBER FORCE</h1>
-            <p>Learn. Build. Secure.</p>
+    <!-- ===== TOAST ===== -->
+    <div id="toast">✅ <span id="toastMessage"></span></div>
+
+    <!-- ===== CONFETTI ===== -->
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <!-- ===== LOGIN ===== -->
+    <section id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="login-logo"><img src="logo.png" alt="SAYODA Logo" onerror="this.style.display='none'"></div>
+            <div class="logo-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
+            <div class="login-subtitle">SECURE ACCESS</div>
+            <input id="username" class="input" type="text" placeholder="👤 اسم المستخدم" autocomplete="username">
+            <input id="password" class="input" type="password" placeholder="🔑 كلمة المرور" autocomplete="current-password">
+            <button class="login-btn" onclick="login()">دخول</button>
+            <div id="loginError" class="error"></div>
+            <button class="register-btn" onclick="showRegisterForm()" style="margin-top:8px;background:linear-gradient(135deg,#f7971e,#ffd200);">📝 إنشاء حساب جديد</button>
+            <div class="register-form" id="registerForm">
+                <div class="register-title">📝 <span>إنشاء حساب جديد</span></div>
+                <input id="regUsername" class="input" type="text" placeholder="👤 اسم المستخدم المطلوب">
+                <input id="regPassword" class="input" type="password" placeholder="🔑 كلمة المرور المطلوبة">
+                <input id="regPhone" class="input" type="tel" placeholder="📱 رقم الهاتف (للتواصل)">
+                <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn">✅ إضافة الحساب</button>
+            </div>
+            <div id="confirmationMessage">
+                <div class="icon">✅</div>
+                <h3>تم إرسال طلبك بنجاح!</h3>
+                <p>سيتم مراجعة طلبك قريباً من قبل فريق الدعم.<br>تواصل مع دعم المنصة لمتابعة الطلب.</p>
+                <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20قدمت%20طلب%20إنشاء%20حساب%20على%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأريد%20متابعة%20الطلب" target="_blank" class="support-link">💬 تواصل مع الدعم</a>
+            </div>
         </div>
     </section>
 
-    <!-- ===== PROFILE ===== -->
-    <section id="profile" class="section">
-        <div class="container">
-            <div class="section-title"><h2>👤 <span>ملفي الشخصي</span></h2></div>
-            <div id="profileContent" style="background:rgba(7,19,33,.6);border-radius:20px;padding:30px;border:1px solid #123d6033;">
-                <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-                    <div style="font-size:60px;">🛡️</div>
-                    <div>
-                        <h3 id="profileName" style="font-size:24px;color:#19aaff;">-</h3>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
-                            <span id="profileLevel" class="level-badge level-1">🟢 مبتدئ</span>
-                            <span id="profileXP" class="xp-badge">⭐ 0 XP</span>
-                            <span id="profileStreak" class="streak-badge">🔥 0 يوم</span>
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
+            <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#home" class="active" onclick="closeSidebar()"><span class="icon">🏠</span> الرئيسية</a>
+            <a href="#videos" onclick="closeSidebar()"><span class="icon">🎬</span> الفيديوهات</a>
+            <a href="#leaderboard" onclick="closeSidebar()"><span class="icon">🏆</span> المتصدرين</a>
+            <a href="#profile" onclick="closeSidebar()"><span class="icon">👤</span> ملفي</a>
+            <a href="#adminPanel" onclick="closeSidebar()" id="adminPanelLink" style="display:none;"><span class="icon">🛡️</span> لوحة التحكم <span class="badge">Admin</span></a>
+            <a href="#about" onclick="closeSidebar()"><span class="icon">ℹ️</span> عن المنصة</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 <span>تغيير الثيم</span></button>
+            <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+        </div>
+    </div>
+
+    <!-- ===== APP ===== -->
+    <div id="app" class="hidden">
+        <header>
+            <a class="brand" href="#home">
+                <span class="brand-icon">🛡️</span>
+                <span class="brand-name">SAYODA <span>|</span> CYBER FORCE</span>
+            </a>
+            <div class="header-actions">
+                <span id="adminBadge" style="display:none;" class="admin-badge">👑 Admin</span>
+                <button class="header-theme-btn" onclick="toggleTheme()" title="تغيير الثيم">🌙</button>
+                <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            </div>
+        </header>
+
+        <section id="home" class="hero">
+            <div>
+                <div class="badge">CYBER LEARNING PLATFORM</div>
+                <h1>🛡️ SAYODA <span class="highlight">|</span><br>CYBER FORCE</h1>
+                <p>Learn. Build. Secure.</p>
+            </div>
+        </section>
+
+        <!-- ===== PROFILE ===== -->
+        <section id="profile" class="section">
+            <div class="container">
+                <div class="section-title"><h2>👤 <span>ملفي الشخصي</span></h2></div>
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <div class="profile-avatar">🛡️</div>
+                        <div>
+                            <div class="profile-name" id="profileName">-</div>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                                <span id="profileLevel" class="level-badge level-1">🟢 مبتدئ</span>
+                                <span id="profileXP" class="xp-badge">⭐ 0 XP</span>
+                                <span id="profileStreak" class="streak-badge">🔥 0 يوم</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;">
-                    <div style="background:rgba(7,19,33,.5);padding:15px;border-radius:12px;text-align:center;">
-                        <div style="font-size:28px;">🎬</div>
-                        <div id="profileVideos" style="font-size:20px;font-weight:bold;color:#19aaff;">0</div>
-                        <div style="font-size:12px;color:#718ca2;">فيديوهات</div>
+                    <div class="profile-stats">
+                        <div class="profile-stat"><div class="num" id="profileVideos">0</div><div class="label">🎬 فيديوهات</div></div>
+                        <div class="profile-stat"><div class="num" id="profileBadges">0</div><div class="label">🏆 شارات</div></div>
+                        <div class="profile-stat"><div class="num" id="profileRating">0</div><div class="label">⭐ متوسط التقييم</div></div>
                     </div>
-                    <div style="background:rgba(7,19,33,.5);padding:15px;border-radius:12px;text-align:center;">
-                        <div style="font-size:28px;">🏆</div>
-                        <div id="profileBadges" style="font-size:20px;font-weight:bold;color:#19aaff;">0</div>
-                        <div style="font-size:12px;color:#718ca2;">شارات</div>
-                    </div>
-                    <div style="background:rgba(7,19,33,.5);padding:15px;border-radius:12px;text-align:center;">
-                        <div style="font-size:28px;">⭐</div>
-                        <div id="profileRating" style="font-size:20px;font-weight:bold;color:#19aaff;">0</div>
-                        <div style="font-size:12px;color:#718ca2;">متوسط التقييم</div>
+                    <div class="profile-badges">
+                        <div class="profile-badges-title">🏅 الشارات</div>
+                        <div class="profile-badges-list" id="profileBadgesList"><span style="color:var(--text-muted);font-size:13px;">لا توجد شارات بعد</span></div>
                     </div>
                 </div>
-                <div style="margin-top:20px;">
-                    <h4 style="color:#718ca2;margin-bottom:10px;">🏅 الشارات</h4>
-                    <div id="profileBadgesList" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+            </div>
+        </section>
+
+        <!-- ===== LEADERBOARD ===== -->
+        <section id="leaderboard" class="section">
+            <div class="container">
+                <div class="section-title"><h2>🏆 <span>المتصدرين</span></h2><p>ترتيب المستخدمين حسب النقاط</p></div>
+                <div style="background:var(--card-bg);border-radius:16px;padding:16px;border:1px solid var(--border-color);">
+                    <div id="leaderboardList"></div>
+                    <div style="margin-top:12px;text-align:center;color:var(--text-muted);font-size:12px;">⚡ يتم تحديث الترتيب تلقائياً</div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ===== LEADERBOARD ===== -->
-    <section id="leaderboard" class="section">
-        <div class="container">
-            <div class="section-title"><h2>🏆 <span>المتصدرين</span></h2><p>ترتيب المستخدمين حسب النقاط</p></div>
-            <div id="leaderboardContent" style="background:rgba(7,19,33,.6);border-radius:20px;padding:25px;border:1px solid #123d6033;">
-                <div id="leaderboardList"></div>
-                <div style="margin-top:15px;text-align:center;color:#718ca2;font-size:13px;">
-                    ⚡ يتم تحديث الترتيب تلقائياً كل دقيقة
+        <!-- ===== ADMIN PANEL ===== -->
+        <section id="adminPanel" class="section" style="display:none;">
+            <div class="container">
+                <div class="section-title">
+                    <h2>🛡️ <span>لوحة تحكم المشرف</span></h2>
+                    <p>إحصائيات وبيانات جميع المستخدمين</p>
+                </div>
+                <div class="admin-panel">
+                    <div class="admin-stats-grid" id="adminStats">
+                        <div class="admin-stat-box"><div class="num" id="adminTotalUsers">0</div><div class="label">👥 إجمالي المستخدمين</div></div>
+                        <div class="admin-stat-box"><div class="num" id="adminTotalXP">0</div><div class="label">⭐ إجمالي النقاط</div></div>
+                        <div class="admin-stat-box"><div class="num" id="adminTotalBadges">0</div><div class="label">🏅 إجمالي الشارات</div></div>
+                        <div class="admin-stat-box"><div class="num" id="adminTotalVideos">0</div><div class="label">🎬 إجمالي المشاهدات</div></div>
+                    </div>
+                    <input class="admin-search" id="adminSearch" type="text" placeholder="🔍 بحث عن مستخدم..." oninput="filterAdminUsers()">
+                    <div id="adminUsersList"></div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ===== VIDEOS ===== -->
-    <section id="videos" class="section">
-        <div class="container">
-            <div class="section-title"><h2>🎬 <span>مكتبة الفيديوهات</span></h2><p>محتوى SAYODA | CYBER FORCE</p></div>
-            <div id="videoGrid" class="video-grid"></div>
-        </div>
-    </section>
+        <!-- ===== VIDEOS ===== -->
+        <section id="videos" class="section">
+            <div class="container">
+                <div class="section-title"><h2>🎬 <span>مكتبة الفيديوهات</span></h2><p>محتوى SAYODA | CYBER FORCE</p></div>
+                <div id="videoGrid" class="video-grid"></div>
+            </div>
+        </section>
 
-    <section id="about" class="section">
-        <div class="container">
-            <div class="section-title"><h2><span>عن المنصة</span></h2><p>منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking 💻🔐</p></div>
-        </div>
-    </section>
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-title"><h2><span>عن المنصة</span></h2><p>منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking 💻🔐</p></div>
+            </div>
+        </section>
 
-    <footer>
-        <div style="max-width:500px;margin:0 auto;">
-            <div class="support-section">
-                <div class="support-title">💬 <span>الدعم الفني</span></div>
-                <div class="support-desc">للإستفسارات والمساعدة، تواصل معنا</div>
-                <div class="support-buttons">
-                    <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" target="_blank" class="support-btn whatsapp">
-                        <span class="btn-icon">💬</span>
-                        <span class="btn-text">تواصل عبر واتساب <small>01128351702</small></span>
-                    </a>
-                    <a href="https://chat.whatsapp.com/FvCcHqSmDEq7bKtCPKrScm" target="_blank" class="support-btn team">
-                        <span class="btn-icon">💪🏻</span>
-                        <span class="btn-text">كن جزء من الفريق <small>انضم لجروب الواتساب</small></span>
-                    </a>
+        <footer>
+            <div style="max-width:450px;margin:0 auto;">
+                <div class="support-section">
+                    <div class="support-title">💬 <span>الدعم الفني</span></div>
+                    <div class="support-desc">للإستفسارات والمساعدة، تواصل معنا</div>
+                    <div class="support-buttons">
+                        <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" target="_blank" class="support-btn whatsapp">
+                            <span class="btn-icon">💬</span>
+                            <span class="btn-text">تواصل عبر واتساب <small>01128351702</small></span>
+                        </a>
+                        <a href="https://chat.whatsapp.com/FvCcHqSmDEq7bKtCPKrScm" target="_blank" class="support-btn team">
+                            <span class="btn-icon">💪🏻</span>
+                            <span class="btn-text">كن جزء من الفريق <small>انضم لجروب الواتساب</small></span>
+                        </a>
+                    </div>
+                </div>
+                <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-color);">
+                    © 2026 SAYODA | CYBER FORCE<br>
+                    <a href="https://t.me/sayoda_elgadar" target="_blank">حقوقي EL-SAYED HASAN</a>
                 </div>
             </div>
-            <div style="margin-top:25px;padding-top:20px;border-top:1px solid #12324d33;">
-                © 2026 SAYODA | CYBER FORCE<br><br>
-                <a href="https://t.me/sayoda_elgadar" target="_blank">حقوقي EL-SAYED HASAN</a>
+        </footer>
+    </div>
+
+    <!-- ===== VIDEO MODAL ===== -->
+    <div id="videoModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="videoTitle">SAYODA | CYBER FORCE</h3>
+                <button class="close-btn" onclick="closeVideo()">×</button>
             </div>
+            <div class="player-wrapper"><iframe id="player" src="" allowfullscreen></iframe></div>
+            <div id="commentsContainer" style="margin-top:12px;padding:0 4px;"></div>
         </div>
-    </footer>
-</div>
+    </div>
 
-<!-- ===== VIDEO MODAL ===== -->
-<div id="videoModal" class="modal">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h3 id="videoTitle">SAYODA | CYBER FORCE</h3>
-            <button class="close-btn" onclick="closeVideo()">×</button>
+    <!-- ===== KICK ===== -->
+    <div id="kickMessage">
+        <div class="kick-box">
+            <div class="icon">🚫</div>
+            <h2>تم تسجيل الخروج</h2>
+            <p>⚠️ تم تسجيل دخول شخص آخر بنفس الحساب.<br>لا يمكن استخدام نفس الحساب من جهازين في نفس الوقت.</p>
+            <button class="btn" onclick="forceLogout()">تسجيل الدخول مرة أخرى</button>
         </div>
-        <div class="player-wrapper"><iframe id="player" src="" allowfullscreen></iframe></div>
-        <div id="commentsContainer" style="margin-top:15px;padding:0 8px;"></div>
     </div>
-</div>
 
-<!-- ===== KICK ===== -->
-<div id="kickMessage" style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;background:#000000dd;backdrop-filter:blur(15px);padding:20px;">
-    <div style="background:#0a1a2e;border:2px solid #ff3344;border-radius:25px;padding:45px 35px;max-width:450px;width:100%;text-align:center;animation:shake 0.5s;">
-        <div style="font-size:70px;margin-bottom:15px;">🚫</div>
-        <h2 style="color:#ff4455;font-size:26px;margin-bottom:12px;">تم تسجيل الخروج</h2>
-        <p style="color:#99b5cc;font-size:16px;line-height:1.8;margin-bottom:25px;">⚠️ تم تسجيل دخول شخص آخر بنفس الحساب.<br>لا يمكن استخدام نفس الحساب من جهازين في نفس الوقت.</p>
-        <button onclick="forceLogout()" style="padding:14px 40px;border:0;border-radius:12px;background:linear-gradient(135deg,#ff3344,#cc2233);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;">تسجيل الدخول مرة أخرى</button>
-    </div>
-</div>
-
-<script>
-/* =========================================
-   🛡️ XSS PROTECTION - تنقية النصوص
-========================================= */
-function sanitizeHTML(text) {
-    if (!text) return '';
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;',
-        '/': '&#x2F;',
-        '`': '&#x60;',
-        '=': '&#x3D;'
-    };
-    return String(text).replace(/[&<>"'/`=]/g, function(s) {
-        return map[s];
-    });
-}
-
-/* =========================================
-   🤖 BOT TELEGRAM
-========================================= */
-const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
-const CHAT_ID = '7114350905';
-
-async function sendTelegramMessage(message) {
-    try {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-        await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
-        });
-        return true;
-    } catch(e) { console.error('❌ فشل إرسال رسالة التيليجرام:', e); return false; }
-}
-
-/* =========================================
-   ☁️ JSONBIN - التخزين السحابي المشترك
-========================================= */
-const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/67d4f8ca8a456b79667e3c8a';
-const JSONBIN_MASTER_KEY = '$2a$10$pD1lYgEoH5RgEoH5RgEoH5RgEoH5RgEoH5RgEoH5';
-
-async function fetchCloudData() {
-    try {
-        const response = await fetch(JSONBIN_URL, {
-            headers: { 'X-Master-Key': JSONBIN_MASTER_KEY }
-        });
-        const data = await response.json();
-        return data.record || {};
-    } catch(e) {
-        console.error('⚠️ فشل جلب البيانات من السحابة:', e);
-        return {};
-    }
-}
-
-async function saveCloudData(data) {
-    try {
-        const response = await fetch(JSONBIN_URL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': JSONBIN_MASTER_KEY
-            },
-            body: JSON.stringify(data)
-        });
-        return await response.json();
-    } catch(e) {
-        console.error('⚠️ فشل حفظ البيانات في السحابة:', e);
-        return null;
-    }
-}
-
-/* =========================================
-   💬 COMMENTS SYSTEM
-========================================= */
-let commentsCache = {};
-
-async function loadComments(videoId) {
-    try {
-        const cloudData = await fetchCloudData();
-        commentsCache = cloudData.comments || {};
-        return commentsCache[videoId] || [];
-    } catch(e) {
-        return [];
-    }
-}
-
-async function saveComment(videoId, username, text) {
-    // تنقية النص من XSS
-    const cleanText = sanitizeHTML(text.trim());
-    if (!cleanText) return false;
-    
-    try {
-        const cloudData = await fetchCloudData();
-        if (!cloudData.comments) cloudData.comments = {};
-        if (!cloudData.comments[videoId]) cloudData.comments[videoId] = [];
-        
-        const comment = {
-            username: sanitizeHTML(username),
-            text: cleanText,
-            time: new Date().toISOString()
-        };
-        
-        cloudData.comments[videoId].unshift(comment);
-        await saveCloudData(cloudData);
-        commentsCache = cloudData.comments;
-        return true;
-    } catch(e) {
-        console.error('❌ فشل حفظ التعليق:', e);
-        return false;
-    }
-}
-
-async function renderComments(videoId) {
-    const container = document.getElementById('commentsContainer');
-    if (!container) return;
-    
-    const comments = await loadComments(videoId);
-    
-    let html = `<div class="comments-section">`;
-    html += `<div class="comments-title">💬 التعليقات (${comments.length})</div>`;
-    
-    if (comments.length === 0) {
-        html += `<div style="color:#60788c;font-size:14px;text-align:center;padding:10px;">لا توجد تعليقات، كن أول من يعلق!</div>`;
-    } else {
-        // عرض آخر 50 تعليق فقط
-        const displayComments = comments.slice(0, 50);
-        displayComments.forEach(c => {
-            const time = new Date(c.time).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
-            html += `
-            <div class="comment-item">
-                <span class="comment-user">${sanitizeHTML(c.username)}</span>
-                <span class="comment-time">${time}</span>
-                <div class="comment-text">${sanitizeHTML(c.text)}</div>
-            </div>
-            `;
-        });
-    }
-    
-    // نموذج إضافة تعليق
-    html += `
-    <div class="comment-input-area">
-        <input type="text" id="commentInput" placeholder="اكتب تعليقك..." maxlength="500">
-        <button onclick="postComment('${videoId}')" id="commentBtn">إرسال</button>
-    </div>
-    `;
-    
-    html += `</div>`;
-    container.innerHTML = html;
-}
-
-async function postComment(videoId) {
-    const input = document.getElementById('commentInput');
-    const btn = document.getElementById('commentBtn');
-    const text = input.value.trim();
-    
-    if (!text) {
-        showToast('⚠️ اكتب تعليقاً أولاً.', '⚠️');
-        return;
-    }
-    
-    if (!currentUser) {
-        showToast('⚠️ يجب تسجيل الدخول أولاً.', '⚠️');
-        return;
-    }
-    
-    btn.disabled = true;
-    btn.textContent = '⏳';
-    
-    const success = await saveComment(videoId, currentUser.username, text);
-    
-    if (success) {
-        input.value = '';
-        showToast('✅ تم إضافة تعليقك!');
-        await renderComments(videoId);
-        // إعادة ربط حدث Enter
-        document.getElementById('commentInput')?.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') postComment(videoId);
-        });
-    } else {
-        showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
-    }
-    
-    btn.disabled = false;
-    btn.textContent = 'إرسال';
-}
-
-/* =========================================
-   USER DATA SYSTEM
-========================================= */
-function getUserData() {
-    let data = localStorage.getItem('sayoda_user_data');
-    if (!data) {
-        data = {
-            xp: 0,
-            level: 'مبتدئ',
-            levelEmoji: '🟢',
-            streak: 0,
-            lastVisit: null,
-            videosWatched: [],
-            badges: [],
-            ratings: {},
-            totalRating: 0,
-            ratingCount: 0
-        };
-        localStorage.setItem('sayoda_user_data', JSON.stringify(data));
-    } else {
-        data = JSON.parse(data);
-    }
-    return data;
-}
-
-function saveUserData(data) {
-    localStorage.setItem('sayoda_user_data', JSON.stringify(data));
-}
-
-function updateProfile() {
-    const data = getUserData();
-    document.getElementById('profileName').textContent = currentUser?.username || '-';
-    document.getElementById('profileLevel').textContent = data.levelEmoji + ' ' + data.level;
-    document.getElementById('profileLevel').className = 'level-badge level-' + (Math.floor(data.xp / 100) + 1);
-    document.getElementById('profileXP').textContent = '⭐ ' + data.xp + ' XP';
-    document.getElementById('profileStreak').textContent = '🔥 ' + data.streak + ' يوم';
-    document.getElementById('profileVideos').textContent = data.videosWatched.length;
-    document.getElementById('profileBadges').textContent = data.badges.length;
-    document.getElementById('profileRating').textContent = data.ratingCount > 0 ? (data.totalRating / data.ratingCount).toFixed(1) : '0';
-    
-    const badgesList = document.getElementById('profileBadgesList');
-    badgesList.innerHTML = '';
-    const badgeEmojis = {
-        'first_video': '🎬', 'five_videos': '📺', 'ten_videos': '🏆',
-        'twenty_videos': '💎', 'fifty_videos': '👑',
-        'streak_7': '🔥', 'streak_30': '⚡',
-        'level_2': '🔵', 'level_3': '🟣', 'level_4': '🟡', 'level_5': '🔴'
-    };
-    const badgeNames = {
-        'first_video': 'أول فيديو', 'five_videos': '5 فيديوهات',
-        'ten_videos': '10 فيديوهات', 'twenty_videos': '20 فيديو',
-        'fifty_videos': '50 فيديو',
-        'streak_7': '7 أيام متتالية', 'streak_30': '30 يوم متتالي',
-        'level_2': 'المستوى 2', 'level_3': 'المستوى 3',
-        'level_4': 'المستوى 4', 'level_5': 'المستوى 5'
-    };
-    data.badges.forEach(b => {
-        const div = document.createElement('div');
-        div.style.cssText = 'background:rgba(7,19,33,.5);padding:8px 14px;border-radius:30px;font-size:13px;border:1px solid #19aaff33;';
-        div.innerHTML = (badgeEmojis[b] || '🏅') + ' ' + (badgeNames[b] || b);
-        badgesList.appendChild(div);
-    });
-    if (data.badges.length === 0) {
-        badgesList.innerHTML = '<span style="color:#718ca2;font-size:14px;">لا توجد شارات بعد، شاهد المزيد من الفيديوهات!</span>';
-    }
-}
-
-/* =========================================
-   XP & LEVEL SYSTEM
-========================================= */
-function addXP(amount) {
-    const data = getUserData();
-    data.xp += amount;
-    
-    const levels = [
-        { min: 0, title: 'مبتدئ', emoji: '🟢' },
-        { min: 100, title: 'متعلم', emoji: '🔵' },
-        { min: 300, title: 'خبير', emoji: '🟣' },
-        { min: 600, title: 'محترف', emoji: '🟡' },
-        { min: 1000, title: 'أسطورة', emoji: '🔴' }
-    ];
-    let newLevel = levels[0];
-    for (const l of levels) {
-        if (data.xp >= l.min) newLevel = l;
-    }
-    
-    if (newLevel.title !== data.level) {
-        data.level = newLevel.title;
-        data.levelEmoji = newLevel.emoji;
-        const levelBadgeMap = {
-            'متعلم': 'level_2',
-            'خبير': 'level_3',
-            'محترف': 'level_4',
-            'أسطورة': 'level_5'
-        };
-        if (levelBadgeMap[data.level] && !data.badges.includes(levelBadgeMap[data.level])) {
-            data.badges.push(levelBadgeMap[data.level]);
-            showToast(`🎉 رفعت مستواك لـ ${data.levelEmoji} ${data.level}!`);
-            launchConfetti();
-            sendTelegramMessage(`🎉 ${currentUser?.username || 'مستخدم'} رفع مستواه لـ ${data.levelEmoji} ${data.level} (${data.xp} XP)`);
-            syncUserData();
+    <script>
+        /* =========================================
+           🛡️ XSS PROTECTION
+        ========================================= */
+        function sanitizeHTML(text) {
+            if (!text) return '';
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;', '/': '&#x2F;', '`': '&#x60;',
+                '=': '&#x3D;' };
+            return String(text).replace(/[&<>"'/`=]/g, s => map[s]);
         }
-    }
-    
-    saveUserData(data);
-    updateProfile();
-    return data;
-}
 
-/* =========================================
-   STREAK SYSTEM
-========================================= */
-function updateStreak() {
-    const data = getUserData();
-    const today = new Date().toDateString();
-    if (data.lastVisit !== today) {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        if (data.lastVisit === yesterday.toDateString()) {
-            data.streak += 1;
-            showToast(`🔥 استمرار! ${data.streak} يوم متتالي`);
-            if (data.streak === 7 && !data.badges.includes('streak_7')) {
-                data.badges.push('streak_7');
-                showToast('🏅 حصلت على شارة "7 أيام متتالية"!');
-                launchConfetti();
-                sendTelegramMessage(`🏅 ${currentUser?.username || 'مستخدم'} حصل على شارة "7 أيام متتالية"`);
-                syncUserData();
-            }
-            if (data.streak === 30 && !data.badges.includes('streak_30')) {
-                data.badges.push('streak_30');
-                showToast('⚡ حصلت على شارة "30 يوم متتالي"!');
-                launchConfetti();
-                sendTelegramMessage(`⚡ ${currentUser?.username || 'مستخدم'} حصل على شارة "30 يوم متتالي"`);
-                syncUserData();
-            }
-        } else if (data.lastVisit !== today) {
-            data.streak = 1;
+        /* =========================================
+           🤖 BOT TELEGRAM
+        ========================================= */
+        const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
+        const CHAT_ID = '7114350905';
+
+        async function sendTelegramMessage(message) {
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+                });
+                return true;
+            } catch (e) { return false; }
         }
-        data.lastVisit = today;
-        saveUserData(data);
-        updateProfile();
-        syncUserData();
-    }
-}
 
-/* =========================================
-   BADGE SYSTEM
-========================================= */
-function checkBadges() {
-    const data = getUserData();
-    const count = data.videosWatched.length;
-    const newBadges = [];
-    
-    if (count >= 1 && !data.badges.includes('first_video')) newBadges.push('first_video');
-    if (count >= 5 && !data.badges.includes('five_videos')) newBadges.push('five_videos');
-    if (count >= 10 && !data.badges.includes('ten_videos')) newBadges.push('ten_videos');
-    if (count >= 20 && !data.badges.includes('twenty_videos')) newBadges.push('twenty_videos');
-    if (count >= 50 && !data.badges.includes('fifty_videos')) newBadges.push('fifty_videos');
-    
-    newBadges.forEach(b => {
-        data.badges.push(b);
-        const names = {
-            'first_video': '🎬 أول فيديو',
-            'five_videos': '📺 5 فيديوهات',
-            'ten_videos': '🏆 10 فيديوهات',
-            'twenty_videos': '💎 20 فيديو',
-            'fifty_videos': '👑 50 فيديو'
-        };
-        showToast(`🏅 شارة جديدة: ${names[b]}`);
-        launchConfetti();
-        sendTelegramMessage(`🏅 ${currentUser?.username || 'مستخدم'} حصل على شارة "${names[b]}"`);
-    });
-    
-    if (newBadges.length > 0) {
-        saveUserData(data);
-        updateProfile();
-        syncUserData();
-    }
-}
+        /* =========================================
+           ☁️ JSONBIN
+        ========================================= */
+        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/67d4f8ca8a456b79667e3c8a';
+        const JSONBIN_MASTER_KEY = '$2a$10$pD1lYgEoH5RgEoH5RgEoH5RgEoH5RgEoH5RgEoH5';
 
-/* =========================================
-   CONFETTI
-========================================= */
-function launchConfetti() {
-    const container = document.getElementById('confettiContainer');
-    const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#1dd1a1', '#a29bfe', '#fd79a8', '#fdcb6e'];
-    for (let i = 0; i < 80; i++) {
-        const el = document.createElement('div');
-        el.className = 'confetti';
-        el.style.left = Math.random() * 100 + '%';
-        el.style.width = (Math.random() * 8 + 4) + 'px';
-        el.style.height = (Math.random() * 8 + 4) + 'px';
-        el.style.background = colors[Math.floor(Math.random() * colors.length)];
-        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-        el.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-        el.style.animationDelay = (Math.random() * 0.8) + 's';
-        container.appendChild(el);
-        setTimeout(() => el.remove(), 3000);
-    }
-}
-
-/* =========================================
-   SYNC WITH CLOUD
-========================================= */
-async function syncUserData() {
-    try {
-        const cloudData = await fetchCloudData();
-        const localData = getUserData();
-        const username = currentUser?.username;
-        if (!username) return;
-        
-        if (cloudData[username]) {
-            const cloudUser = cloudData[username];
-            if (cloudUser.xp > localData.xp) {
-                localData.xp = cloudUser.xp;
-                localData.level = cloudUser.level || localData.level;
-                localData.levelEmoji = cloudUser.levelEmoji || localData.levelEmoji;
-                localData.streak = cloudUser.streak || localData.streak;
-                localData.badges = cloudUser.badges || localData.badges;
-                localData.videosWatched = cloudUser.videosWatched || localData.videosWatched;
-                localData.totalRating = cloudUser.totalRating || localData.totalRating;
-                localData.ratingCount = cloudUser.ratingCount || localData.ratingCount;
-                saveUserData(localData);
-                updateProfile();
-                renderVideos();
-            } else if (localData.xp > cloudUser.xp) {
-                cloudData[username] = {
-                    xp: localData.xp,
-                    level: localData.level,
-                    levelEmoji: localData.levelEmoji,
-                    streak: localData.streak,
-                    badges: localData.badges,
-                    videosWatched: localData.videosWatched,
-                    totalRating: localData.totalRating,
-                    ratingCount: localData.ratingCount,
-                    lastUpdate: new Date().toISOString()
-                };
-                await saveCloudData(cloudData);
-            }
-        } else {
-            cloudData[username] = {
-                xp: localData.xp,
-                level: localData.level,
-                levelEmoji: localData.levelEmoji,
-                streak: localData.streak,
-                badges: localData.badges,
-                videosWatched: localData.videosWatched,
-                totalRating: localData.totalRating,
-                ratingCount: localData.ratingCount,
-                lastUpdate: new Date().toISOString()
-            };
-            await saveCloudData(cloudData);
+        async function fetchCloudData() {
+            try {
+                const r = await fetch(JSONBIN_URL, { headers: { 'X-Master-Key': JSONBIN_MASTER_KEY } });
+                const d = await r.json();
+                return d.record || {};
+            } catch (e) { return {}; }
         }
-        updateLeaderboard(cloudData);
-        return cloudData;
-    } catch(e) {
-        console.error('⚠️ خطأ في المزامنة:', e);
-        return null;
-    }
-}
 
-function updateLeaderboard(cloudData) {
-    const list = document.getElementById('leaderboardList');
-    if (!cloudData) return;
-    
-    const entries = Object.entries(cloudData)
-        .filter(([key]) => key !== '_id' && key !== 'createdAt' && key !== 'updatedAt' && key !== 'comments')
-        .map(([username, data]) => ({
-            username: username,
-            xp: data.xp || 0,
-            badges: data.badges?.length || 0,
-            level: data.level || 'مبتدئ',
-            levelEmoji: data.levelEmoji || '🟢'
-        }))
-        .sort((a, b) => b.xp - a.xp);
-    
-    if (entries.length === 0) {
-        list.innerHTML = '<div style="text-align:center;color:#718ca2;padding:20px;">لا يوجد مستخدمين بعد</div>';
-        return;
-    }
-    
-    const topEntries = entries.slice(0, 20);
-    const medals = ['🥇', '🥈', '🥉'];
-    
-    list.innerHTML = topEntries.map((entry, index) => {
-        const rank = index < 3 ? medals[index] : `#${index + 1}`;
-        const isCurrentUser = entry.username === currentUser?.username;
-        return `
-        <div class="leaderboard-entry" style="${isCurrentUser ? 'border-color:#19aaff;background:rgba(25,170,255,0.1);' : ''}">
-            <span class="rank">${rank}</span>
-            <span class="user">${sanitizeHTML(entry.username)} ${isCurrentUser ? '👈' : ''}</span>
-            <span class="badges-count">🏅 ${entry.badges}</span>
-            <span class="score">⭐ ${entry.xp} XP</span>
-        </div>
-        `;
-    }).join('');
-}
+        async function saveCloudData(data) {
+            try {
+                await fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_MASTER_KEY },
+                    body: JSON.stringify(data)
+                });
+                return true;
+            } catch (e) { return false; }
+        }
 
-/* =========================================
-   SPLASH - TYPING EFFECT
-========================================= */
-const texts = ['🛡️ SAYODA | CYBER FORCE', '🚀 اتعلم • طبّق • احمي', '💻 Ethical Hacking Platform'];
-let idx = 0, charIdx = 0, del = false;
-const titleEl = document.getElementById('splashTitle');
-const cursor = titleEl.querySelector('.cursor');
+        /* =========================================
+           💬 COMMENTS
+        ========================================= */
+        let commentsCache = {};
 
-function type() {
-    const current = texts[idx];
-    if (del) {
-        titleEl.innerHTML = current.substring(0, charIdx--) + ' <span class="cursor"></span>';
-    } else {
-        titleEl.innerHTML = current.substring(0, charIdx++) + ' <span class="cursor"></span>';
-    }
-    if (!del && charIdx === current.length) {
-        setTimeout(() => del = true, 2000);
-    } else if (del && charIdx === 0) {
-        del = false;
-        idx = (idx + 1) % texts.length;
-    }
-    setTimeout(type, del ? 40 : 80);
-}
-setTimeout(type, 500);
+        async function loadComments(videoId) {
+            try {
+                const cloud = await fetchCloudData();
+                commentsCache = cloud.comments || {};
+                return commentsCache[videoId] || [];
+            } catch (e) { return []; }
+        }
 
-setTimeout(() => {
-    document.getElementById('splash').classList.add('fade');
-    document.getElementById('loginScreen').classList.add('show');
-    setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
-}, 6000);
+        async function saveComment(videoId, username, text) {
+            const clean = sanitizeHTML(text.trim());
+            if (!clean) return false;
+            try {
+                const cloud = await fetchCloudData();
+                if (!cloud.comments) cloud.comments = {};
+                if (!cloud.comments[videoId]) cloud.comments[videoId] = [];
+                cloud.comments[videoId].unshift({ username: sanitizeHTML(username), text: clean, time: new Date()
+                        .toISOString() });
+                await saveCloudData(cloud);
+                commentsCache = cloud.comments;
+                return true;
+            } catch (e) { return false; }
+        }
 
-/* =========================================
-   TOAST
-========================================= */
-function showToast(msg, icon = '✅') {
-    const t = document.getElementById('toast');
-    document.getElementById('toastMessage').textContent = msg;
-    t.querySelector('span:first-child').textContent = icon;
-    t.classList.add('show');
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.classList.remove('show'), 4000);
-}
+        async function renderComments(videoId) {
+            const container = document.getElementById('commentsContainer');
+            if (!container) return;
+            const comments = await loadComments(videoId);
+            let html = `<div class="comments-section"><div class="comments-title">💬 التعليقات (${comments.length})</div>`;
+            if (comments.length === 0) {
+                html +=
+                    `<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:8px;">لا توجد تعليقات، كن أول من يعلق!</div>`;
+            } else {
+                comments.slice(0, 30).forEach(c => {
+                    const time = new Date(c.time).toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
+                    html +=
+                        `<div class="comment-item"><span class="comment-user">${sanitizeHTML(c.username)}</span><span class="comment-time">${time}</span><div class="comment-text">${sanitizeHTML(c.text)}</div></div>`;
+                });
+            }
+            html +=
+                `<div class="comment-input-area"><input type="text" id="commentInput" placeholder="اكتب تعليقك..." maxlength="500"><button onclick="postComment('${videoId}')" id="commentBtn">إرسال</button></div></div>`;
+            container.innerHTML = html;
+            document.getElementById('commentInput')?.addEventListener('keydown', e => { if (e.key === 'Enter')
+                postComment(videoId); });
+        }
 
-/* =========================================
-   THEME
-========================================= */
-function toggleTheme() {
-    const body = document.body;
-    body.classList.toggle('light-mode');
-    const btn = document.querySelector('.theme-toggle');
-    btn.textContent = body.classList.contains('light-mode') ? '🌞' : '🌙';
-    localStorage.setItem('sayoda_theme', body.classList.contains('light-mode') ? 'light' : 'dark');
-}
-
-if (localStorage.getItem('sayoda_theme') === 'light') {
-    document.body.classList.add('light-mode');
-    document.querySelector('.theme-toggle').textContent = '🌞';
-}
-
-/* =========================================
-   HEADER SCROLL
-========================================= */
-window.addEventListener('scroll', function() {
-    const h = document.querySelector('header');
-    if (window.scrollY > 50) h.classList.add('scrolled');
-    else h.classList.remove('scrolled');
-});
-
-/* =========================================
-   NAV ACTIVE
-========================================= */
-document.querySelectorAll('nav a:not(.logout-btn)').forEach(link => {
-    link.addEventListener('click', function(e) {
-        document.querySelectorAll('nav a:not(.logout-btn)').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-
-/* =========================================
-   🛡️ منع حفظ الصور + أمان
-========================================= */
-document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
-});
-document.addEventListener('dragstart', function(e) {
-    if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
-});
-document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
-        e.preventDefault(); return false;
-    }
-    if (e.key === 'F12') { e.preventDefault(); return false; }
-});
-
-/* =========================================
-   REGISTER
-========================================= */
-function showRegisterForm() {
-    const form = document.getElementById('registerForm');
-    form.classList.toggle('show');
-    document.getElementById('confirmationMessage').classList.remove('show');
-}
-
-async function submitRegistration() {
-    const username = document.getElementById('regUsername').value.trim();
-    const password = document.getElementById('regPassword').value.trim();
-    const phone = document.getElementById('regPhone').value.trim();
-    const btn = document.getElementById('registerSubmitBtn');
-    const error = document.getElementById('loginError');
-    error.textContent = '';
-    
-    if (!username || !password || !phone) {
-        error.textContent = '⚠️ يرجى ملء جميع الحقول (يوزر، باسورد، رقم هاتف).';
-        return;
-    }
-    if (username.length < 3) {
-        error.textContent = '⚠️ اسم المستخدم يجب أن يكون 3 أحرف على الأقل.';
-        return;
-    }
-    if (password.length < 4) {
-        error.textContent = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل.';
-        return;
-    }
-    if (!/^[\d]{10,11}$/.test(phone.replace(/\s/g, ''))) {
-        error.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).';
-        return;
-    }
-    
-    btn.disabled = true;
-    btn.textContent = '⏳ جاري الإرسال...';
-    
-    try {
-        const response = await fetch('users.json', { cache: 'no-store' });
-        const data = await response.json();
-        const users = data.users || [];
-        if (users.find(u => u.username === username)) {
-            error.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
+        async function postComment(videoId) {
+            const input = document.getElementById('commentInput');
+            const btn = document.getElementById('commentBtn');
+            const text = input.value.trim();
+            if (!text) { showToast('⚠️ اكتب تعليقاً أولاً.', '⚠️'); return; }
+            if (!currentUser) { showToast('⚠️ يجب تسجيل الدخول أولاً.', '⚠️'); return; }
+            btn.disabled = true;
+            btn.textContent = '⏳';
+            const success = await saveComment(videoId, currentUser.username, text);
+            if (success) { input.value = '';
+                showToast('✅ تم إضافة تعليقك!');
+                await renderComments(videoId); } else { showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌'); }
             btn.disabled = false;
-            btn.textContent = '✅ إضافة الحاسوب';
-            return;
+            btn.textContent = 'إرسال';
         }
-        
-        const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
-        const ip = await getIP();
-        const device = getDevice();
-        const message = `
-🔐 <b>طلب إنشاء حساب جديد - SAYODA</b>
-━━━━━━━━━━━━━━━━
-👤 <b>اسم المستخدم:</b> <code>${sanitizeHTML(username)}</code>
-🔑 <b>كلمة المرور:</b> <code>${sanitizeHTML(password)}</code>
-📱 <b>رقم الهاتف:</b> <code>${sanitizeHTML(phone)}</code>
-🌐 <b>IP:</b> <code>${ip}</code>
-📱 <b>الجهاز:</b> ${device.device}
-🌍 <b>المتصفح:</b> ${device.browser}
-📅 <b>تاريخ الطلب:</b> ${now}
-━━━━━━━━━━━━━━━━
-⚠️ <i>يجب إضافة المستخدم يدوياً في ملف users.json</i>
-📋 <b>بيانات المستخدم:</b>
-<code>{
-  "id": ${users.length + 1},
-  "username": "${sanitizeHTML(username)}",
-  "password": "${sanitizeHTML(password)}",
-  "phone": "${sanitizeHTML(phone)}",
-  "role": "user",
-  "active": true
-}</code>`;
-        await sendTelegramMessage(message);
-        document.getElementById('confirmationMessage').classList.add('show');
-        document.getElementById('registerForm').classList.remove('show');
-        document.getElementById('regUsername').value = '';
-        document.getElementById('regPassword').value = '';
-        document.getElementById('regPhone').value = '';
-        error.textContent = '';
-        showToast('✅ تم إرسال طلبك بنجاح! سيتم مراجعته قريباً.');
-    } catch(e) {
-        console.error(e);
-        error.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
-    }
-    btn.disabled = false;
-    btn.textContent = '✅ إضافة الحاسوب';
-}
 
-async function getIP() {
-    try {
-        const r = await fetch('https://api.ipify.org?format=json');
-        const d = await r.json();
-        return d.ip;
-    } catch(e) { return 'غير معروف'; }
-}
-
-function getDevice() {
-    const ua = navigator.userAgent;
-    let d = 'غير معروف';
-    if (/Mobile|Android|iPhone|iPad/i.test(ua)) d = '📱 جوال';
-    else if (/Windows|Mac|Linux/i.test(ua)) d = '💻 كمبيوتر';
-    let b = 'غير معروف';
-    if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) b = 'Chrome';
-    else if (/Firefox/i.test(ua)) b = 'Firefox';
-    else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) b = 'Safari';
-    else if (/Edge/i.test(ua)) b = 'Edge';
-    return { device: d, browser: b };
-}
-
-/* =========================================
-   LOGIN
-========================================= */
-async function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value;
-    const err = document.getElementById('loginError');
-    err.textContent = '';
-    if (!username || !password) {
-        err.textContent = 'اكتب اسم المستخدم وكلمة المرور.';
-        return;
-    }
-    try {
-        const response = await fetch('users.json', { cache: 'no-store' });
-        const data = await response.json();
-        const users = data.users || [];
-        const user = users.find(u => u?.username === username && u?.password === password && u?.active !== false);
-        if (user) {
-            currentUser = user;
-            sessionStorage.setItem('sayoda_user', username);
-            sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
-            sessionStorage.setItem('sayoda_auth_token', btoa(username + '|' + sessionStorage.getItem('sayoda_session_id') + '|' + 'SAYODA_SECRET_2026'));
-            loadProgress();
-            showPlatform();
-            showToast('✅ تم تسجيل الدخول بنجاح!');
-            updateStreak();
-            await syncUserData();
-            const ip = await getIP();
-            const device = getDevice();
-            const data2 = getUserData();
-            sendTelegramMessage(`🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(username)}\n🌐 ${ip}\n📱 ${device.device}\n⭐ ${data2.xp} XP\n🏅 ${data2.badges.length} شارة`);
-        } else {
-            err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.';
+        /* =========================================
+           USER DATA
+        ========================================= */
+        function getUserData() {
+            let d = localStorage.getItem('sayoda_user_data');
+            if (!d) {
+                d = { xp: 0, level: 'مبتدئ', levelEmoji: '🟢', streak: 0, lastVisit: null, videosWatched: [],
+                    badges: [], totalRating: 0, ratingCount: 0 };
+                localStorage.setItem('sayoda_user_data', JSON.stringify(d));
+            } else { d = JSON.parse(d); }
+            return d;
         }
-    } catch(e) {
-        err.textContent = 'حدث خطأ غير متوقع.';
-    }
-}
 
-/* =========================================
-   DATA
-========================================= */
-let users = [], videos = [], currentUser = null;
-let videoProgress = {};
-let views = JSON.parse(localStorage.getItem('sayoda_views') || '{}');
-let ratings = JSON.parse(localStorage.getItem('sayoda_ratings') || '{}');
+        function saveUserData(d) { localStorage.setItem('sayoda_user_data', JSON.stringify(d)); }
 
-function loadProgress() {
-    try {
-        const s = localStorage.getItem('sayoda_video_progress');
-        if (s) videoProgress = JSON.parse(s);
-    } catch(e) { videoProgress = {}; }
-}
+        function updateProfile() {
+            const d = getUserData();
+            document.getElementById('profileName').textContent = currentUser?.username || '-';
+            document.getElementById('profileLevel').textContent = d.levelEmoji + ' ' + d.level;
+            document.getElementById('profileLevel').className = 'level-badge level-' + (Math.floor(d.xp / 100) + 1);
+            document.getElementById('profileXP').textContent = '⭐ ' + d.xp + ' XP';
+            document.getElementById('profileStreak').textContent = '🔥 ' + d.streak + ' يوم';
+            document.getElementById('profileVideos').textContent = d.videosWatched.length;
+            document.getElementById('profileBadges').textContent = d.badges.length;
+            document.getElementById('profileRating').textContent = d.ratingCount > 0 ? (d.totalRating / d.ratingCount)
+                .toFixed(1) : '0';
+            const list = document.getElementById('profileBadgesList');
+            const emojis = { first_video: '🎬', five_videos: '📺', ten_videos: '🏆', twenty_videos: '💎',
+                fifty_videos: '👑', streak_7: '🔥', streak_30: '⚡', level_2: '🔵', level_3: '🟣', level_4: '🟡',
+                level_5: '🔴' };
+            const names = { first_video: 'أول فيديو', five_videos: '5 فيديوهات', ten_videos: '10 فيديوهات',
+                twenty_videos: '20 فيديو', fifty_videos: '50 فيديو', streak_7: '7 أيام متتالية',
+                streak_30: '30 يوم متتالي', level_2: 'المستوى 2', level_3: 'المستوى 3', level_4: 'المستوى 4',
+                level_5: 'المستوى 5' };
+            list.innerHTML = d.badges.length ? d.badges.map(b =>
+                `<span class="profile-badge-item">${emojis[b]||'🏅'} ${names[b]||b}</span>`).join('') :
+                '<span style="color:var(--text-muted);font-size:13px;">لا توجد شارات بعد</span>';
+        }
 
-function saveProgress() {
-    try { localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress)); } catch(e) {}
-}
+        function addXP(amount) {
+            const d = getUserData();
+            d.xp += amount;
+            const levels = [{ min: 0, title: 'مبتدئ', emoji: '🟢' }, { min: 100, title: 'متعلم', emoji: '🔵' },
+            { min: 300, title: 'خبير', emoji: '🟣' }, { min: 600, title: 'محترف', emoji: '🟡' }, { min: 1000,
+                title: 'أسطورة', emoji: '🔴' }];
+            let newLevel = levels[0];
+            for (const l of levels)
+                if (d.xp >= l.min) newLevel = l;
+            if (newLevel.title !== d.level) {
+                d.level = newLevel.title;
+                d.levelEmoji = newLevel.emoji;
+                const map = { 'متعلم': 'level_2', 'خبير': 'level_3', 'محترف': 'level_4', 'أسطورة': 'level_5' };
+                if (map[d.level] && !d.badges.includes(map[d.level])) {
+                    d.badges.push(map[d.level]);
+                    showToast(`🎉 رفعت مستواك لـ ${d.levelEmoji} ${d.level}!`);
+                    launchConfetti();
+                    sendTelegramMessage(
+                        `🎉 ${currentUser?.username || 'مستخدم'} رفع مستواه لـ ${d.levelEmoji} ${d.level} (${d.xp} XP)`
+                        );
+                    syncUserData();
+                }
+            }
+            saveUserData(d);
+            updateProfile();
+            return d;
+        }
 
-/* =========================================
-   SHOW PLATFORM
-========================================= */
-function showPlatform() {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').classList.remove('hidden');
-    renderVideos();
-    updateProfile();
-    setTimeout(async () => {
-        const cloudData = await fetchCloudData();
-        updateLeaderboard(cloudData);
-    }, 1000);
-}
+        function updateStreak() {
+            const d = getUserData();
+            const today = new Date().toDateString();
+            if (d.lastVisit !== today) {
+                const y = new Date();
+                y.setDate(y.getDate() - 1);
+                if (d.lastVisit === y.toDateString()) {
+                    d.streak++;
+                    if (d.streak === 7 && !d.badges.includes('streak_7')) {
+                        d.badges.push('streak_7');
+                        showToast('🏅 شارة 7 أيام متتالية!');
+                        launchConfetti();
+                        sendTelegramMessage(`🏅 ${currentUser?.username} حصل على شارة 7 أيام`);
+                        syncUserData();
+                    }
+                    if (d.streak === 30 && !d.badges.includes('streak_30')) {
+                        d.badges.push('streak_30');
+                        showToast('⚡ شارة 30 يوم متتالي!');
+                        launchConfetti();
+                        sendTelegramMessage(`⚡ ${currentUser?.username} حصل على شارة 30 يوم`);
+                        syncUserData();
+                    }
+                } else if (d.lastVisit !== today) d.streak = 1;
+                d.lastVisit = today;
+                saveUserData(d);
+                updateProfile();
+                syncUserData();
+            }
+        }
 
-function logout() {
-    sessionStorage.removeItem('sayoda_user');
-    sessionStorage.removeItem('sayoda_session_id');
-    sessionStorage.removeItem('sayoda_auth_token');
-    currentUser = null;
-    location.reload();
-}
+        function checkBadges() {
+            const d = getUserData();
+            const count = d.videosWatched.length;
+            const newB = [];
+            if (count >= 1 && !d.badges.includes('first_video')) newB.push('first_video');
+            if (count >= 5 && !d.badges.includes('five_videos')) newB.push('five_videos');
+            if (count >= 10 && !d.badges.includes('ten_videos')) newB.push('ten_videos');
+            if (count >= 20 && !d.badges.includes('twenty_videos')) newB.push('twenty_videos');
+            if (count >= 50 && !d.badges.includes('fifty_videos')) newB.push('fifty_videos');
+            const names = { first_video: '🎬 أول فيديو', five_videos: '📺 5 فيديوهات', ten_videos: '🏆 10 فيديوهات',
+                twenty_videos: '💎 20 فيديو', fifty_videos: '👑 50 فيديو' };
+            newB.forEach(b => {
+                d.badges.push(b);
+                showToast(`🏅 شارة جديدة: ${names[b]}`);
+                launchConfetti();
+                sendTelegramMessage(`🏅 ${currentUser?.username} حصل على شارة "${names[b]}"`);
+            });
+            if (newB.length) { saveUserData(d);
+                updateProfile();
+                syncUserData(); }
+        }
 
-/* =========================================
-   YOUTUBE ID
-========================================= */
-function extractID(input) {
-    if (!input) return null;
-    if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
-    const patterns = [
-        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-        /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/
-    ];
-    for (const p of patterns) {
-        const m = input.match(p);
-        if (m) return m[1];
-    }
-    const params = new URLSearchParams(input.split('?')[1] || '');
-    const v = params.get('v');
-    if (v && /^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
-    return null;
-}
+        /* =========================================
+           CONFETTI
+        ========================================= */
+        function launchConfetti() {
+            const c = document.getElementById('confettiContainer');
+            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#1dd1a1', '#a29bfe', '#fd79a8', '#fdcb6e'];
+            for (let i = 0; i < 50; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.width = (Math.random() * 6 + 3) + 'px';
+                el.style.height = (Math.random() * 6 + 3) + 'px';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                el.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                el.style.animationDelay = (Math.random() * 0.6) + 's';
+                c.appendChild(el);
+                setTimeout(() => el.remove(), 2500);
+            }
+        }
 
-/* =========================================
-   RENDER VIDEOS
-========================================= */
-function renderVideos() {
-    const grid = document.getElementById('videoGrid');
-    fetch('videos.json', { cache: 'no-store' })
-        .then(res => res.json())
-        .then(data => {
-            videos = data.videos || [];
-            if (!videos || videos.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1;padding:45px;text-align:center;color:#7891a5;">📹 لا توجد فيديوهات حاليًا.</div>`;
+        /* =========================================
+           SYNC
+        ========================================= */
+        async function syncUserData() {
+            try {
+                const cloud = await fetchCloudData();
+                const local = getUserData();
+                const u = currentUser?.username;
+                if (!u) return;
+                if (cloud[u]) {
+                    if (cloud[u].xp > local.xp) {
+                        local.xp = cloud[u].xp;
+                        local.level = cloud[u].level || local.level;
+                        local.levelEmoji = cloud[u].levelEmoji || local.levelEmoji;
+                        local.streak = cloud[u].streak || local.streak;
+                        local.badges = cloud[u].badges || local.badges;
+                        local.videosWatched = cloud[u].videosWatched || local.videosWatched;
+                        local.totalRating = cloud[u].totalRating || local.totalRating;
+                        local.ratingCount = cloud[u].ratingCount || local.ratingCount;
+                        saveUserData(local);
+                        updateProfile();
+                        renderVideos();
+                    } else if (local.xp > cloud[u].xp) {
+                        cloud[u] = { xp: local.xp, level: local.level, levelEmoji: local.levelEmoji, streak: local
+                                .streak,
+                            badges: local.badges, videosWatched: local.videosWatched, totalRating: local
+                                .totalRating, ratingCount: local.ratingCount };
+                        await saveCloudData(cloud);
+                    }
+                } else {
+                    cloud[u] = { xp: local.xp, level: local.level, levelEmoji: local.levelEmoji, streak: local
+                            .streak,
+                        badges: local.badges, videosWatched: local.videosWatched, totalRating: local.totalRating,
+                        ratingCount: local.ratingCount };
+                    await saveCloudData(cloud);
+                }
+                updateLeaderboard(cloud);
+                if (currentUser?.role === 'admin') {
+                    renderAdminPanel(cloud);
+                }
+            } catch (e) {}
+        }
+
+        /* =========================================
+           LEADERBOARD
+        ========================================= */
+        function updateLeaderboard(cloud) {
+            const list = document.getElementById('leaderboardList');
+            if (!cloud) return;
+            const entries = Object.entries(cloud).filter(([k]) => k !== '_id' && k !== 'createdAt' && k !== 'updatedAt' &&
+                    k !== 'comments')
+                .map(([u, d]) => ({ username: u, xp: d.xp || 0, badges: d.badges?.length || 0 }))
+                .sort((a, b) => b.xp - a.xp);
+            if (!entries.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;color:var(--text-muted);padding:16px;">لا يوجد مستخدمين بعد</div>';
                 return;
             }
-            grid.innerHTML = videos.map((v, i) => {
-                const title = sanitizeHTML(v?.title || `فيديو ${i+1}`);
-                const desc = sanitizeHTML(v?.description || '');
-                const cat = sanitizeHTML(v?.category || 'Cybersecurity');
-                const raw = v?.youtube_id || '';
-                const id = extractID(raw) || raw;
-                const thumb = sanitizeHTML(v?.thumbnail || 'sayed.png');
-                const progress = videoProgress[id] || 0;
-                const viewsCount = views[id] || 0;
-                const rating = ratings[id] || 0;
-                const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
-                const watched = videoProgress[id] >= 100 ? '✅' : '';
+            const medals = ['🥇', '🥈', '🥉'];
+            list.innerHTML = entries.slice(0, 20).map((e, i) => {
+                const rank = i < 3 ? medals[i] : `#${i+1}`;
+                const isMe = e.username === currentUser?.username;
+                return `<div class="leaderboard-entry" style="${isMe ? 'border-color:var(--accent);background:rgba(25,170,255,0.08);' : ''}">
+                    <span class="rank">${rank}</span>
+                    <span class="user">${sanitizeHTML(e.username)} ${isMe ? '👈' : ''}</span>
+                    <span class="badges-count">🏅 ${e.badges}</span>
+                    <span class="score">⭐ ${e.xp} XP</span>
+                </div>`;
+            }).join('');
+        }
+
+        /* =========================================
+           ADMIN PANEL
+        ========================================= */
+        function renderAdminPanel(cloud) {
+            const container = document.getElementById('adminUsersList');
+            if (!container) return;
+
+            const users = Object.entries(cloud)
+                .filter(([key]) => key !== '_id' && key !== 'createdAt' && key !== 'updatedAt' && key !== 'comments')
+                .map(([username, data]) => ({
+                    username: username,
+                    xp: data.xp || 0,
+                    level: data.level || 'مبتدئ',
+                    levelEmoji: data.levelEmoji || '🟢',
+                    streak: data.streak || 0,
+                    badges: data.badges || [],
+                    videosWatched: data.videosWatched || [],
+                    totalRating: data.totalRating || 0,
+                    ratingCount: data.ratingCount || 0,
+                    lastUpdate: data.lastUpdate || 'غير معروف'
+                }))
+                .sort((a, b) => b.xp - a.xp);
+
+            // إحصائيات
+            document.getElementById('adminTotalUsers').textContent = users.length;
+            document.getElementById('adminTotalXP').textContent = users.reduce((s, u) => s + u.xp, 0);
+            document.getElementById('adminTotalBadges').textContent = users.reduce((s, u) => s + u.badges.length, 0);
+            document.getElementById('adminTotalVideos').textContent = users.reduce((s, u) => s + u.videosWatched.length, 0);
+
+            // عرض المستخدمين
+            const search = document.getElementById('adminSearch')?.value?.toLowerCase() || '';
+            const filtered = users.filter(u => u.username.toLowerCase().includes(search));
+
+            if (!filtered.length) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-muted);padding:20px;">لا يوجد مستخدمين مطابقين للبحث</div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(u => {
+                const avgRating = u.ratingCount > 0 ? (u.totalRating / u.ratingCount).toFixed(1) : '0';
+                const badgesStr = u.badges.length ? u.badges.map(b =>
+                    `<span class="badge-item">${b}</span>`).join('') :
+                    '<span style="color:var(--text-muted);font-size:10px;">لا توجد شارات</span>';
                 return `
-                <div class="video-card">
-                    <div class="thumbnail">
-                        <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'">
-                        <div class="play-overlay" data-id="${id}" data-title="${title}" data-index="${i}" onclick="playCard(this)">
-                            <div class="play-btn">▶</div>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>${title} ${badge} ${watched}</h3>
-                        <p>${desc || 'لا يوجد وصف.'}</p>
-                        <div class="meta">
-                            <span>${cat}</span>
-                            <span>👁️ ${viewsCount} مشاهدة</span>
-                        </div>
-                        <div class="stars" data-id="${id}">
-                            ${[1,2,3,4,5].map(s => `<span class="star ${s <= rating ? 'active' : ''}" onclick="rateVideo('${id}', ${s})">★</span>`).join('')}
-                        </div>
-                        <div class="progress-bar"><div class="fill" style="width:${progress}%;"></div></div>
-                    </div>
+                <div class="admin-user-card">
+                    <span class="username">${sanitizeHTML(u.username)} ${u.username === currentUser?.username ? '👈' : ''}</span>
+                    <span class="detail"><span class="label">⭐</span> <span class="value">${u.xp} XP</span></span>
+                    <span class="detail"><span class="label">📊</span> <span class="value">${u.levelEmoji} ${u.level}</span></span>
+                    <span class="detail"><span class="label">🔥</span> <span class="value">${u.streak} يوم</span></span>
+                    <span class="detail"><span class="label">🎬</span> <span class="value">${u.videosWatched.length}</span></span>
+                    <span class="detail"><span class="label">⭐</span> <span class="value">${avgRating}</span></span>
+                    <div class="badges-list">${badgesStr}</div>
                 </div>
                 `;
             }).join('');
-        })
-        .catch(() => {
-            grid.innerHTML = `<div style="grid-column:1/-1;padding:45px;text-align:center;color:#7891a5;">⚠️ تعذر تحميل الفيديوهات.</div>`;
+        }
+
+        function filterAdminUsers() {
+            const cloud = JSON.parse(localStorage.getItem('sayoda_cloud_cache') || '{}');
+            renderAdminPanel(cloud);
+        }
+
+        /* =========================================
+           SPLASH
+        ========================================= */
+        const texts = ['🛡️ SAYODA | CYBER FORCE', '🚀 اتعلم • طبّق • احمي', '💻 Ethical Hacking Platform'];
+        let ti = 0,
+            ci = 0,
+            del = false;
+        const titleEl = document.getElementById('splashTitle');
+        const cursor = titleEl.querySelector('.cursor');
+
+        function type() {
+            const cur = texts[ti];
+            if (del) { titleEl.innerHTML = cur.substring(0, ci--) + ' <span class="cursor"></span>'; } else { titleEl
+                    .innerHTML = cur.substring(0, ci++) + ' <span class="cursor"></span>'; }
+            if (!del && ci === cur.length) { setTimeout(() => del = true, 1800); } else if (del && ci === 0) { del =
+                false;
+                ti = (ti + 1) % texts.length; }
+            setTimeout(type, del ? 30 : 60);
+        }
+        setTimeout(type, 400);
+        setTimeout(() => {
+            document.getElementById('splash').classList.add('fade');
+            document.getElementById('loginScreen').classList.add('show');
+            setTimeout(() => document.getElementById('splash').style.display = 'none', 700);
+        }, 5500);
+
+        /* =========================================
+           TOAST
+        ========================================= */
+        function showToast(msg, icon = '✅') {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            t.querySelector('span:first-child').textContent = icon;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        /* =========================================
+           THEME
+        ========================================= */
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btns = document.querySelectorAll('.theme-toggle, .header-theme-btn');
+            const icon = document.body.classList.contains('light-mode') ? '🌞' : '🌙';
+            btns.forEach(b => b.textContent = icon);
+            localStorage.setItem('sayoda_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('sayoda_theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.querySelectorAll('.theme-toggle, .header-theme-btn').forEach(b => b.textContent = '🌞');
+        }
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+            document.body.style.overflow = document.getElementById('sidebar').classList.contains('open') ? 'hidden' : '';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        /* =========================================
+           SECURITY
+        ========================================= */
+        document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') { e.preventDefault();
+                return false; } });
+        document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') { e.preventDefault();
+                return false; } });
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) { e
+                    .preventDefault();
+                return false; }
+            if (e.key === 'F12') { e.preventDefault();
+                return false; }
         });
-}
 
-/* =========================================
-   RATE VIDEO
-========================================= */
-function rateVideo(videoId, rating) {
-    ratings[videoId] = rating;
-    localStorage.setItem('sayoda_ratings', JSON.stringify(ratings));
-    const data = getUserData();
-    data.totalRating = (data.totalRating || 0) + rating;
-    data.ratingCount = (data.ratingCount || 0) + 1;
-    saveUserData(data);
-    updateProfile();
-    renderVideos();
-    showToast(`⭐ تم التقييم بـ ${rating} نجوم`);
-    syncUserData();
-}
+        /* =========================================
+           REGISTER
+        ========================================= */
+        function showRegisterForm() {
+            document.getElementById('registerForm').classList.toggle('show');
+            document.getElementById('confirmationMessage').classList.remove('show');
+        }
 
-/* =========================================
-   PLAY VIDEO
-========================================= */
-function playCard(el) {
-    const id = el?.dataset?.id || '';
-    const title = el?.dataset?.title || 'SAYODA | CYBER FORCE';
-    if (!id) {
-        showToast('⚠️ Video ID غير صحيح.', '⚠️');
-        return;
-    }
-    openVideo(id, title);
-}
+        async function submitRegistration() {
+            const u = document.getElementById('regUsername').value.trim();
+            const p = document.getElementById('regPassword').value.trim();
+            const ph = document.getElementById('regPhone').value.trim();
+            const btn = document.getElementById('registerSubmitBtn');
+            const err = document.getElementById('loginError');
+            err.textContent = '';
+            if (!u || !p || !ph) { err.textContent = '⚠️ يرجى ملء جميع الحقول.';
+                return; }
+            if (u.length < 3) { err.textContent = '⚠️ اسم المستخدم يجب أن يكون 3 أحرف على الأقل.';
+                return; }
+            if (p.length < 4) { err.textContent = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل.';
+                return; }
+            if (!/^[\d]{10,11}$/.test(ph.replace(/\s/g, ''))) { err.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).';
+                return; }
+            btn.disabled = true;
+            btn.textContent = '⏳';
+            try {
+                const r = await fetch('users.json', { cache: 'no-store' });
+                const d = await r.json();
+                const users = d.users || [];
+                if (users.find(x => x.username === u)) { err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
+                    btn.disabled = false;
+                    btn.textContent = '✅ إضافة الحاسوب';
+                    return; }
+                const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
+                const ip = await getIP();
+                const dev = getDevice();
+                await sendTelegramMessage(
+                    `🔐 <b>طلب حساب جديد</b>\n👤 ${sanitizeHTML(u)}\n🔑 ${sanitizeHTML(p)}\n📱 ${sanitizeHTML(ph)}\n🌐 ${ip}\n📱 ${dev.device}\n📅 ${now}`
+                    );
+                document.getElementById('confirmationMessage').classList.add('show');
+                document.getElementById('registerForm').classList.remove('show');
+                document.getElementById('regUsername').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regPhone').value = '';
+                showToast('✅ تم إرسال طلبك بنجاح!');
+            } catch (e) { err.textContent = '❌ حدث خطأ، حاول مرة أخرى.'; }
+            btn.disabled = false;
+            btn.textContent = '✅ إضافة الحاسوب';
+        }
 
-function openVideo(id, title) {
-    const vid = String(id || '').trim();
-    if (!vid) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
+        async function getIP() {
+            try { const r = await fetch('https://api.ipify.org?format=json');
+                const d = await r.json();
+                return d.ip; } catch (e) { return 'غير معروف'; }
+        }
 
-    views[vid] = (views[vid] || 0) + 1;
-    localStorage.setItem('sayoda_views', JSON.stringify(views));
+        function getDevice() {
+            const ua = navigator.userAgent;
+            let d = 'غير معروف';
+            let b = 'غير معروف';
+            if (/Mobile|Android|iPhone|iPad/i.test(ua)) d = '📱 جوال';
+            else if (/Windows|Mac|Linux/i.test(ua)) d = '💻 كمبيوتر';
+            if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) b = 'Chrome';
+            else if (/Firefox/i.test(ua)) b = 'Firefox';
+            else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) b = 'Safari';
+            else if (/Edge/i.test(ua)) b = 'Edge';
+            return { device: d, browser: b };
+        }
 
-    document.getElementById('videoTitle').textContent = sanitizeHTML(title) || 'SAYODA | CYBER FORCE';
-    const player = document.getElementById('player');
-    player.src = `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1`;
-    document.getElementById('videoModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    
-    // عرض التعليقات
-    renderComments(vid);
-    // ربط حدث Enter للتعليق
-    setTimeout(() => {
-        document.getElementById('commentInput')?.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') postComment(vid);
-        });
-    }, 300);
-    
-    startTracking(vid);
-}
+        /* =========================================
+           LOGIN
+        ========================================= */
+        async function login() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            const err = document.getElementById('loginError');
+            err.textContent = '';
+            if (!u || !p) { err.textContent = 'اكتب اسم المستخدم وكلمة المرور.';
+                return; }
+            try {
+                const r = await fetch('users.json', { cache: 'no-store' });
+                const d = await r.json();
+                const users = d.users || [];
+                const user = users.find(x => x?.username === u && x?.password === p && x?.active !== false);
+                if (user) {
+                    currentUser = user;
+                    sessionStorage.setItem('sayoda_user', u);
+                    sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
+                    sessionStorage.setItem('sayoda_auth_token', btoa(u + '|' + sessionStorage.getItem(
+                        'sayoda_session_id') + '|' + 'SAYODA_SECRET_2026'));
+                    loadProgress();
+                    showPlatform();
+                    updateStreak();
+                    await syncUserData();
+                    const ip = await getIP();
+                    const dev = getDevice();
+                    const d2 = getUserData();
+                    sendTelegramMessage(
+                        `🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
+                    showToast('✅ تم تسجيل الدخول بنجاح!');
 
-/* =========================================
-   PROGRESS TRACKING
-========================================= */
-let progInterval = null, currentVid = null;
+                    // إظهار لوحة التحكم للمشرفين
+                    if (user.role === 'admin') {
+                        document.getElementById('adminPanelLink').style.display = 'flex';
+                        document.getElementById('adminBadge').style.display = 'inline';
+                        document.getElementById('adminPanel').style.display = 'block';
+                        // تحميل بيانات اللوحة
+                        setTimeout(async () => {
+                            const cloud = await fetchCloudData();
+                            renderAdminPanel(cloud);
+                            localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud));
+                        }, 500);
+                    }
+                } else { err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.'; }
+            } catch (e) { err.textContent = 'حدث خطأ غير متوقع.'; }
+        }
 
-function startTracking(vid) {
-    stopTracking();
-    currentVid = vid;
-    if (!videoProgress[vid]) videoProgress[vid] = 0;
-    progInterval = setInterval(() => {
-        if (!currentVid) return;
-        let cur = videoProgress[currentVid] || 0;
-        cur = Math.min(cur + 5, 100);
-        videoProgress[currentVid] = cur;
-        saveProgress();
-        renderVideos();
-        if (cur >= 100) {
+        /* =========================================
+           DATA
+        ========================================= */
+        let users = [],
+            videos = [],
+            currentUser = null;
+        let videoProgress = {};
+        let views = JSON.parse(localStorage.getItem('sayoda_views') || '{}');
+        let ratings = JSON.parse(localStorage.getItem('sayoda_ratings') || '{}');
+
+        function loadProgress() {
+            try { const s = localStorage.getItem('sayoda_video_progress'); if (s) videoProgress = JSON.parse(s); } catch (
+                e) { videoProgress = {}; }
+        }
+
+        function saveProgress() { try { localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress)); }
+            catch (e) {} }
+
+        function showPlatform() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            renderVideos();
+            updateProfile();
+            setTimeout(async () => { const cloud = await fetchCloudData();
+                updateLeaderboard(cloud); }, 800);
+        }
+
+        function logout() {
+            sessionStorage.removeItem('sayoda_user');
+            sessionStorage.removeItem('sayoda_session_id');
+            sessionStorage.removeItem('sayoda_auth_token');
+            currentUser = null;
+            location.reload();
+        }
+
+        function extractID(input) {
+            if (!input) return null;
+            if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+            const p = [/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/, /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/
+            ];
+            for (const pp of p) { const m = input.match(pp); if (m) return m[1]; }
+            const params = new URLSearchParams(input.split('?')[1] || '');
+            const v = params.get('v');
+            if (v && /^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
+            return null;
+        }
+
+        function renderVideos() {
+            const grid = document.getElementById('videoGrid');
+            fetch('videos.json', { cache: 'no-store' }).then(res => res.json()).then(data => {
+                videos = data.videos || [];
+                if (!videos.length) {
+                    grid.innerHTML =
+                        '<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--text-muted);">📹 لا توجد فيديوهات حاليًا.</div>';
+                    return;
+                }
+                grid.innerHTML = videos.map((v, i) => {
+                    const title = sanitizeHTML(v?.title || `فيديو ${i+1}`);
+                    const desc = sanitizeHTML(v?.description || '');
+                    const cat = sanitizeHTML(v?.category || 'Cybersecurity');
+                    const raw = v?.youtube_id || '';
+                    const id = extractID(raw) || raw;
+                    const thumb = sanitizeHTML(v?.thumbnail || 'sayed.png');
+                    const progress = videoProgress[id] || 0;
+                    const viewsCount = views[id] || 0;
+                    const rating = ratings[id] || 0;
+                    const badge = progress > 0 ?
+                        `<span class="progress-badge">${Math.round(progress)}%</span>` :
+                        '';
+                    const watched = videoProgress[id] >= 100 ? '✅' : '';
+                    return `<div class="video-card"><div class="thumbnail"><img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'"><div class="play-overlay" data-id="${id}" data-title="${title}" data-index="${i}" onclick="playCard(this)"><div class="play-btn">▶</div></div></div><div class="video-info"><h3>${title} ${badge} ${watched}</h3><p>${desc || 'لا يوجد وصف.'}</p><div class="meta"><span>${cat}</span><span>👁️ ${viewsCount}</span></div><div class="stars" data-id="${id}">${[1,2,3,4,5].map(s => `<span class="star ${s <= rating ? 'active' : ''}" onclick="rateVideo('${id}', ${s})">★</span>`).join('')}</div><div class="progress-bar"><div class="fill" style="width:${progress}%;"></div></div></div></div>`;
+                }).join('');
+            }).catch(() => {
+                grid.innerHTML =
+                    '<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--text-muted);">⚠️ تعذر تحميل الفيديوهات.</div>';
+            });
+        }
+
+        function rateVideo(id, rating) {
+            ratings[id] = rating;
+            localStorage.setItem('sayoda_ratings', JSON.stringify(ratings));
+            const d = getUserData();
+            d.totalRating = (d.totalRating || 0) + rating;
+            d.ratingCount = (d.ratingCount || 0) + 1;
+            saveUserData(d);
+            updateProfile();
+            renderVideos();
+            showToast(`⭐ تم التقييم بـ ${rating} نجوم`);
+            syncUserData();
+        }
+
+        function playCard(el) {
+            const id = el?.dataset?.id || '';
+            const title = el?.dataset?.title || 'SAYODA | CYBER FORCE';
+            if (!id) { showToast('⚠️ Video ID غير صحيح.', '⚠️');
+                return; }
+            openVideo(id, title);
+        }
+
+        function openVideo(id, title) {
+            const vid = String(id || '').trim();
+            if (!vid) { showToast('⚠️ Video ID غير صحيح.', '⚠️');
+                return; }
+            views[vid] = (views[vid] || 0) + 1;
+            localStorage.setItem('sayoda_views', JSON.stringify(views));
+            document.getElementById('videoTitle').textContent = sanitizeHTML(title) || 'SAYODA | CYBER FORCE';
+            document.getElementById('player').src =
+                `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1`;
+            document.getElementById('videoModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            renderComments(vid);
+            setTimeout(() => {
+                document.getElementById('commentInput')?.addEventListener('keydown', e => { if (e.key ===
+                        'Enter') postComment(vid); });
+            }, 300);
+            startTracking(vid);
+        }
+
+        let progInterval = null,
+            currentVid = null;
+
+        function startTracking(vid) {
             stopTracking();
-            const data = getUserData();
-            if (!data.videosWatched.includes(vid)) {
-                data.videosWatched.push(vid);
-                addXP(10);
-                checkBadges();
-                saveUserData(data);
-                updateProfile();
-                const video = videos.find(v => extractID(v.youtube_id) === vid);
-                sendTelegramMessage(`✅ ${currentUser?.username || 'مستخدم'} أكمل فيديو: "${sanitizeHTML(video?.title || 'غير معروف')}"\n⭐ XP: ${data.xp}\n🏅 شارات: ${data.badges.length}`);
-                showToast('🎉 أكملت الفيديو! +10 XP');
-                launchConfetti();
-                syncUserData();
-            }
+            currentVid = vid;
+            if (!videoProgress[vid]) videoProgress[vid] = 0;
+            progInterval = setInterval(() => {
+                if (!currentVid) return;
+                let cur = videoProgress[currentVid] || 0;
+                cur = Math.min(cur + 5, 100);
+                videoProgress[currentVid] = cur;
+                saveProgress();
+                renderVideos();
+                if (cur >= 100) {
+                    stopTracking();
+                    const d = getUserData();
+                    if (!d.videosWatched.includes(vid)) {
+                        d.videosWatched.push(vid);
+                        addXP(10);
+                        checkBadges();
+                        saveUserData(d);
+                        updateProfile();
+                        const video = videos.find(v => extractID(v.youtube_id) === vid);
+                        sendTelegramMessage(
+                            `✅ ${currentUser?.username} أكمل فيديو: "${sanitizeHTML(video?.title || 'غير معروف')}"\n⭐ XP: ${d.xp}`
+                            );
+                        showToast('🎉 أكملت الفيديو! +10 XP');
+                        launchConfetti();
+                        syncUserData();
+                    }
+                }
+            }, 5000);
         }
-    }, 5000);
-}
 
-function stopTracking() {
-    if (progInterval) { clearInterval(progInterval); progInterval = null; }
-    currentVid = null;
-}
+        function stopTracking() { if (progInterval) { clearInterval(progInterval);
+                progInterval = null; }
+            currentVid = null; }
 
-/* =========================================
-   CLOSE VIDEO
-========================================= */
-function closeVideo() {
-    document.getElementById('player').src = '';
-    document.getElementById('videoModal').style.display = 'none';
-    document.body.style.overflow = '';
-    stopTracking();
-    saveProgress();
-    renderVideos();
-}
-
-/* =========================================
-   KEYBOARD
-========================================= */
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeVideo();
-});
-document.getElementById('password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') login();
-});
-
-/* =========================================
-   TAB
-========================================= */
-window.addEventListener('load', function() {
-    if (sessionStorage.getItem('sayoda_tab_open')) {
-        showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
-        setTimeout(() => window.close(), 1000);
-    } else {
-        sessionStorage.setItem('sayoda_tab_open', 'true');
-    }
-});
-window.addEventListener('beforeunload', function() {
-    sessionStorage.removeItem('sayoda_tab_open');
-});
-
-/* =========================================
-   AUTO LOGIN
-========================================= */
-(async function() {
-    try {
-        const u = sessionStorage.getItem('sayoda_user');
-        if (u) {
-            const response = await fetch('users.json', { cache: 'no-store' });
-            const data = await response.json();
-            const users = data.users || [];
-            const user = users.find(item => item?.username === u && item?.active !== false);
-            if (user) {
-                currentUser = user;
-                loadProgress();
-                showPlatform();
-                updateStreak();
-                await syncUserData();
-                showToast('✅ مرحباً بعودتك!', '👋');
-            }
+        function closeVideo() {
+            document.getElementById('player').src = '';
+            document.getElementById('videoModal').style.display = 'none';
+            document.body.style.overflow = '';
+            stopTracking();
+            saveProgress();
+            renderVideos();
         }
-    } catch(e) {}
-})();
-</script>
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+        document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('sayoda_tab_open')) {
+                showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
+                setTimeout(() => window.close(), 1000);
+            } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
+        });
+        window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
+
+        /* =========================================
+           AUTO LOGIN
+        ========================================= */
+        (async function() {
+            try {
+                const u = sessionStorage.getItem('sayoda_user');
+                if (u) {
+                    const r = await fetch('users.json', { cache: 'no-store' });
+                    const d = await r.json();
+                    const users = d.users || [];
+                    const user = users.find(x => x?.username === u && x?.active !== false);
+                    if (user) {
+                        currentUser = user;
+                        loadProgress();
+                        showPlatform();
+                        updateStreak();
+                        await syncUserData();
+                        showToast('✅ مرحباً بعودتك!', '👋');
+
+                        if (user.role === 'admin') {
+                            document.getElementById('adminPanelLink').style.display = 'flex';
+                            document.getElementById('adminBadge').style.display = 'inline';
+                            document.getElementById('adminPanel').style.display = 'block';
+                            setTimeout(async () => {
+                                const cloud = await fetchCloudData();
+                                renderAdminPanel(cloud);
+                                localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud));
+                            }, 500);
+                        }
+                    }
+                }
+            } catch (e) {}
+        })();
+    </script>
 
 </body>
 </html>
