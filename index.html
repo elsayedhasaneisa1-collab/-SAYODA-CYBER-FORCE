@@ -154,13 +154,10 @@ body {
 }
 
 /* ===== INPUTS ===== */
-.input-wrapper {
-    position: relative;
-    margin-bottom: 16px;
-}
 .input {
     width: 100%;
     padding: 16px 18px;
+    margin-bottom: 14px;
     border: 2px solid #1c466355;
     border-radius: 12px;
     background: #020812cc;
@@ -174,9 +171,6 @@ body {
     border-color: #19aaff;
     box-shadow: 0 0 30px #008cff20;
     transform: scale(1.02);
-}
-.input:active {
-    transform: scale(0.98);
 }
 .login-btn {
     width: 100%;
@@ -196,9 +190,6 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px #008cff25;
 }
-.login-btn:active {
-    transform: scale(0.96);
-}
 .error {
     min-height: 22px;
     margin-top: 14px;
@@ -209,7 +200,7 @@ body {
 
 /* ===== HEADER ===== */
 header {
-    height: 70px;
+    height: 75px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -217,30 +208,106 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 0 6%;
-    background: #040d18cc;
-    border-bottom: 1px solid #123d6033;
+    background: rgba(4, 13, 24, 0.85);
+    border-bottom: 1px solid rgba(18, 61, 96, 0.2);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
 }
+header.scrolled {
+    background: rgba(4, 13, 24, 0.95);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== BRAND ===== */
 .brand {
-    color: #20aaff;
-    font-size: 20px;
-    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
 }
-.brand span { color: #fff; }
+.brand-icon {
+    font-size: 28px;
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+.brand-text {
+    color: #20aaff;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+.brand-text span {
+    color: #fff;
+}
+.brand-sub {
+    font-size: 11px;
+    color: #4a8aaf;
+    letter-spacing: 2px;
+    font-weight: 400;
+    display: block;
+    margin-top: -2px;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { text-shadow: 0 0 10px rgba(32, 170, 255, 0.2); }
+    50% { text-shadow: 0 0 25px rgba(32, 170, 255, 0.5), 0 0 50px rgba(32, 170, 255, 0.1); }
+}
+
+/* ===== NAV ===== */
 nav {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 8px;
 }
 nav a {
-    color: #91a8bb;
+    color: #8aa8c4;
     text-decoration: none;
     font-size: 14px;
-    cursor: pointer;
-    transition: color 0.3s;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    letter-spacing: 0.5px;
 }
-nav a:hover { color: #20aaff; }
-.logout { color: #ff6375 !important; }
+nav a:hover {
+    color: #20aaff;
+    background: rgba(32, 170, 255, 0.08);
+}
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #20aaff, #087cff);
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+nav a:hover::after {
+    width: 60%;
+    right: 20%;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+.logout-btn {
+    color: #ff6375 !important;
+    border: 1px solid rgba(255, 99, 117, 0.2) !important;
+    background: rgba(255, 99, 117, 0.05) !important;
+    padding: 8px 20px !important;
+    border-radius: 30px !important;
+    transition: all 0.3s ease !important;
+}
+.logout-btn:hover {
+    background: rgba(255, 99, 117, 0.15) !important;
+    border-color: rgba(255, 99, 117, 0.4) !important;
+    color: #ff6375 !important;
+    transform: scale(1.05);
+}
+.logout-btn::after {
+    display: none !important;
+}
 
 /* ===== HERO ===== */
 .hero {
@@ -254,7 +321,7 @@ nav a:hover { color: #20aaff; }
 }
 .badge {
     display: inline-block;
-    padding: 8px 18px;
+    padding: 8px 22px;
     border: 1px solid #168bd055;
     border-radius: 30px;
     color: #29b4ff;
@@ -637,6 +704,12 @@ footer a {
 
 /* ===== MOBILE ===== */
 @media (max-width: 650px) {
+    header { height: 60px; padding: 0 4%; }
+    .brand-text { font-size: 16px; }
+    .brand-sub { font-size: 9px; }
+    .brand-icon { font-size: 20px; }
+    nav a { font-size: 12px; padding: 6px 10px; }
+    .logout-btn { padding: 6px 14px !important; font-size: 12px !important; }
     .video-grid { gap: 18px; }
     .whatsapp-btn {
         padding: 12px 20px;
@@ -645,6 +718,7 @@ footer a {
         justify-content: center;
     }
     #toast { font-size: 14px; padding: 14px 22px; bottom: 80px; width: 90%; }
+    .hero h1 { font-size: clamp(32px, 8vw, 45px); }
 }
 </style>
 </head>
@@ -688,12 +762,18 @@ footer a {
 <!-- ===== APP ===== -->
 <div id="app" class="hidden">
     <header>
-        <div class="brand">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
+        <a class="brand" href="#home">
+            <span class="brand-icon">🛡️</span>
+            <div>
+                <div class="brand-text">SAYODA <span>|</span> CYBER FORCE</div>
+                <div class="brand-sub">SECURE LEARNING PLATFORM</div>
+            </div>
+        </a>
         <nav>
             <a href="#home">الرئيسية</a>
             <a href="#videos">الفيديوهات</a>
             <a href="#about">عن المنصة</a>
-            <a class="logout" onclick="logout()">خروج</a>
+            <a class="logout-btn" onclick="logout()">خروج</a>
         </nav>
     </header>
 
@@ -829,6 +909,15 @@ function createWatermark(text) {
         c.appendChild(s);
     }
 }
+
+/* =========================================
+   HEADER SCROLL
+========================================= */
+window.addEventListener('scroll', function() {
+    const h = document.querySelector('header');
+    if (window.scrollY > 50) h.classList.add('scrolled');
+    else h.classList.remove('scrolled');
+});
 
 /* =========================================
    BOT TELEGRAM
@@ -1332,15 +1421,6 @@ window.addEventListener('load', function() {
 });
 window.addEventListener('beforeunload', function() {
     sessionStorage.removeItem('sayoda_tab_open');
-});
-
-/* =========================================
-   HEADER SCROLL
-========================================= */
-window.addEventListener('scroll', function() {
-    const h = document.querySelector('header');
-    if (window.scrollY > 50) h.style.background = '#040d18ee';
-    else h.style.background = '#040d18cc';
 });
 
 /* =========================================
