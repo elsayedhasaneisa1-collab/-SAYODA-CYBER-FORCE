@@ -48,7 +48,7 @@ body{
     display:none !important;
 }
 
-/* ================= SPLASH - كتابة تلقائية ================= */
+/* ================= SPLASH ================= */
 #splash {
     position:fixed;
     inset:0;
@@ -97,7 +97,6 @@ body{
     margin-right:2px;
 }
 
-/* الكلام اللي انت بعته */
 .splash-sub {
     font-size:clamp(14px,1.5vw,20px);
     color:#c0d0e0;
@@ -111,11 +110,6 @@ body{
 .splash-sub .icon {
     display:inline-block;
     animation:wave 2s ease-in-out infinite;
-}
-
-.splash-sub .highlight-text {
-    color:#19aaff;
-    font-weight:700;
 }
 
 .splash-tag {
@@ -168,7 +162,7 @@ body{
     75% { transform:rotate(-10deg); }
 }
 
-/* ================= LOGIN - طلعة من أسفل ================= */
+/* ================= LOGIN ================= */
 .login-screen {
     min-height:100vh;
     display:flex;
@@ -223,7 +217,7 @@ body{
     margin:12px 0 32px;
 }
 
-/* ================= تأثير احترافي عند الضغط على الحقول ================= */
+/* ================= INPUT EFFECTS ================= */
 .input-wrapper {
     position:relative;
     margin-bottom:16px;
@@ -345,7 +339,7 @@ body{
     font-size:14px;
 }
 
-/* خلفية نجوم متحركة */
+/* ================= خلفية نجوم ================= */
 body::before {
     content:'';
     position:fixed;
@@ -371,11 +365,356 @@ body::before {
     100% { background-position:250px 250px; }
 }
 
+/* ================= APP ================= */
 #app {
     display:none;
 }
 
-/* ================= رسالة الطرد ================= */
+/* ================= WATERMARK ================= */
+.watermark-container {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:9998;
+    overflow:hidden;
+}
+
+.watermark-text {
+    position:absolute;
+    font-weight:900;
+    letter-spacing:5px;
+    text-shadow:0 0 30px rgba(0,0,0,0.6);
+    white-space:nowrap;
+    user-select:none;
+    pointer-events:none;
+    animation:watermarkFloat 25s ease-in-out infinite;
+    font-family:'Tajawal',Arial,sans-serif;
+    transform-origin:center;
+}
+
+.watermark-text.color-1 { color:rgba(25, 170, 255, 0.12); }
+.watermark-text.color-2 { color:rgba(255, 107, 107, 0.12); }
+.watermark-text.color-3 { color:rgba(0, 255, 200, 0.12); }
+.watermark-text.color-4 { color:rgba(255, 215, 0, 0.12); }
+
+@keyframes watermarkFloat {
+    0% { transform:translate(0, 0) rotate(-8deg) scale(1); }
+    20% { transform:translate(calc(80vw - 100px), calc(10vh)) rotate(5deg) scale(1.1); }
+    40% { transform:translate(calc(40vw - 50px), calc(75vh - 50px)) rotate(-10deg) scale(0.9); }
+    60% { transform:translate(calc(10vw), calc(50vh - 30px)) rotate(7deg) scale(1.05); }
+    80% { transform:translate(calc(70vw - 80px), calc(25vh)) rotate(-5deg) scale(0.95); }
+    100% { transform:translate(0, 0) rotate(-8deg) scale(1); }
+}
+
+/* ================= VIDEO CARDS ================= */
+.video-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.video-card {
+    overflow:hidden;
+    background:rgba(7,19,33,.85);
+    border:1px solid #123d5d33;
+    border-radius:20px;
+    transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position:relative;
+    backdrop-filter:blur(10px);
+}
+
+.video-card:hover {
+    transform:translateY(-10px) scale(1.01);
+    border-color:#19aaff55;
+    box-shadow:0 25px 60px #008cff15;
+}
+
+.video-card.locked {
+    opacity:0.6;
+}
+
+.video-card .thumbnail {
+    position:relative;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:#01060d;
+}
+
+.video-card .thumbnail img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    user-select:none;
+    pointer-events:none;
+    transition:transform 0.6s;
+}
+
+.video-card:hover .thumbnail img {
+    transform:scale(1.08) rotate(-1deg);
+}
+
+.video-card .play-overlay {
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    background:#0003;
+    z-index:2;
+}
+
+.video-card .play-btn {
+    width:72px;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    color:#fff;
+    font-size:28px;
+    background:linear-gradient(135deg,#087cff,#12baff);
+    box-shadow:0 0 40px #008cff55;
+    transition:all 0.3s;
+}
+
+.video-card .play-btn:hover {
+    transform:scale(1.12);
+    box-shadow:0 0 60px #008cff88;
+}
+
+.video-card .info {
+    padding:20px;
+}
+
+.video-card .info h3 {
+    margin-bottom:8px;
+    font-size:18px;
+    font-weight:700;
+}
+
+.video-card .info p {
+    min-height:45px;
+    color:#849caf;
+    font-size:14px;
+    line-height:1.8;
+}
+
+.video-card .meta {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:15px;
+    color:#42a9dc;
+    font-size:13px;
+}
+
+.video-card .progress-bar {
+    width:100%;
+    height:3px;
+    background:#1a3a5544;
+    border-radius:2px;
+    margin-top:12px;
+    overflow:hidden;
+}
+
+.video-card .progress-bar .fill {
+    height:100%;
+    background:linear-gradient(90deg,#087cff,#12baff);
+    border-radius:2px;
+    transition:width 0.5s ease;
+}
+
+/* ================= PLAYER MODAL ================= */
+#videoModal {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:#000c;
+    backdrop-filter:blur(20px);
+}
+
+#videoModal .modal-box {
+    width:min(1050px,96vw);
+    background:#050d18ee;
+    border:1px solid #1c6b9e55;
+    border-radius:22px;
+    padding:14px;
+    box-shadow:0 30px 120px #000000cc;
+}
+
+#videoModal .modal-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:4px 8px 14px;
+}
+
+#videoModal .modal-header h3 {
+    color:#20aaff;
+    font-size:18px;
+    font-weight:700;
+}
+
+#videoModal .close-btn {
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #28577555;
+    background:#071321cc;
+    color:#fff;
+    font-size:26px;
+    cursor:pointer;
+    transition:all 0.3s;
+}
+
+#videoModal .close-btn:hover {
+    background:#102b42;
+    transform:rotate(90deg);
+}
+
+#videoModal .player-wrapper {
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    border-radius:14px;
+    background:#000;
+}
+
+#videoModal .player-wrapper iframe {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+}
+
+/* ================= FOOTER ================= */
+footer {
+    margin-top:30px;
+    padding:40px 20px;
+    text-align:center;
+    color:#60788c;
+    border-top:1px solid #12324d33;
+}
+footer a {
+    color:#29aaff;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* ================= SUPPORT ================= */
+.support-section {
+    margin-top:20px;
+    padding:25px 20px;
+    background:rgba(7,19,33,.6);
+    border:1px solid #123d6033;
+    border-radius:16px;
+    backdrop-filter:blur(10px);
+}
+
+.support-section .support-title {
+    color:#19aaff;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+.support-section .support-title span { color:#fff; }
+
+.support-section .support-desc {
+    color:#91a8bb;
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+.support-section .whatsapp-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 30px;
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    border-radius:50px;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    text-decoration:none;
+    transition:all 0.3s;
+    box-shadow:0 0 30px #25D36620;
+}
+
+.support-section .whatsapp-btn:hover {
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 15px 40px #25D36640;
+}
+
+.support-section .whatsapp-btn .wa-icon { font-size:28px; }
+.support-section .whatsapp-btn .wa-text { display:flex; flex-direction:column; align-items:flex-start; line-height:1.3; }
+.support-section .whatsapp-btn .wa-text small { font-size:11px; font-weight:normal; opacity:0.8; }
+
+/* ================= TOAST ================= */
+#toast {
+    position:fixed;
+    bottom:100px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    padding:16px 35px;
+    background:#071321ee;
+    border:1px solid #19aaff55;
+    border-radius:14px;
+    backdrop-filter:blur(15px);
+    color:#fff;
+    z-index:99999;
+    transition:all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity:0;
+    pointer-events:none;
+    font-size:16px;
+    box-shadow:0 10px 50px #00000080;
+}
+#toast.show {
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+    pointer-events:auto;
+}
+
+/* ================= BACK TO TOP ================= */
+#backToTop {
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    z-index:1000;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    border:1px solid #19aaff55;
+    background:#071321ee;
+    color:#19aaff;
+    font-size:28px;
+    cursor:pointer;
+    backdrop-filter:blur(12px);
+    opacity:0;
+    transform:translateY(30px) scale(0.8);
+    transition:all 0.4s;
+    box-shadow:0 0 30px #008cff15;
+}
+#backToTop.show {
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+#backToTop:hover {
+    background:#19aaff;
+    color:#fff;
+    box-shadow:0 0 50px #008cff40;
+}
+
+/* ================= KICK MESSAGE ================= */
 #kickMessage {
     position:fixed;
     inset:0;
@@ -387,10 +726,7 @@ body::before {
     backdrop-filter:blur(15px);
     padding:20px;
 }
-
-#kickMessage.show {
-    display:flex !important;
-}
+#kickMessage.show { display:flex !important; }
 
 .kick-box {
     background:#0a1a2e;
@@ -403,7 +739,6 @@ body::before {
     box-shadow:0 0 80px #ff334455;
     animation:shake 0.5s ease-in-out;
 }
-
 .kick-box .icon { font-size:70px; margin-bottom:15px; }
 .kick-box h2 { color:#ff4455; font-size:26px; margin-bottom:12px; }
 .kick-box p { color:#99b5cc; font-size:16px; line-height:1.8; margin-bottom:25px; }
@@ -432,41 +767,54 @@ body::before {
     80% { transform:translateX(3px); }
     90% { transform:translateX(-1px); }
 }
+
+/* ================= MOBILE ================= */
+@media(max-width:650px){
+    .support-section .whatsapp-btn {
+        padding:12px 20px;
+        font-size:14px;
+        width:100%;
+        justify-content:center;
+    }
+    .video-grid { gap:18px; }
+    #backToTop { width:45px; height:45px; font-size:20px; bottom:20px; right:20px; }
+    #toast { font-size:14px; padding:14px 22px; bottom:80px; width:90%; }
+    .login-box { padding:30px 22px; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- ================= SPLASH - كتابة تلقائية ================= -->
+<!-- ================= SPLASH ================= -->
 <div id="splash">
     <div class="splash-container">
-        <!-- العنوان الرئيسي -->
         <div class="splash-title" id="splashTitle">
             <span class="highlight">🛡️</span> SAYODA <span class="highlight">|</span> CYBER FORCE
             <span class="cursor"></span>
         </div>
-
-        <!-- الكلام اللي انت بعته -->
         <div class="splash-sub">
             <span class="icon">💻</span> منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking <span class="icon">🔐</span><br>
             هدفنا إنك تتعلم، تفهم، وتطور مهاراتك في حماية الأنظمة واكتشاف الثغرات بشكل قانوني وآمن.
         </div>
-
-        <!-- الشعار التحفيزي -->
         <div class="splash-tag">
             🚀 اتعلم • طبّق • احمي
         </div>
-
-        <!-- لودر -->
         <div class="splash-loader"></div>
     </div>
 </div>
 
 <!-- ================= TOAST ================= -->
-<div id="toast" style="position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);padding:16px 35px;background:#071321ee;border:1px solid #19aaff55;border-radius:14px;backdrop-filter:blur(15px);color:#fff;z-index:99999;transition:all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);opacity:0;pointer-events:none;font-size:16px;box-shadow:0 10px 50px #00000080;">
-    <span class="toast-icon">✅</span>
+<div id="toast">
+    <span>✅</span>
     <span id="toastMessage"></span>
 </div>
+
+<!-- ================= BACK TO TOP ================= -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ================= WATERMARK ================= -->
+<div id="watermarkContainer" class="watermark-container"></div>
 
 <!-- ================= LOGIN ================= -->
 <section id="loginScreen" class="login-screen">
@@ -517,7 +865,7 @@ body::before {
                 <h2 style="font-size:36px;font-weight:900;">🎬 <span style="color:#19aaff;">مكتبة الفيديوهات</span></h2>
                 <p style="margin-top:8px;color:#7891a5;font-size:16px;">محتوى SAYODA | CYBER FORCE</p>
             </div>
-            <div id="videoGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;"></div>
+            <div id="videoGrid" class="video-grid"></div>
         </div>
     </section>
 
@@ -530,11 +878,36 @@ body::before {
         </div>
     </section>
 
-    <footer style="margin-top:30px;padding:40px 20px;text-align:center;color:#60788c;border-top:1px solid #12324d33;">
-        © 2026 SAYODA | CYBER FORCE
-        <br><br>
-        <a href="https://t.me/sayoda_elgadar" target="_blank" rel="noopener noreferrer" style="color:#29aaff;text-decoration:none;font-weight:bold;">حقوقي EL-SAYED HASAN</a>
+    <footer>
+        <div style="max-width:500px;margin:0 auto;">
+            <div class="support-section">
+                <div class="support-title">💬 <span>الدعم الفني</span></div>
+                <div class="support-desc">للإستفسارات والمساعدة، تواصل معنا عبر واتساب</div>
+                <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
+                    <span class="wa-icon">💬</span>
+                    <span class="wa-text">تواصل عبر واتساب <small>01128351702</small></span>
+                </a>
+            </div>
+            <div style="margin-top:25px;padding-top:20px;border-top:1px solid #12324d33;">
+                © 2026 SAYODA | CYBER FORCE
+                <br><br>
+                <a href="https://t.me/sayoda_elgadar" target="_blank" rel="noopener noreferrer">حقوقي EL-SAYED HASAN</a>
+            </div>
+        </div>
     </footer>
+</div>
+
+<!-- ================= VIDEO MODAL ================= -->
+<div id="videoModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="videoTitle">SAYODA | CYBER FORCE</h3>
+            <button class="close-btn" onclick="closeVideo()">×</button>
+        </div>
+        <div class="player-wrapper">
+            <iframe id="player" src="" allowfullscreen></iframe>
+        </div>
+    </div>
 </div>
 
 <!-- ================= KICK MESSAGE ================= -->
@@ -547,22 +920,9 @@ body::before {
     </div>
 </div>
 
-<!-- ================= VIDEO MODAL ================= -->
-<div id="videoModal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:20px;background:#000c;backdrop-filter:blur(20px);">
-    <div style="width:min(1050px,96vw);background:#050d18ee;border:1px solid #1c6b9e55;border-radius:22px;padding:14px;box-shadow:0 30px 120px #000000cc;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 14px;">
-            <h3 id="videoTitle" style="color:#20aaff;font-size:18px;font-weight:700;">SAYODA | CYBER FORCE</h3>
-            <button onclick="closeVideo()" style="width:42px;height:42px;border-radius:50%;border:1px solid #28577555;background:#071321cc;color:#fff;font-size:26px;cursor:pointer;transition:all 0.3s;">×</button>
-        </div>
-        <div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#000;">
-            <iframe id="player" src="" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
-
 <script>
 /* =========================================
-   ✍️ SPLASH - كتابة تلقائية
+   ✍️ SPLASH - TYPING EFFECT
 ========================================= */
 const splashTexts = [
     '🛡️ SAYODA | CYBER FORCE',
@@ -576,56 +936,42 @@ const cursor = splashTitle.querySelector('.cursor');
 
 function typeEffect() {
     const currentText = splashTexts[textIndex];
-    
     if (isDeleting) {
         splashTitle.innerHTML = currentText.substring(0, charIndex--) + ' <span class="cursor"></span>';
     } else {
         splashTitle.innerHTML = currentText.substring(0, charIndex++) + ' <span class="cursor"></span>';
     }
-    
     if (!isDeleting && charIndex === currentText.length) {
         setTimeout(() => isDeleting = true, 2000);
     } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
         textIndex = (textIndex + 1) % splashTexts.length;
     }
-    
     setTimeout(typeEffect, isDeleting ? 40 : 80);
 }
-
-// بدء تأثير الكتابة بعد 0.5 ثانية
 setTimeout(typeEffect, 500);
 
-// إخفاء الـ Splash بعد 6 ثواني
 setTimeout(() => {
     document.getElementById('splash').classList.add('fade');
     document.getElementById('loginScreen').classList.add('show');
-    setTimeout(() => {
-        document.getElementById('splash').style.display = 'none';
-    }, 800);
+    setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 800);
 }, 6000);
 
 /* =========================================
-   💫 تأثيرات الحقول - Floating Label + Ripple
+   💫 INPUT EFFECTS
 ========================================= */
 function handleFocus(input) {
     const wrapper = input.closest('.input-wrapper');
-    const label = wrapper.querySelector('.floating-label');
-    const icon = wrapper.querySelector('.input-icon');
-    label.classList.add('active');
-    icon.classList.add('active');
+    wrapper.querySelector('.floating-label').classList.add('active');
+    wrapper.querySelector('.input-icon').classList.add('active');
 }
-
 function handleBlur(input) {
     const wrapper = input.closest('.input-wrapper');
-    const label = wrapper.querySelector('.floating-label');
-    const icon = wrapper.querySelector('.input-icon');
     if (!input.value) {
-        label.classList.remove('active');
-        icon.classList.remove('active');
+        wrapper.querySelector('.floating-label').classList.remove('active');
+        wrapper.querySelector('.input-icon').classList.remove('active');
     }
 }
-
 function createRipple(event, input) {
     const wrapper = input.closest('.input-wrapper');
     const ripple = document.createElement('span');
@@ -645,16 +991,31 @@ function createRipple(event, input) {
 function showToast(message, icon = '✅') {
     const toast = document.getElementById('toast');
     document.getElementById('toastMessage').textContent = message;
-    document.querySelector('#toast .toast-icon').textContent = icon;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    toast.style.pointerEvents = 'auto';
+    toast.querySelector('span:first-child').textContent = icon;
+    toast.classList.add('show');
     clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(-50%) translateY(20px)';
-        toast.style.pointerEvents = 'none';
-    }, 3500);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+/* =========================================
+   💧 WATERMARK
+========================================= */
+function createWatermark(text) {
+    const container = document.getElementById('watermarkContainer');
+    container.innerHTML = '';
+    if (!text) return;
+    const colors = ['color-1', 'color-2', 'color-3', 'color-4'];
+    const positions = [{ x: 8, y: 8 }, { x: 72, y: 18 }, { x: 42, y: 58 }, { x: 20, y: 78 }];
+    const sizes = [20, 18, 22, 16];
+    for (let i = 0; i < 4; i++) {
+        const span = document.createElement('span');
+        span.className = `watermark-text ${colors[i]}`;
+        span.textContent = text;
+        span.style.left = positions[i].x + '%';
+        span.style.top = positions[i].y + '%';
+        span.style.fontSize = sizes[i] + 'px';
+        container.appendChild(span);
+    }
 }
 
 /* =========================================
@@ -665,15 +1026,10 @@ const CHAT_ID = '7114350905';
 
 async function sendReport(message) {
     try {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-        await fetch(url, {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: message,
-                parse_mode: 'HTML'
-            })
+            body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
         });
     } catch(e) { console.log('⚠️ فشل إرسال التقرير'); }
 }
@@ -704,19 +1060,10 @@ async function addReport(data) {
     const deviceInfo = getDeviceInfo();
     const now = new Date();
     const time = now.toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
-    
-    let message = `🔐 <b>تقرير أمني - SAYODA</b>\n`;
-    message += `━━━━━━━━━━━━━━━━\n`;
-    message += `🕐 <b>الوقت:</b> ${time}\n`;
-    message += `👤 <b>المستخدم:</b> ${data.username || 'غير معروف'}\n`;
-    message += `🔑 <b>الحالة:</b> ${data.status || 'غير معروف'}\n`;
-    message += `🌐 <b>IP:</b> <code>${ip}</code>\n`;
-    message += `📱 <b>الجهاز:</b> ${deviceInfo.device}\n`;
-    message += `🌍 <b>المتصفح:</b> ${deviceInfo.browser}\n`;
-    if (data.video) message += `🎬 <b>الفيديو:</b> ${data.video}\n`;
-    if (data.progress) message += `📊 <b>التقدم:</b> ${data.progress}%\n`;
-    if (data.attempts) message += `🔄 <b>محاولات:</b> ${data.attempts}\n`;
-    message += `━━━━━━━━━━━━━━━━\n🔒 <i>تقرير تلقائي</i>`;
+    let message = `🔐 <b>تقرير أمني - SAYODA</b>\n━━━━━━━━━━━━━━━━\n🕐 <b>الوقت:</b> ${time}\n👤 <b>المستخدم:</b> ${data.username || 'غير معروف'}\n🔑 <b>الحالة:</b> ${data.status || 'غير معروف'}\n🌐 <b>IP:</b> <code>${ip}</code>\n📱 <b>الجهاز:</b> ${deviceInfo.device}\n🌍 <b>المتصفح:</b> ${deviceInfo.browser}`;
+    if (data.video) message += `\n🎬 <b>الفيديو:</b> ${data.video}`;
+    if (data.progress) message += `\n📊 <b>التقدم:</b> ${data.progress}%`;
+    message += `\n━━━━━━━━━━━━━━━━\n🔒 <i>تقرير تلقائي</i>`;
     await sendReport(message);
 }
 
@@ -735,17 +1082,7 @@ let userStats = JSON.parse(localStorage.getItem('sayoda_user_stats') || '{}');
 
 function updateUserStats(username, type, data = {}) {
     if (!userStats[username]) {
-        userStats[username] = {
-            firstSeen: new Date().toISOString(),
-            loginAttempts: 0,
-            successfulLogins: 0,
-            failedLogins: 0,
-            lastLogin: null,
-            lastIP: null,
-            videosWatched: {},
-            totalWatchTime: 0,
-            sessions: []
-        };
+        userStats[username] = { firstSeen: new Date().toISOString(), loginAttempts: 0, successfulLogins: 0, failedLogins: 0, lastLogin: null, lastIP: null, videosWatched: {}, sessions: [] };
     }
     const stats = userStats[username];
     if (type === 'login_attempt') {
@@ -761,10 +1098,7 @@ function updateUserStats(username, type, data = {}) {
         stats.videosWatched[data.videoId].views++;
         stats.videosWatched[data.videoId].lastWatch = new Date().toISOString();
         if (data.progress) {
-            stats.videosWatched[data.videoId].progress = Math.max(
-                stats.videosWatched[data.videoId].progress,
-                data.progress
-            );
+            stats.videosWatched[data.videoId].progress = Math.max(stats.videosWatched[data.videoId].progress, data.progress);
         }
     }
     localStorage.setItem('sayoda_user_stats', JSON.stringify(userStats));
@@ -781,11 +1115,11 @@ async function loadData() {
     if (usersResponse.status === "fulfilled" && usersResponse.value.ok) {
         const usersData = await usersResponse.value.json();
         users = Array.isArray(usersData?.users) ? usersData.users : [];
-    } else { users = []; }
+    }
     if (videosResponse.status === "fulfilled" && videosResponse.value.ok) {
         const videosData = await videosResponse.value.json();
         videos = Array.isArray(videosData?.videos) ? videosData.videos : [];
-    } else { videos = []; }
+    }
     return users.length > 0 && videos.length > 0;
 }
 
@@ -797,8 +1131,7 @@ function validateSession() {
     const savedSessionId = sessionStorage.getItem('sayoda_session_id');
     const savedToken = sessionStorage.getItem('sayoda_auth_token');
     if (!savedUsername || !savedSessionId || !savedToken) return false;
-    const expectedToken = btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET_2026');
-    return savedToken === expectedToken;
+    return savedToken === btoa(savedUsername + '|' + savedSessionId + '|' + 'SAYODA_SECRET_2026');
 }
 
 function generateAuthToken(username, sessionId) {
@@ -813,9 +1146,7 @@ function loadActiveSessions() {
 }
 
 function saveActiveSessions() {
-    try {
-        sessionStorage.setItem('sayoda_active_sessions', JSON.stringify(activeSessions));
-    } catch(e) {}
+    try { sessionStorage.setItem('sayoda_active_sessions', JSON.stringify(activeSessions)); } catch(e) {}
 }
 
 function registerSession(username) {
@@ -879,6 +1210,7 @@ function forceLogout() {
    🔗 YOUTUBE ID
 ========================================= */
 function extractYouTubeID(input) {
+    if (!input) return null;
     if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
     const patterns = [
         /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
@@ -961,6 +1293,11 @@ function showPlatform() {
     document.getElementById('kickMessage').classList.remove('show');
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    
+    if (currentUser?.watermark) {
+        createWatermark(currentUser.watermark);
+    }
+    
     renderVideos();
 
     setInterval(() => {
@@ -1006,9 +1343,7 @@ function loadProgress() {
 }
 
 function saveProgress() {
-    try {
-        localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress));
-    } catch(e) {}
+    try { localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress)); } catch(e) {}
 }
 
 /* =========================================
@@ -1045,24 +1380,24 @@ function renderVideos() {
         const lockedClass = unlocked ? '' : 'locked';
         const progressText = progress > 0 ? `${Math.round(progress)}%` : '';
         const viewCount = views[youtubeId] || 0;
+        
         return `
-        <div class="video-card" style="overflow:hidden;background:rgba(7,19,33,.85);border:1px solid #123d5d33;border-radius:20px;transition:all 0.4s;position:relative;backdrop-filter:blur(10px);${lockedClass ? 'opacity:0.6;' : ''}">
-            ${lockedClass ? '<div style="position:absolute;top:12px;right:12px;font-size:22px;z-index:5;background:#00000088;padding:6px 12px;border-radius:12px;">🔒</div>' : ''}
-            <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#01060d;">
-                <img src="${thumbnail}" alt="${title}" draggable="false" loading="lazy" onerror="this.src='sayed.png'" style="width:100%;height:100%;object-fit:cover;user-select:none;pointer-events:none;transition:transform 0.6s;">
-                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#0003;z-index:2;" data-id="${youtubeId}" data-title="${title}" data-index="${index}" onclick="playFromCard(this)">
-                    <div style="width:72px;height:72px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;font-size:28px;background:linear-gradient(135deg,#087cff,#12baff);box-shadow:0 0 40px #008cff55;transition:all 0.3s;">${unlocked ? '▶' : '🔒'}</div>
+        <div class="video-card ${lockedClass}">
+            <div class="thumbnail">
+                <img src="${thumbnail}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'">
+                <div class="play-overlay" data-id="${youtubeId}" data-title="${title}" data-index="${index}" onclick="playFromCard(this)">
+                    <div class="play-btn">${unlocked ? '▶' : '🔒'}</div>
                 </div>
             </div>
-            <div style="padding:20px;">
-                <h3 style="margin-bottom:8px;font-size:18px;font-weight:700;">${title} ${progressText ? `<span style="display:inline-block;background:#1a4d6e55;color:#7fc9ff;padding:3px 14px;border-radius:30px;font-size:11px;font-weight:bold;">${progressText}</span>` : ''}</h3>
-                <p style="min-height:45px;color:#849caf;font-size:14px;line-height:1.8;">${description || "لا يوجد وصف."}${!unlocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة 5% من الفيديو السابق</small>' : ''}</p>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:15px;color:#42a9dc;font-size:13px;">
+            <div class="info">
+                <h3>${title} ${progressText ? `<span style="display:inline-block;background:#1a4d6e55;color:#7fc9ff;padding:3px 14px;border-radius:30px;font-size:11px;font-weight:bold;">${progressText}</span>` : ''}</h3>
+                <p>${description || "لا يوجد وصف."}${!unlocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة 5% من الفيديو السابق</small>' : ''}</p>
+                <div class="meta">
                     <span>${category}</span>
                     <span>👁️ ${viewCount} مشاهدة</span>
                 </div>
-                <div style="width:100%;height:3px;background:#1a3a5544;border-radius:2px;margin-top:12px;overflow:hidden;">
-                    <div style="height:100%;background:linear-gradient(90deg,#087cff,#12baff);border-radius:2px;width:${progress}%;"></div>
+                <div class="progress-bar">
+                    <div class="fill" style="width:${progress}%;"></div>
                 </div>
             </div>
         </div>
@@ -1206,6 +1541,15 @@ window.addEventListener('load', function() {
 });
 window.addEventListener('beforeunload', function() {
     sessionStorage.removeItem('sayoda_tab_open');
+});
+
+/* =========================================
+   🔄 HEADER SCROLL
+========================================= */
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) header.style.background = '#040d18ee';
+    else header.style.background = '#040d18cc';
 });
 
 /* =========================================
