@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SAYODA | CYBER FORCE</title>
     <style>
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -17,7 +18,6 @@
             --text-secondary: #c0d0e0;
             --text-muted: #60788c;
             --accent: #19aaff;
-            --accent-glow: #008cff30;
             --border-color: #123d6033;
             --card-bg: rgba(7, 19, 33, .85);
             --danger: #ff3344;
@@ -1726,28 +1726,36 @@
         }
 
         /* =========================================
-           ☁️ JSONBIN - NEW CONFIG
+           ☁️ npoint.io - التخزين السحابي
         ========================================= */
-        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a971172f5f4af5e295da875';
-        const JSONBIN_MASTER_KEY = '$2a$10$6g/5/xiiCP0LQNueGQ4zGeSVdciE7k0P/wVb/7XNdftLEGJEVGqAW';
+        const BIN_ID = '48abf829d8b17214271b';
+        const API_URL = `https://api.npoint.io/${BIN_ID}`;
 
         async function fetchCloudData() {
             try {
-                const r = await fetch(JSONBIN_URL, { headers: { 'X-Master-Key': JSONBIN_MASTER_KEY } });
-                const d = await r.json();
-                return d.record || {};
-            } catch (e) { return {}; }
+                const response = await fetch(API_URL);
+                if (!response.ok) return {};
+                return await response.json();
+            } catch (e) {
+                console.warn('⚠️ فشل جلب البيانات:', e);
+                return {};
+            }
         }
 
         async function saveCloudData(data) {
             try {
-                await fetch(JSONBIN_URL, {
+                const response = await fetch(API_URL, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_MASTER_KEY },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(data)
                 });
-                return true;
-            } catch (e) { return false; }
+                return response.ok;
+            } catch (e) {
+                console.warn('⚠️ فشل حفظ البيانات:', e);
+                return false;
+            }
         }
 
         /* =========================================
@@ -2050,13 +2058,11 @@
                 }))
                 .sort((a, b) => b.xp - a.xp);
 
-            // إحصائيات
             document.getElementById('adminTotalUsers').textContent = users.length;
             document.getElementById('adminTotalXP').textContent = users.reduce((s, u) => s + u.xp, 0);
             document.getElementById('adminTotalBadges').textContent = users.reduce((s, u) => s + u.badges.length, 0);
             document.getElementById('adminTotalVideos').textContent = users.reduce((s, u) => s + u.videosWatched.length, 0);
 
-            // عرض المستخدمين
             const search = document.getElementById('adminSearch')?.value?.toLowerCase() || '';
             const filtered = users.filter(u => u.username.toLowerCase().includes(search));
 
@@ -2274,7 +2280,6 @@
                         `🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
                     showToast('✅ تم تسجيل الدخول بنجاح!');
 
-                    // إظهار لوحة التحكم للمشرفين
                     if (user.role === 'admin') {
                         document.getElementById('adminPanelLink').style.display = 'flex';
                         document.getElementById('adminBadge').style.display = 'inline';
