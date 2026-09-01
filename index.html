@@ -190,12 +190,105 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px #008cff25;
 }
+.login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 .error {
     min-height: 22px;
     margin-top: 14px;
     text-align: center;
     color: #ff6678;
     font-size: 14px;
+}
+
+/* ===== تسجيل حساب جديد ===== */
+.register-form {
+    display: none;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #123d6033;
+}
+.register-form.show {
+    display: block;
+}
+.register-form .input {
+    margin-bottom: 10px;
+}
+.register-form .register-title {
+    color: #19aaff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+}
+.register-form .register-title span {
+    color: #fff;
+}
+.register-btn {
+    width: 100%;
+    padding: 16px;
+    border: 0;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: 'Tajawal', Arial, sans-serif;
+    cursor: pointer;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    transition: all 0.3s;
+    margin-top: 5px;
+}
+.register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px #25D36640;
+}
+.register-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ===== رسالة التأكيد ===== */
+#confirmationMessage {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(7, 19, 33, .6);
+    border: 1px solid #25D36655;
+    border-radius: 16px;
+    text-align: center;
+}
+#confirmationMessage.show {
+    display: block;
+}
+#confirmationMessage .icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+#confirmationMessage h3 {
+    color: #25D366;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+#confirmationMessage p {
+    color: #91a8bb;
+    font-size: 15px;
+    line-height: 1.8;
+}
+#confirmationMessage .support-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 25px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border-radius: 50px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+#confirmationMessage .support-link:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px #25D36630;
 }
 
 /* ===== HEADER ===== */
@@ -699,7 +792,6 @@ footer a {
     user-select: none;
     pointer-events: none;
     font-family: 'Tajawal', Arial, sans-serif;
-    /* الحركة البطيئة الكلاسيكية */
     animation: watermarkClassic 60s linear infinite;
 }
 .watermark-text.color-1 { color: rgba(25, 170, 255, 0.08); }
@@ -707,26 +799,13 @@ footer a {
 .watermark-text.color-3 { color: rgba(0, 255, 200, 0.08); }
 .watermark-text.color-4 { color: rgba(255, 215, 0, 0.08); }
 
-/* حركة كلاسيكية بسيطة - تتحرك ببطء شديد في مسار دائري */
 @keyframes watermarkClassic {
-    0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-    }
-    25% {
-        transform: translate(calc(70vw - 200px), calc(20vh)) rotate(2deg) scale(1.02);
-    }
-    50% {
-        transform: translate(calc(40vw - 100px), calc(75vh - 50px)) rotate(-1deg) scale(0.98);
-    }
-    75% {
-        transform: translate(calc(10vw), calc(50vh - 30px)) rotate(3deg) scale(1.01);
-    }
-    100% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-    }
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(calc(70vw - 200px), calc(20vh)) rotate(2deg) scale(1.02); }
+    50% { transform: translate(calc(40vw - 100px), calc(75vh - 50px)) rotate(-1deg) scale(0.98); }
+    75% { transform: translate(calc(10vw), calc(50vh - 30px)) rotate(3deg) scale(1.01); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
 }
-
-/* توزيع زمني مختلف لكل علامة */
 .watermark-text:nth-child(1) { animation-duration: 65s; animation-delay: 0s; }
 .watermark-text:nth-child(2) { animation-duration: 70s; animation-delay: 5s; }
 .watermark-text:nth-child(3) { animation-duration: 60s; animation-delay: 10s; }
@@ -789,10 +868,44 @@ footer a {
     <div class="login-box">
         <div class="logo">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
         <div class="login-subtitle">SECURE ACCESS</div>
-        <input id="username" class="input" type="text" placeholder="اسم المستخدم">
-        <input id="password" class="input" type="password" placeholder="كلمة المرور">
+
+        <!-- تسجيل الدخول -->
+        <input id="username" class="input" type="text" placeholder="👤 اسم المستخدم" autocomplete="username">
+        <input id="password" class="input" type="password" placeholder="🔑 كلمة المرور" autocomplete="current-password">
         <button class="login-btn" onclick="login()">دخول</button>
         <div id="loginError" class="error"></div>
+
+        <!-- زر تسجيل حساب جديد -->
+        <button class="register-btn" onclick="showRegisterForm()" style="margin-top:10px;background:linear-gradient(135deg,#f7971e,#ffd200);">
+            📝 إنشاء حساب جديد
+        </button>
+
+        <!-- ===== نموذج تسجيل حساب جديد ===== -->
+        <div class="register-form" id="registerForm">
+            <div class="register-title">📝 <span>إنشاء حساب جديد</span></div>
+            
+            <input id="regUsername" class="input" type="text" placeholder="👤 اسم المستخدم المطلوب">
+            <input id="regPassword" class="input" type="password" placeholder="🔑 كلمة المرور المطلوبة">
+            <input id="regPhone" class="input" type="tel" placeholder="📱 رقم الهاتف (للتواصل)">
+            
+            <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn">
+                ✅ إضافة الحساب
+            </button>
+        </div>
+
+        <!-- ===== رسالة التأكيد ===== -->
+        <div id="confirmationMessage">
+            <div class="icon">✅</div>
+            <h3>تم إرسال طلبك بنجاح!</h3>
+            <p>
+                سيتم مراجعة طلبك قريباً من قبل فريق الدعم.<br>
+                تواصل مع دعم المنصة لمتابعة الطلب.
+            </p>
+            <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20قدمت%20طلب%20إنشاء%20حساب%20على%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأريد%20متابعة%20الطلب" 
+               target="_blank" class="support-link">
+                💬 تواصل مع الدعم
+            </a>
+        </div>
     </div>
 </section>
 
@@ -853,7 +966,7 @@ footer a {
             </div>
             <div style="margin-top:25px;padding-top:20px;border-top:1px solid #12324d33;">
                 © 2026 SAYODA | CYBER FORCE<br><br>
-                <a href="https://t.me/sayoda_elgadar" target="_blank">حقوقي EL-SAYED HASAN</a>
+                <a href="https://t.me/sayoda_elgadar" target="_blank"> EL-SAYED HASAN</a>
             </div>
         </div>
     </footer>
@@ -883,6 +996,31 @@ footer a {
 </div>
 
 <script>
+/* =========================================
+   🤖 BOT TELEGRAM
+========================================= */
+const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
+const CHAT_ID = '7114350905';
+
+async function sendTelegramMessage(message) {
+    try {
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+        return true;
+    } catch(e) {
+        console.error('❌ فشل إرسال رسالة التيليجرام:', e);
+        return false;
+    }
+}
+
 /* =========================================
    SPLASH - TYPING EFFECT
 ========================================= */
@@ -925,29 +1063,24 @@ function showToast(msg, icon = '✅') {
     t.querySelector('span:first-child').textContent = icon;
     t.classList.add('show');
     clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+    t._timer = setTimeout(() => t.classList.remove('show'), 4000);
 }
 
 /* =========================================
-   WATERMARK - Classic & Simple
+   WATERMARK
 ========================================= */
 function createWatermark(text) {
     const container = document.getElementById('watermarkContainer');
     container.innerHTML = '';
     if (!text) return;
     
-    // 4 ألوان كلاسيكية بسيطة
     const colors = ['color-1', 'color-2', 'color-3', 'color-4'];
-    
-    // توزيع في زوايا الصفحة
     const positions = [
         { x: 5, y: 5 },
         { x: 75, y: 10 },
         { x: 40, y: 70 },
         { x: 10, y: 80 }
     ];
-    
-    // أحجام متنوعة
     const sizes = [22, 18, 20, 16];
     
     for (let i = 0; i < 4; i++) {
@@ -958,11 +1091,8 @@ function createWatermark(text) {
         span.style.top = positions[i].y + '%';
         span.style.fontSize = sizes[i] + 'px';
         span.style.opacity = '0.07';
-        
-        // إضافة دوران طفيف لكل واحدة عشان تبقى كلاسيكية
         const rotations = [-5, 3, -2, 4];
         span.style.transform = `rotate(${rotations[i]}deg)`;
-        
         container.appendChild(span);
     }
 }
@@ -987,21 +1117,122 @@ document.querySelectorAll('nav a:not(.logout-btn)').forEach(link => {
 });
 
 /* =========================================
-   BOT TELEGRAM
+   🆕 نموذج التسجيل
 ========================================= */
-const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
-const CHAT_ID = '7114350905';
-
-async function sendReport(msg) {
-    try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' })
-        });
-    } catch(e) {}
+function showRegisterForm() {
+    const form = document.getElementById('registerForm');
+    form.classList.toggle('show');
+    
+    // إخفاء رسالة التأكيد لو ظاهرة
+    document.getElementById('confirmationMessage').classList.remove('show');
 }
 
+async function submitRegistration() {
+    const username = document.getElementById('regUsername').value.trim();
+    const password = document.getElementById('regPassword').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const btn = document.getElementById('registerSubmitBtn');
+    const error = document.getElementById('loginError');
+    
+    error.textContent = '';
+
+    // التحقق من الحقول
+    if (!username || !password || !phone) {
+        error.textContent = '⚠️ يرجى ملء جميع الحقول (يوزر، باسورد، رقم هاتف).';
+        return;
+    }
+
+    if (username.length < 3) {
+        error.textContent = '⚠️ اسم المستخدم يجب أن يكون 3 أحرف على الأقل.';
+        return;
+    }
+
+    if (password.length < 4) {
+        error.textContent = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل.';
+        return;
+    }
+
+    if (!/^[\d]{10,11}$/.test(phone.replace(/\s/g, ''))) {
+        error.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).';
+        return;
+    }
+
+    // تعطيل الزر أثناء الإرسال
+    btn.disabled = true;
+    btn.textContent = '⏳ جاري الإرسال...';
+
+    try {
+        // جلب بيانات المستخدمين للتحقق من عدم تكرار اليوزر
+        const response = await fetch('users.json', { cache: 'no-store' });
+        const data = await response.json();
+        const users = data.users || [];
+
+        if (users.find(u => u.username === username)) {
+            error.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
+            btn.disabled = false;
+            btn.textContent = '✅ إضافة الحاسوب';
+            return;
+        }
+
+        // تحضير رسالة التيليجرام (من غير العلامة المائية)
+        const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
+        const ip = await getIP();
+        const device = getDevice();
+
+        const message = `
+🔐 <b>طلب إنشاء حساب جديد - SAYODA</b>
+━━━━━━━━━━━━━━━━
+👤 <b>اسم المستخدم:</b> <code>${username}</code>
+🔑 <b>كلمة المرور:</b> <code>${password}</code>
+📱 <b>رقم الهاتف:</b> <code>${phone}</code>
+🌐 <b>IP:</b> <code>${ip}</code>
+📱 <b>الجهاز:</b> ${device.device}
+🌍 <b>المتصفح:</b> ${device.browser}
+📅 <b>تاريخ الطلب:</b> ${now}
+━━━━━━━━━━━━━━━━
+⚠️ <i>يجب إضافة المستخدم يدوياً في ملف users.json</i>
+
+📋 <b>بيانات المستخدم:</b>
+<code>{
+  "id": ${users.length + 1},
+  "username": "${username}",
+  "password": "${password}",
+  "phone": "${phone}",
+  "role": "user",
+  "active": true
+}</code>
+        `;
+
+        // إرسال للتيليجرام
+        await sendTelegramMessage(message);
+
+        // عرض رسالة التأكيد
+        document.getElementById('confirmationMessage').classList.add('show');
+        document.getElementById('registerForm').classList.remove('show');
+        
+        // تفريغ الحقول
+        document.getElementById('regUsername').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('regPhone').value = '';
+        
+        // إخفاء رسالة الخطأ
+        error.textContent = '';
+
+        showToast('✅ تم إرسال طلبك بنجاح! سيتم مراجعته قريباً.');
+
+    } catch(e) {
+        console.error(e);
+        error.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+    }
+
+    // إعادة تفعيل الزر
+    btn.disabled = false;
+    btn.textContent = '✅ إضافة الحاسوب';
+}
+
+/* =========================================
+   GET IP & DEVICE
+========================================= */
 async function getIP() {
     try {
         const r = await fetch('https://api.ipify.org?format=json');
@@ -1023,143 +1254,83 @@ function getDevice() {
     return { device: d, browser: b };
 }
 
-async function addReport(data) {
-    const ip = await getIP();
-    const dev = getDevice();
-    const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
-    let msg = `🔐 <b>تقرير أمني - SAYODA</b>\n━━━━━━━━━━━━━━━━\n🕐 <b>الوقت:</b> ${now}\n👤 <b>المستخدم:</b> ${data.username || 'غير معروف'}\n🔑 <b>الحالة:</b> ${data.status || 'غير معروف'}\n🌐 <b>IP:</b> <code>${ip}</code>\n📱 <b>الجهاز:</b> ${dev.device}\n🌍 <b>المتصفح:</b> ${dev.browser}`;
-    if (data.video) msg += `\n🎬 <b>الفيديو:</b> ${data.video}`;
-    if (data.progress) msg += `\n📊 <b>التقدم:</b> ${data.progress}%`;
-    msg += `\n━━━━━━━━━━━━━━━━\n🔒 <i>تقرير تلقائي</i>`;
-    await sendReport(msg);
+/* =========================================
+   LOGIN
+========================================= */
+async function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const err = document.getElementById('loginError');
+    err.textContent = '';
+
+    if (!username || !password) {
+        err.textContent = 'اكتب اسم المستخدم وكلمة المرور.';
+        return;
+    }
+
+    try {
+        const response = await fetch('users.json', { cache: 'no-store' });
+        const data = await response.json();
+        const users = data.users || [];
+
+        const user = users.find(u => u?.username === username && u?.password === password && u?.active !== false);
+
+        if (user) {
+            // ✅ تسجيل دخول ناجح
+            currentUser = user;
+            sessionStorage.setItem('sayoda_user', username);
+            sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
+            sessionStorage.setItem('sayoda_auth_token', btoa(username + '|' + sessionStorage.getItem('sayoda_session_id') + '|' + 'SAYODA_SECRET_2026'));
+            
+            loadProgress();
+            showPlatform();
+            showToast('✅ تم تسجيل الدخول بنجاح!');
+        } else {
+            err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.';
+        }
+    } catch(e) {
+        err.textContent = 'حدث خطأ غير متوقع.';
+    }
 }
 
 /* =========================================
    DATA
 ========================================= */
-let users = [], videos = [], currentUser = null, sessionId = null;
-let videoProgress = {}, activeSessions = {}, currentSessionKey = null;
+let users = [], videos = [], currentUser = null;
+let videoProgress = {};
 let views = JSON.parse(localStorage.getItem('sayoda_views') || '{}');
-let userStats = JSON.parse(localStorage.getItem('sayoda_user_stats') || '{}');
 
-function updateStats(username, type, data = {}) {
-    if (!userStats[username]) {
-        userStats[username] = { loginAttempts: 0, successfulLogins: 0, failedLogins: 0, videosWatched: {} };
-    }
-    const s = userStats[username];
-    if (type === 'login_attempt') {
-        s.loginAttempts++;
-        if (data.success) s.successfulLogins++;
-        else s.failedLogins++;
-    }
-    if (type === 'video_view') {
-        if (!s.videosWatched[data.videoId]) s.videosWatched[data.videoId] = { views: 0, progress: 0 };
-        s.videosWatched[data.videoId].views++;
-        if (data.progress) s.videosWatched[data.videoId].progress = Math.max(s.videosWatched[data.videoId].progress, data.progress);
-    }
-    localStorage.setItem('sayoda_user_stats', JSON.stringify(userStats));
-}
-
-/* =========================================
-   LOAD JSON
-========================================= */
-async function loadData() {
-    const [ur, vr] = await Promise.allSettled([
-        fetch('users.json', { cache: 'no-store' }),
-        fetch('videos.json', { cache: 'no-store' })
-    ]);
-    if (ur.status === 'fulfilled' && ur.value.ok) {
-        const d = await ur.value.json();
-        users = Array.isArray(d?.users) ? d.users : [];
-    }
-    if (vr.status === 'fulfilled' && vr.value.ok) {
-        const d = await vr.value.json();
-        videos = Array.isArray(d?.videos) ? d.videos : [];
-    }
-    return users.length > 0 && videos.length > 0;
-}
-
-/* =========================================
-   SESSION
-========================================= */
-function validateSession() {
-    const u = sessionStorage.getItem('sayoda_user');
-    const s = sessionStorage.getItem('sayoda_session_id');
-    const t = sessionStorage.getItem('sayoda_auth_token');
-    if (!u || !s || !t) return false;
-    return t === btoa(u + '|' + s + '|' + 'SAYODA_SECRET_2026');
-}
-
-function genToken(u, s) {
-    return btoa(u + '|' + s + '|' + 'SAYODA_SECRET_2026');
-}
-
-function loadActiveSessions() {
+function loadProgress() {
     try {
-        const s = sessionStorage.getItem('sayoda_active_sessions');
-        if (s) activeSessions = JSON.parse(s);
-    } catch(e) { activeSessions = {}; }
+        const s = localStorage.getItem('sayoda_video_progress');
+        if (s) videoProgress = JSON.parse(s);
+    } catch(e) { videoProgress = {}; }
 }
 
-function saveActiveSessions() {
-    try { sessionStorage.setItem('sayoda_active_sessions', JSON.stringify(activeSessions)); } catch(e) {}
-}
-
-function registerSession(username) {
-    loadActiveSessions();
-    for (const [k, v] of Object.entries(activeSessions)) {
-        if (v.username === username) delete activeSessions[k];
-    }
-    const newId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    currentSessionKey = newId;
-    activeSessions[newId] = { username, timestamp: Date.now() };
-    sessionId = newId;
-    saveActiveSessions();
-    return newId;
-}
-
-function unregisterSession(key) {
-    if (key && activeSessions[key]) {
-        delete activeSessions[key];
-        saveActiveSessions();
-    }
-}
-
-function refreshSession(key) {
-    if (key && activeSessions[key]) {
-        activeSessions[key].timestamp = Date.now();
-        saveActiveSessions();
-    }
-}
-
-function isMySessionValid() {
-    if (!currentSessionKey) return true;
-    loadActiveSessions();
-    return activeSessions[currentSessionKey] !== undefined;
+function saveProgress() {
+    try { localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress)); } catch(e) {}
 }
 
 /* =========================================
-   KICK
+   SHOW PLATFORM
 ========================================= */
-function showKick() {
-    document.getElementById('kickMessage').classList.add('show');
-    document.getElementById('app').classList.add('hidden');
+function showPlatform() {
     document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.remove('hidden');
+
+    if (currentUser?.watermark) {
+        createWatermark(currentUser.watermark);
+    }
+
+    renderVideos();
 }
 
-function forceLogout() {
+function logout() {
     sessionStorage.removeItem('sayoda_user');
     sessionStorage.removeItem('sayoda_session_id');
     sessionStorage.removeItem('sayoda_auth_token');
-    sessionStorage.removeItem('sayoda_tab_open');
-    sessionStorage.removeItem('sayoda_active_sessions');
-    currentUser = null; sessionId = null; currentSessionKey = null;
-    document.getElementById('kickMessage').classList.remove('show');
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('app').classList.add('hidden');
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('loginError').textContent = '';
+    currentUser = null;
+    location.reload();
 }
 
 /* =========================================
@@ -1183,275 +1354,111 @@ function extractID(input) {
 }
 
 /* =========================================
-   LOGIN
-========================================= */
-async function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value;
-    const err = document.getElementById('loginError');
-    err.textContent = '';
-
-    if (!username || !password) {
-        err.textContent = 'اكتب اسم المستخدم وكلمة المرور.';
-        return;
-    }
-
-    try {
-        const loaded = await loadData();
-        if (!loaded) {
-            err.textContent = 'تعذر قراءة ملفات البيانات.';
-            return;
-        }
-
-        const user = users.find(u => u?.username === username && u?.password === password && u?.active !== false);
-        const ip = await getIP();
-
-        if (user) {
-            currentUser = user;
-            registerSession(username);
-            const token = genToken(username, sessionId);
-            sessionStorage.setItem('sayoda_user', username);
-            sessionStorage.setItem('sayoda_session_id', sessionId);
-            sessionStorage.setItem('sayoda_auth_token', token);
-            loadProgress();
-
-            updateStats(username, 'login_attempt', { success: true, ip });
-            await addReport({
-                username,
-                status: '✅ تسجيل دخول ناجح',
-                sessionId,
-                attempts: userStats[username]?.loginAttempts || 1
-            });
-
-            showPlatform();
-            showToast('✅ تم تسجيل الدخول بنجاح!');
-        } else {
-            updateStats(username || 'غير معروف', 'login_attempt', { success: false, ip });
-            await addReport({
-                username: username || 'غير معروف',
-                status: '❌ محاولة دخول فاشلة',
-                attempts: userStats[username]?.loginAttempts || 1
-            });
-            err.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
-        }
-    } catch(e) {
-        err.textContent = 'حدث خطأ غير متوقع.';
-    }
-}
-
-/* =========================================
-   SHOW PLATFORM
-========================================= */
-function showPlatform() {
-    if (!validateSession()) { logout(); return; }
-    document.getElementById('kickMessage').classList.remove('show');
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').classList.remove('hidden');
-
-    // إنشاء العلامة المائية
-    if (currentUser?.watermark) {
-        createWatermark(currentUser.watermark);
-    }
-
-    renderVideos();
-
-    setInterval(() => {
-        if (sessionId) {
-            refreshSession(sessionId);
-            const u = sessionStorage.getItem('sayoda_user');
-            if (u && sessionId) {
-                sessionStorage.setItem('sayoda_auth_token', genToken(u, sessionId));
-            }
-        }
-    }, 60000);
-
-    setInterval(() => {
-        if (!document.getElementById('app').classList.contains('hidden')) {
-            if (!isMySessionValid() || !validateSession()) {
-                showKick();
-            }
-        }
-    }, 3000);
-}
-
-function logout() {
-    if (currentSessionKey) unregisterSession(currentSessionKey);
-    sessionStorage.removeItem('sayoda_user');
-    sessionStorage.removeItem('sayoda_session_id');
-    sessionStorage.removeItem('sayoda_auth_token');
-    sessionStorage.removeItem('sayoda_active_sessions');
-    currentUser = null; sessionId = null; currentSessionKey = null;
-    location.reload();
-}
-
-/* =========================================
-   PROGRESS
-========================================= */
-function loadProgress() {
-    try {
-        const s = localStorage.getItem('sayoda_video_progress');
-        if (s) videoProgress = JSON.parse(s);
-    } catch(e) { videoProgress = {}; }
-}
-
-function saveProgress() {
-    try { localStorage.setItem('sayoda_video_progress', JSON.stringify(videoProgress)); } catch(e) {}
-}
-
-/* =========================================
-   UNLOCK
-========================================= */
-function isUnlocked(index) {
-    if (index === 0) return true;
-    const prev = videos.slice(0, index);
-    return prev.every((v, i) => {
-        const id = extractID(v.youtube_id) || v.youtube_id || '';
-        return (videoProgress[id] || 0) >= 5;
-    });
-}
-
-/* =========================================
    RENDER VIDEOS
 ========================================= */
 function renderVideos() {
     const grid = document.getElementById('videoGrid');
-    if (!videos || videos.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1;padding:45px;text-align:center;color:#7891a5;">📹 لا توجد فيديوهات حاليًا.</div>`;
-        return;
-    }
+    
+    // تحميل الفيديوهات
+    fetch('videos.json', { cache: 'no-store' })
+        .then(res => res.json())
+        .then(data => {
+            videos = data.videos || [];
+            
+            if (!videos || videos.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1;padding:45px;text-align:center;color:#7891a5;">📹 لا توجد فيديوهات حاليًا.</div>`;
+                return;
+            }
 
-    grid.innerHTML = videos.map((v, i) => {
-        const title = v?.title || `فيديو ${i+1}`;
-        const desc = v?.description || '';
-        const cat = v?.category || 'Cybersecurity';
-        const raw = v?.youtube_id || '';
-        const id = extractID(raw) || raw;
-        const thumb = v?.thumbnail || 'sayed.png';
-        const unlocked = isUnlocked(i);
-        const progress = videoProgress[id] || 0;
-        const viewsCount = views[id] || 0;
-        const locked = unlocked ? '' : 'locked';
-        const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
+            grid.innerHTML = videos.map((v, i) => {
+                const title = v?.title || `فيديو ${i+1}`;
+                const desc = v?.description || '';
+                const cat = v?.category || 'Cybersecurity';
+                const raw = v?.youtube_id || '';
+                const id = extractID(raw) || raw;
+                const thumb = v?.thumbnail || 'sayed.png';
+                const progress = videoProgress[id] || 0;
+                const viewsCount = views[id] || 0;
+                const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
 
-        return `
-        <div class="video-card ${locked}">
-            <div class="thumbnail">
-                <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'">
-                <div class="play-overlay" data-id="${id}" data-title="${title}" data-index="${i}" onclick="playCard(this)">
-                    <div class="play-btn">${unlocked ? '▶' : '🔒'}</div>
+                return `
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'">
+                        <div class="play-overlay" data-id="${id}" data-title="${title}" data-index="${i}" onclick="playCard(this)">
+                            <div class="play-btn">▶</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>${title} ${badge}</h3>
+                        <p>${desc || 'لا يوجد وصف.'}</p>
+                        <div class="meta">
+                            <span>${cat}</span>
+                            <span>👁️ ${viewsCount} مشاهدة</span>
+                        </div>
+                        <div class="progress-bar"><div class="fill" style="width:${progress}%;"></div></div>
+                    </div>
                 </div>
-            </div>
-            <div class="video-info">
-                <h3>${title} ${badge}</h3>
-                <p>${desc || 'لا يوجد وصف.'}${!unlocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة 5% من الفيديو السابق</small>' : ''}</p>
-                <div class="meta">
-                    <span>${cat}</span>
-                    <span>👁️ ${viewsCount} مشاهدة</span>
-                </div>
-                <div class="progress-bar"><div class="fill" style="width:${progress}%;"></div></div>
-            </div>
-        </div>
-        `;
-    }).join('');
+                `;
+            }).join('');
+        })
+        .catch(() => {
+            grid.innerHTML = `<div style="grid-column:1/-1;padding:45px;text-align:center;color:#7891a5;">⚠️ تعذر تحميل الفيديوهات.</div>`;
+        });
 }
 
 /* =========================================
    PLAY VIDEO
 ========================================= */
 function playCard(el) {
-    if (!validateSession()) { showKick(); return; }
     const id = el?.dataset?.id || '';
     const title = el?.dataset?.title || 'SAYODA | CYBER FORCE';
-    const index = parseInt(el?.dataset?.index || 0);
-    if (!isUnlocked(index)) {
-        showToast('🔒 هذا الفيديو مقفل!', '🔒');
+    if (!id) {
+        showToast('⚠️ Video ID غير صحيح.', '⚠️');
         return;
     }
-    openVideo(id, title, index);
+    openVideo(id, title);
 }
 
-async function openVideo(id, title, index) {
-    if (!validateSession()) { showKick(); return; }
+function openVideo(id, title) {
     const vid = String(id || '').trim();
     if (!vid) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
 
     views[vid] = (views[vid] || 0) + 1;
     localStorage.setItem('sayoda_views', JSON.stringify(views));
 
-    if (currentUser) {
-        updateStats(currentUser.username, 'video_view', { videoId: vid, progress: videoProgress[vid] || 0 });
-        await addReport({
-            username: currentUser.username,
-            status: '🎬 بدء مشاهدة فيديو',
-            video: title,
-            progress: videoProgress[vid] || 0,
-            sessionId
-        });
-    }
-
     document.getElementById('videoTitle').textContent = title || 'SAYODA | CYBER FORCE';
     const player = document.getElementById('player');
     player.src = `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1`;
     document.getElementById('videoModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    startTracking(vid, index);
+    startTracking(vid);
 }
 
 /* =========================================
    PROGRESS TRACKING
 ========================================= */
-let progInterval = null, currentVid = null, lastReport = 0;
+let progInterval = null, currentVid = null;
 
-function startTracking(vid, index) {
+function startTracking(vid) {
     stopTracking();
     currentVid = vid;
-    lastReport = 0;
     if (!videoProgress[vid]) videoProgress[vid] = 0;
 
-    progInterval = setInterval(async () => {
+    progInterval = setInterval(() => {
         if (!currentVid) return;
         let cur = videoProgress[currentVid] || 0;
         cur = Math.min(cur + 5, 100);
         videoProgress[currentVid] = cur;
         saveProgress();
         renderVideos();
-
-        if (cur - lastReport >= 10 || cur >= 100) {
-            lastReport = cur;
-            const video = videos.find(v => extractID(v.youtube_id) === currentVid);
-            const title = video?.title || 'غير معروف';
-            if (currentUser) {
-                updateStats(currentUser.username, 'video_view', { videoId: currentVid, progress: cur });
-                await addReport({
-                    username: currentUser.username,
-                    status: '📊 تقدم المشاهدة',
-                    video: title,
-                    progress: cur,
-                    sessionId
-                });
-            }
-        }
-        if (cur >= 100) {
-            stopTracking();
-            const video = videos.find(v => extractID(v.youtube_id) === currentVid);
-            const title = video?.title || 'غير معروف';
-            if (currentUser) {
-                await addReport({
-                    username: currentUser.username,
-                    status: '✅ انتهاء الفيديو',
-                    video: title,
-                    progress: 100,
-                    sessionId
-                });
-            }
-        }
+        if (cur >= 100) stopTracking();
     }, 5000);
 }
 
 function stopTracking() {
     if (progInterval) { clearInterval(progInterval); progInterval = null; }
     currentVid = null;
-    lastReport = 0;
 }
 
 /* =========================================
@@ -1496,24 +1503,17 @@ window.addEventListener('beforeunload', function() {
 ========================================= */
 (async function() {
     try {
-        await loadData();
-        loadProgress();
-        loadActiveSessions();
         const u = sessionStorage.getItem('sayoda_user');
-        const s = sessionStorage.getItem('sayoda_session_id');
-        const t = sessionStorage.getItem('sayoda_auth_token');
-        if (u && s && t) {
-            const expected = genToken(u, s);
-            if (t === expected && activeSessions[s]?.username === u) {
-                const user = users.find(item => item?.username === u && item?.active !== false);
-                if (user) {
-                    currentUser = user;
-                    sessionId = s;
-                    currentSessionKey = s;
-                    refreshSession(s);
-                    showPlatform();
-                    showToast('✅ مرحباً بعودتك!', '👋');
-                }
+        if (u) {
+            const response = await fetch('users.json', { cache: 'no-store' });
+            const data = await response.json();
+            const users = data.users || [];
+            const user = users.find(item => item?.username === u && item?.active !== false);
+            if (user) {
+                currentUser = user;
+                loadProgress();
+                showPlatform();
+                showToast('✅ مرحباً بعودتك!', '👋');
             }
         }
     } catch(e) {}
