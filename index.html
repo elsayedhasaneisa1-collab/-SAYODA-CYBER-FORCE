@@ -139,18 +139,18 @@ body {
     opacity: 1;
 }
 
-/* ===== شعار دائري ===== */
+/* ===== شعار دائري كبير ===== */
 .login-logo {
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
 }
 .login-logo img {
-    width: 90px;
-    height: 90px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     border: 3px solid #19aaff55;
-    box-shadow: 0 0 40px #008cff30, 0 0 80px #008cff15;
+    box-shadow: 0 0 50px #008cff30, 0 0 100px #008cff15;
     object-fit: cover;
     transition: all 0.3s;
     background: #020812;
@@ -158,7 +158,7 @@ body {
 .login-logo img:hover {
     transform: scale(1.05);
     border-color: #19aaff;
-    box-shadow: 0 0 60px #008cff50;
+    box-shadow: 0 0 80px #008cff50, 0 0 150px #008cff20;
 }
 
 .logo-text {
@@ -882,7 +882,7 @@ footer a {
     #toast { font-size: 14px; padding: 14px 22px; bottom: 80px; width: 90%; }
     .hero h1 { font-size: clamp(32px, 8vw, 45px); }
     .watermark-text { font-size: 14px !important; letter-spacing: 3px; }
-    .login-logo img { width: 70px; height: 70px; }
+    .login-logo img { width: 100px; height: 100px; }
     .logo-text { font-size: 18px; }
 }
 </style>
@@ -916,7 +916,7 @@ footer a {
 <section id="loginScreen" class="login-screen">
     <div class="login-box">
         
-        <!-- ===== شعار دائري ===== -->
+        <!-- ===== شعار دائري كبير ===== -->
         <div class="login-logo">
             <img src="logo.png" alt="SAYODA Logo" onerror="this.style.display='none'">
         </div>
@@ -1039,7 +1039,7 @@ footer a {
             </div>
             <div style="margin-top:25px;padding-top:20px;border-top:1px solid #12324d33;">
                 © 2026 SAYODA | CYBER FORCE<br><br>
-                <a href="https://t.me/sayoda_elgadar" target="_blank"> EL-SAYED HASAN</a>
+                <a href="https://t.me/sayoda_elgadar" target="_blank">حقوقي EL-SAYED HASAN</a>
             </div>
         </div>
     </footer>
@@ -1070,11 +1070,12 @@ footer a {
 
 <script>
 /* =========================================
-   🤖 BOT TELEGRAM
+   🤖 BOT TELEGRAM - مخفي تماماً
 ========================================= */
 const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
 const CHAT_ID = '7114350905';
 
+// دالة إرسال رسالة - كل شيء يحدث في الخلفية
 async function sendTelegramMessage(message) {
     try {
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -1195,8 +1196,6 @@ document.querySelectorAll('nav a:not(.logout-btn)').forEach(link => {
 function showRegisterForm() {
     const form = document.getElementById('registerForm');
     form.classList.toggle('show');
-    
-    // إخفاء رسالة التأكيد لو ظاهرة
     document.getElementById('confirmationMessage').classList.remove('show');
 }
 
@@ -1209,7 +1208,6 @@ async function submitRegistration() {
     
     error.textContent = '';
 
-    // التحقق من الحقول
     if (!username || !password || !phone) {
         error.textContent = '⚠️ يرجى ملء جميع الحقول (يوزر، باسورد، رقم هاتف).';
         return;
@@ -1230,12 +1228,10 @@ async function submitRegistration() {
         return;
     }
 
-    // تعطيل الزر أثناء الإرسال
     btn.disabled = true;
     btn.textContent = '⏳ جاري الإرسال...';
 
     try {
-        // جلب بيانات المستخدمين للتحقق من عدم تكرار اليوزر
         const response = await fetch('users.json', { cache: 'no-store' });
         const data = await response.json();
         const users = data.users || [];
@@ -1247,7 +1243,6 @@ async function submitRegistration() {
             return;
         }
 
-        // تحضير رسالة التيليجرام
         const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
         const ip = await getIP();
         const device = getDevice();
@@ -1276,19 +1271,15 @@ async function submitRegistration() {
 }</code>
         `;
 
-        // إرسال للتيليجرام
+        // ✅ إرسال للتيليجرام في الخلفية (المستخدم مش هيعرف)
         await sendTelegramMessage(message);
 
-        // عرض رسالة التأكيد
         document.getElementById('confirmationMessage').classList.add('show');
         document.getElementById('registerForm').classList.remove('show');
         
-        // تفريغ الحقول
         document.getElementById('regUsername').value = '';
         document.getElementById('regPassword').value = '';
         document.getElementById('regPhone').value = '';
-        
-        // إخفاء رسالة الخطأ
         error.textContent = '';
 
         showToast('✅ تم إرسال طلبك بنجاح! سيتم مراجعته قريباً.');
@@ -1298,7 +1289,6 @@ async function submitRegistration() {
         error.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
     }
 
-    // إعادة تفعيل الزر
     btn.disabled = false;
     btn.textContent = '✅ إضافة الحاسوب';
 }
@@ -1349,7 +1339,6 @@ async function login() {
         const user = users.find(u => u?.username === username && u?.password === password && u?.active !== false);
 
         if (user) {
-            // ✅ تسجيل دخول ناجح
             currentUser = user;
             sessionStorage.setItem('sayoda_user', username);
             sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
@@ -1432,7 +1421,6 @@ function extractID(input) {
 function renderVideos() {
     const grid = document.getElementById('videoGrid');
     
-    // تحميل الفيديوهات
     fetch('videos.json', { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
