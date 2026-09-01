@@ -1759,6 +1759,12 @@
         }
 
         /* =========================================
+           🚫 SYSTEM - منع الدخول بدون صلاحية
+        ========================================= */
+        // المستخدمين المسموح لهم (admin فقط)
+        // يتم التحقق في login و playCard و openVideo
+
+        /* =========================================
            💬 COMMENTS
         ========================================= */
         let commentsCache = {};
@@ -1973,38 +1979,55 @@
                 const local = getUserData();
                 const u = currentUser?.username;
                 if (!u) return;
-                if (cloud[u]) {
-                    if (cloud[u].xp > local.xp) {
-                        local.xp = cloud[u].xp;
-                        local.level = cloud[u].level || local.level;
-                        local.levelEmoji = cloud[u].levelEmoji || local.levelEmoji;
-                        local.streak = cloud[u].streak || local.streak;
-                        local.badges = cloud[u].badges || local.badges;
-                        local.videosWatched = cloud[u].videosWatched || local.videosWatched;
-                        local.totalRating = cloud[u].totalRating || local.totalRating;
-                        local.ratingCount = cloud[u].ratingCount || local.ratingCount;
+                if (cloud.users && cloud.users[u]) {
+                    if (cloud.users[u].xp > local.xp) {
+                        local.xp = cloud.users[u].xp;
+                        local.level = cloud.users[u].level || local.level;
+                        local.levelEmoji = cloud.users[u].levelEmoji || local.levelEmoji;
+                        local.streak = cloud.users[u].streak || local.streak;
+                        local.badges = cloud.users[u].badges || local.badges;
+                        local.videosWatched = cloud.users[u].videosWatched || local.videosWatched;
+                        local.totalRating = cloud.users[u].totalRating || local.totalRating;
+                        local.ratingCount = cloud.users[u].ratingCount || local.ratingCount;
                         saveUserData(local);
                         updateProfile();
                         renderVideos();
-                    } else if (local.xp > cloud[u].xp) {
-                        cloud[u] = { xp: local.xp, level: local.level, levelEmoji: local.levelEmoji, streak: local
-                                .streak,
-                            badges: local.badges, videosWatched: local.videosWatched, totalRating: local
-                                .totalRating, ratingCount: local.ratingCount };
+                    } else if (local.xp > cloud.users[u].xp) {
+                        cloud.users[u].xp = local.xp;
+                        cloud.users[u].level = local.level;
+                        cloud.users[u].levelEmoji = local.levelEmoji;
+                        cloud.users[u].streak = local.streak;
+                        cloud.users[u].badges = local.badges;
+                        cloud.users[u].videosWatched = local.videosWatched;
+                        cloud.users[u].totalRating = local.totalRating;
+                        cloud.users[u].ratingCount = local.ratingCount;
                         await saveCloudData(cloud);
                     }
                 } else {
-                    cloud[u] = { xp: local.xp, level: local.level, levelEmoji: local.levelEmoji, streak: local
-                            .streak,
-                        badges: local.badges, videosWatched: local.videosWatched, totalRating: local.totalRating,
-                        ratingCount: local.ratingCount };
+                    if (!cloud.users) cloud.users = {};
+                    cloud.users[u] = {
+                        password: currentUser.password || '',
+                        role: currentUser.role || 'user',
+                        active: true,
+                        phone: currentUser.phone || '',
+                        xp: local.xp,
+                        level: local.level,
+                        levelEmoji: local.levelEmoji,
+                        streak: local.streak,
+                        badges: local.badges,
+                        videosWatched: local.videosWatched,
+                        totalRating: local.totalRating,
+                        ratingCount: local.ratingCount
+                    };
                     await saveCloudData(cloud);
                 }
                 updateLeaderboard(cloud);
                 if (currentUser?.role === 'admin') {
                     renderAdminPanel(cloud);
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.warn('⚠️ خطأ في المزامنة:', e);
+            }
         }
 
         /* =========================================
@@ -2012,9 +2035,8 @@
         ========================================= */
         function updateLeaderboard(cloud) {
             const list = document.getElementById('leaderboardList');
-            if (!cloud) return;
-            const entries = Object.entries(cloud).filter(([k]) => k !== '_id' && k !== 'createdAt' && k !== 'updatedAt' &&
-                    k !== 'comments')
+            if (!cloud || !cloud.users) return;
+            const entries = Object.entries(cloud.users)
                 .map(([u, d]) => ({ username: u, xp: d.xp || 0, badges: d.badges?.length || 0 }))
                 .sort((a, b) => b.xp - a.xp);
             if (!entries.length) {
@@ -2041,9 +2063,13 @@
         function renderAdminPanel(cloud) {
             const container = document.getElementById('adminUsersList');
             if (!container) return;
+            if (!cloud || !cloud.users) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-muted);padding:20px;">لا يوجد مستخدمين بعد</div>';
+                return;
+            }
 
-            const users = Object.entries(cloud)
-                .filter(([key]) => key !== '_id' && key !== 'createdAt' && key !== 'updatedAt' && key !== 'comments')
+            const users = Object.entries(cloud.users)
                 .map(([username, data]) => ({
                     username: username,
                     xp: data.xp || 0,
@@ -2054,7 +2080,9 @@
                     videosWatched: data.videosWatched || [],
                     totalRating: data.totalRating || 0,
                     ratingCount: data.ratingCount || 0,
-                    lastUpdate: data.lastUpdate || 'غير معروف'
+                    role: data.role || 'user',
+                    active: data.active !== false,
+                    password: data.password || ''
                 }))
                 .sort((a, b) => b.xp - a.xp);
 
@@ -2064,7 +2092,7 @@
             document.getElementById('adminTotalVideos').textContent = users.reduce((s, u) => s + u.videosWatched.length, 0);
 
             const search = document.getElementById('adminSearch')?.value?.toLowerCase() || '';
-            const filtered = users.filter(u => u.username.toLowerCase().includes(search));
+            const filtered = users.filter(u => u.username.toLowerCase().includes(search) && u.active !== false);
 
             if (!filtered.length) {
                 container.innerHTML =
@@ -2086,9 +2114,62 @@
                     <span class="detail"><span class="label">🎬</span> <span class="value">${u.videosWatched.length}</span></span>
                     <span class="detail"><span class="label">⭐</span> <span class="value">${avgRating}</span></span>
                     <div class="badges-list">${badgesStr}</div>
+                    ${u.role === 'admin' ? '<span style="background:#ffd700;color:#1a1a2e;padding:2px 10px;border-radius:30px;font-size:10px;font-weight:bold;">👑 Admin</span>' : ''}
+                    <button onclick="toggleUserStatus('${u.username}')" style="background:${u.active ? '#ff334455' : '#25D36655'};color:${u.active ? '#ff6678' : '#7fc9ff'};border:1px solid ${u.active ? '#ff3344' : '#25D366'};padding:4px 12px;border-radius:30px;font-size:10px;cursor:pointer;font-family:'Tajawal',Arial,sans-serif;">
+                        ${u.active ? '⛔ تعطيل' : '✅ تفعيل'}
+                    </button>
+                    <button onclick="deleteUser('${u.username}')" style="background:#ff334455;color:#ff6678;border:1px solid #ff3344;padding:4px 12px;border-radius:30px;font-size:10px;cursor:pointer;font-family:'Tajawal',Arial,sans-serif;">🗑️ حذف</button>
                 </div>
                 `;
             }).join('');
+        }
+
+        // دالة تبديل حالة المستخدم (تفعيل/تعطيل)
+        async function toggleUserStatus(username) {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
+                return;
+            }
+            if (username === currentUser.username) {
+                showToast('⚠️ لا يمكنك تعطيل حسابك أثناء تسجيل الدخول.', '⚠️');
+                return;
+            }
+            try {
+                const cloud = await fetchCloudData();
+                if (cloud.users && cloud.users[username]) {
+                    cloud.users[username].active = !cloud.users[username].active;
+                    await saveCloudData(cloud);
+                    renderAdminPanel(cloud);
+                    showToast(`✅ تم ${cloud.users[username].active ? 'تفعيل' : 'تعطيل'} المستخدم ${username}`);
+                }
+            } catch (e) {
+                showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
+            }
+        }
+
+        // دالة حذف مستخدم
+        async function deleteUser(username) {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
+                return;
+            }
+            if (username === currentUser.username) {
+                showToast('⚠️ لا يمكنك حذف حسابك أثناء تسجيل الدخول.', '⚠️');
+                return;
+            }
+            if (!confirm(`⚠️ هل أنت متأكد من حذف المستخدم "${username}"؟`)) return;
+            try {
+                const cloud = await fetchCloudData();
+                if (cloud.users && cloud.users[username]) {
+                    delete cloud.users[username];
+                    await saveCloudData(cloud);
+                    renderAdminPanel(cloud);
+                    showToast(`✅ تم حذف المستخدم ${username}`);
+                    sendTelegramMessage(`🗑️ ${currentUser.username} حذف المستخدم ${username}`);
+                }
+            } catch (e) {
+                showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
+            }
         }
 
         function filterAdminUsers() {
@@ -2203,28 +2284,54 @@
             if (!/^[\d]{10,11}$/.test(ph.replace(/\s/g, ''))) { err.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).';
                 return; }
             btn.disabled = true;
-            btn.textContent = '⏳';
+            btn.textContent = '⏳ جاري الإرسال...';
+
             try {
-                const r = await fetch('users.json', { cache: 'no-store' });
-                const d = await r.json();
-                const users = d.users || [];
-                if (users.find(x => x.username === u)) { err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
+                const cloud = await fetchCloudData();
+                if (!cloud.users) cloud.users = {};
+
+                if (cloud.users[u]) {
+                    err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
                     btn.disabled = false;
                     btn.textContent = '✅ إضافة الحاسوب';
-                    return; }
+                    return;
+                }
+
+                cloud.users[u] = {
+                    password: p,
+                    role: 'user',
+                    active: true,
+                    phone: ph,
+                    xp: 0,
+                    level: 'مبتدئ',
+                    levelEmoji: '🟢',
+                    streak: 0,
+                    badges: [],
+                    videosWatched: [],
+                    totalRating: 0,
+                    ratingCount: 0
+                };
+
+                await saveCloudData(cloud);
+
                 const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
                 const ip = await getIP();
                 const dev = getDevice();
                 await sendTelegramMessage(
                     `🔐 <b>طلب حساب جديد</b>\n👤 ${sanitizeHTML(u)}\n🔑 ${sanitizeHTML(p)}\n📱 ${sanitizeHTML(ph)}\n🌐 ${ip}\n📱 ${dev.device}\n📅 ${now}`
-                    );
+                );
+
                 document.getElementById('confirmationMessage').classList.add('show');
                 document.getElementById('registerForm').classList.remove('show');
                 document.getElementById('regUsername').value = '';
                 document.getElementById('regPassword').value = '';
                 document.getElementById('regPhone').value = '';
-                showToast('✅ تم إرسال طلبك بنجاح!');
-            } catch (e) { err.textContent = '❌ حدث خطأ، حاول مرة أخرى.'; }
+                showToast('✅ تم إنشاء حسابك بنجاح!');
+
+            } catch (e) {
+                console.error(e);
+                err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+            }
             btn.disabled = false;
             btn.textContent = '✅ إضافة الحاسوب';
         }
@@ -2258,17 +2365,47 @@
             err.textContent = '';
             if (!u || !p) { err.textContent = 'اكتب اسم المستخدم وكلمة المرور.';
                 return; }
+
             try {
-                const r = await fetch('users.json', { cache: 'no-store' });
-                const d = await r.json();
-                const users = d.users || [];
-                const user = users.find(x => x?.username === u && x?.password === p && x?.active !== false);
-                if (user) {
-                    currentUser = user;
+                const cloud = await fetchCloudData();
+                let users = cloud.users || {};
+
+                // لو مفيش مستخدمين في السحابة، جرب من users.json (نسخة احتياطية)
+                if (Object.keys(users).length === 0) {
+                    try {
+                        const r = await fetch('users.json', { cache: 'no-store' });
+                        const d = await r.json();
+                        const usersArray = d.users || [];
+                        users = {};
+                        usersArray.forEach(u2 => {
+                            users[u2.username] = {
+                                password: u2.password,
+                                role: u2.role || 'user',
+                                active: u2.active !== false,
+                                phone: u2.phone || '',
+                                xp: 0,
+                                level: 'مبتدئ',
+                                levelEmoji: '🟢',
+                                streak: 0,
+                                badges: [],
+                                videosWatched: [],
+                                totalRating: 0,
+                                ratingCount: 0
+                            };
+                        });
+                        cloud.users = users;
+                        await saveCloudData(cloud);
+                    } catch (e) { console.warn('⚠️ فشل تحميل users.json'); }
+                }
+
+                const userData = users[u];
+                if (userData && userData.password === p && userData.active !== false) {
+                    currentUser = { username: u, ...userData };
                     sessionStorage.setItem('sayoda_user', u);
                     sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
                     sessionStorage.setItem('sayoda_auth_token', btoa(u + '|' + sessionStorage.getItem(
                         'sayoda_session_id') + '|' + 'SAYODA_SECRET_2026'));
+
                     loadProgress();
                     showPlatform();
                     updateStreak();
@@ -2280,18 +2417,23 @@
                         `🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
                     showToast('✅ تم تسجيل الدخول بنجاح!');
 
-                    if (user.role === 'admin') {
+                    if (userData.role === 'admin') {
                         document.getElementById('adminPanelLink').style.display = 'flex';
                         document.getElementById('adminBadge').style.display = 'inline';
                         document.getElementById('adminPanel').style.display = 'block';
                         setTimeout(async () => {
-                            const cloud = await fetchCloudData();
-                            renderAdminPanel(cloud);
-                            localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud));
+                            const cloud2 = await fetchCloudData();
+                            renderAdminPanel(cloud2);
+                            localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud2));
                         }, 500);
                     }
-                } else { err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.'; }
-            } catch (e) { err.textContent = 'حدث خطأ غير متوقع.'; }
+                } else {
+                    err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.';
+                }
+            } catch (e) {
+                console.error(e);
+                err.textContent = 'حدث خطأ غير متوقع.';
+            }
         }
 
         /* =========================================
@@ -2364,7 +2506,25 @@
                         `<span class="progress-badge">${Math.round(progress)}%</span>` :
                         '';
                     const watched = videoProgress[id] >= 100 ? '✅' : '';
-                    return `<div class="video-card"><div class="thumbnail"><img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'"><div class="play-overlay" data-id="${id}" data-title="${title}" data-index="${i}" onclick="playCard(this)"><div class="play-btn">▶</div></div></div><div class="video-info"><h3>${title} ${badge} ${watched}</h3><p>${desc || 'لا يوجد وصف.'}</p><div class="meta"><span>${cat}</span><span>👁️ ${viewsCount}</span></div><div class="stars" data-id="${id}">${[1,2,3,4,5].map(s => `<span class="star ${s <= rating ? 'active' : ''}" onclick="rateVideo('${id}', ${s})">★</span>`).join('')}</div><div class="progress-bar"><div class="fill" style="width:${progress}%;"></div></div></div></div>`;
+                    
+                    // 🔒 نظام القفل: يحتاج 30% من الفيديو السابق
+                    const isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
+                    
+                    return `<div class="video-card ${isLocked ? 'locked' : ''}">
+                        <div class="thumbnail">
+                            <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='sayed.png'">
+                            <div class="play-overlay" data-id="${id}" data-title="${title}" data-index="${i}" onclick="playCard(this)">
+                                <div class="play-btn">${isLocked ? '🔒' : '▶'}</div>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3>${title} ${badge} ${watched}</h3>
+                            <p>${desc || 'لا يوجد وصف.'} ${isLocked ? '<br><small style="color:#ff6678;">🔒 يجب مشاهدة 30% من الفيديو السابق</small>' : ''}</p>
+                            <div class="meta"><span>${cat}</span><span>👁️ ${viewsCount}</span></div>
+                            <div class="stars" data-id="${id}">${[1,2,3,4,5].map(s => `<span class="star ${s <= rating ? 'active' : ''}" onclick="rateVideo('${id}', ${s})">★</span>`).join('')}</div>
+                            <div class="progress-bar"><div class="fill" style="width:${progress}%;"></div></div>
+                        </div>
+                    </div>`;
                 }).join('');
             }).catch(() => {
                 grid.innerHTML =
@@ -2388,15 +2548,26 @@
         function playCard(el) {
             const id = el?.dataset?.id || '';
             const title = el?.dataset?.title || 'SAYODA | CYBER FORCE';
-            if (!id) { showToast('⚠️ Video ID غير صحيح.', '⚠️');
-                return; }
+            const index = parseInt(el?.dataset?.index || 0);
+            if (!id) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
+            
+            // 🔒 التحقق من القفل (30%)
+            if (index > 0) {
+                const prevVideo = videos[index - 1];
+                const prevId = extractID(prevVideo?.youtube_id) || '';
+                const prevProgress = videoProgress[prevId] || 0;
+                if (prevProgress < 30) {
+                    showToast('🔒 يجب مشاهدة 30% من الفيديو السابق أولاً.', '🔒');
+                    return;
+                }
+            }
+            
             openVideo(id, title);
         }
 
         function openVideo(id, title) {
             const vid = String(id || '').trim();
-            if (!vid) { showToast('⚠️ Video ID غير صحيح.', '⚠️');
-                return; }
+            if (!vid) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
             views[vid] = (views[vid] || 0) + 1;
             localStorage.setItem('sayoda_views', JSON.stringify(views));
             document.getElementById('videoTitle').textContent = sanitizeHTML(title) || 'SAYODA | CYBER FORCE';
@@ -2478,26 +2649,25 @@
             try {
                 const u = sessionStorage.getItem('sayoda_user');
                 if (u) {
-                    const r = await fetch('users.json', { cache: 'no-store' });
-                    const d = await r.json();
-                    const users = d.users || [];
-                    const user = users.find(x => x?.username === u && x?.active !== false);
-                    if (user) {
-                        currentUser = user;
+                    const cloud = await fetchCloudData();
+                    const users = cloud.users || {};
+                    const userData = users[u];
+                    if (userData && userData.active !== false) {
+                        currentUser = { username: u, ...userData };
                         loadProgress();
                         showPlatform();
                         updateStreak();
                         await syncUserData();
                         showToast('✅ مرحباً بعودتك!', '👋');
 
-                        if (user.role === 'admin') {
+                        if (userData.role === 'admin') {
                             document.getElementById('adminPanelLink').style.display = 'flex';
                             document.getElementById('adminBadge').style.display = 'inline';
                             document.getElementById('adminPanel').style.display = 'block';
                             setTimeout(async () => {
-                                const cloud = await fetchCloudData();
-                                renderAdminPanel(cloud);
-                                localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud));
+                                const cloud2 = await fetchCloudData();
+                                renderAdminPanel(cloud2);
+                                localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud2));
                             }, 500);
                         }
                     }
