@@ -27,37 +27,52 @@
         p,h1,h2,h3,h4,h5,h6,span,div,a{-webkit-user-select:none;user-select:none}
         
         .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 30% 40%,#008cff15,transparent 60%),radial-gradient(circle at 70% 60%,#12baff08,transparent 50%),var(--bg-primary)}
-        .login-box{width:min(380px,100%);padding:30px 25px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(16px)}
-        .login-logo{display:flex;justify-content:center;margin-bottom:12px}
-        .login-logo img{width:80px;height:80px;border-radius:50%;border:3px solid #19aaff55;box-shadow:0 0 40px #008cff25;object-fit:cover;background:var(--bg-primary);pointer-events:none}
-        .logo-text{text-align:center;color:var(--accent);font-size:clamp(18px,2.5vw,22px);font-weight:900}
+        .login-box{width:min(400px,100%);padding:25px 20px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(16px);max-height:98vh;overflow-y:auto}
+        .login-logo{display:flex;justify-content:center;margin-bottom:10px}
+        .login-logo img{width:70px;height:70px;border-radius:50%;border:3px solid #19aaff55;box-shadow:0 0 40px #008cff25;object-fit:cover;background:var(--bg-primary);pointer-events:none}
+        .logo-text{text-align:center;color:var(--accent);font-size:clamp(17px,2.2vw,21px);font-weight:900}
         .logo-text span{color:#fff}
-        .login-subtitle{text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:3px;margin-bottom:20px}
-        .input-group{position:relative;margin-bottom:14px}
-        .input-group .input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:16px;transition:color var(--transition)}
+        .login-subtitle{text-align:center;color:var(--text-muted);font-size:10px;letter-spacing:3px;margin-bottom:14px}
+        .input-group{position:relative;margin-bottom:12px}
+        .input-group .input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:15px;transition:color var(--transition)}
         .input-group .input-icon.active{color:var(--accent)}
-        .input{width:100%;padding:12px 44px 12px 14px;border:2px solid var(--border-color);border-radius:12px;background:rgba(2,8,18,.7);color:var(--text-primary);outline:none;font-size:clamp(14px,1.1vw,15px);font-family:'Tajawal',Arial,sans-serif;transition:all var(--transition)}
+        .input{width:100%;padding:11px 42px 11px 12px;border:2px solid var(--border-color);border-radius:12px;background:rgba(2,8,18,.7);color:var(--text-primary);outline:none;font-size:clamp(13px,1vw,14px);font-family:'Tajawal',Arial,sans-serif;transition:all var(--transition)}
         .input:focus{border-color:var(--accent);box-shadow:0 0 25px #008cff20;transform:scale(1.01)}
-        .input:focus+.input-icon{color:var(--accent)}
-        .login-btn{width:100%;padding:13px;border:0;border-radius:12px;color:#fff;font-size:clamp(15px,1.2vw,17px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--accent-dark),var(--accent));transition:all var(--transition);margin-top:6px;box-shadow:0 0 25px #008cff15}
+        .login-btn{width:100%;padding:12px;border:0;border-radius:12px;color:#fff;font-size:clamp(14px,1.1vw,16px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--accent-dark),var(--accent));transition:all var(--transition);margin-top:4px;box-shadow:0 0 25px #008cff15}
         .login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px #008cff30}
         .login-btn:disabled{opacity:0.6;cursor:not-allowed}
-        .error{min-height:20px;margin-top:10px;text-align:center;color:var(--danger);font-size:13px}
-        .register-form{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-color)}
+        .error{min-height:18px;margin-top:8px;text-align:center;color:var(--danger);font-size:12px}
+        .register-form{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-color)}
         .register-form.show{display:block}
-        .register-form .input{margin-bottom:10px}
-        .register-title{color:var(--accent);font-size:clamp(14px,1.1vw,16px);font-weight:700;margin-bottom:10px;text-align:center}
+        .register-form .input{margin-bottom:8px}
+        .register-title{color:var(--accent);font-size:clamp(13px,1vw,15px);font-weight:700;margin-bottom:8px;text-align:center}
         .register-title span{color:#fff}
-        .register-btn{width:100%;padding:13px;border:0;border-radius:12px;color:#fff;font-size:clamp(15px,1.2vw,17px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--success),#128C7E);transition:all var(--transition);margin-top:4px}
+        .register-btn{width:100%;padding:12px;border:0;border-radius:12px;color:#fff;font-size:clamp(14px,1.1vw,16px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--success),#128C7E);transition:all var(--transition);margin-top:4px}
         .register-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px #25D36630}
         .register-btn:disabled{opacity:0.6;cursor:not-allowed}
-        #confirmationMessage{display:none;margin-top:16px;padding:16px;background:rgba(7,19,33,.6);border:1px solid #25D36655;border-radius:14px;text-align:center}
+        #confirmationMessage{display:none;margin-top:14px;padding:14px;background:rgba(7,19,33,.6);border:1px solid #25D36655;border-radius:14px;text-align:center}
         #confirmationMessage.show{display:block}
-        #confirmationMessage .icon{font-size:40px;margin-bottom:6px}
-        #confirmationMessage h3{color:var(--success);font-size:clamp(16px,1.3vw,18px)}
-        #confirmationMessage p{color:var(--text-secondary);font-size:clamp(13px,1vw,14px);line-height:1.6}
-        #confirmationMessage .support-link{display:inline-block;margin-top:10px;padding:8px 20px;background:linear-gradient(135deg,var(--success),#128C7E);border-radius:50px;color:#fff;text-decoration:none;font-weight:bold;font-size:clamp(13px,1vw,14px);transition:all var(--transition)}
+        #confirmationMessage .icon{font-size:36px;margin-bottom:4px}
+        #confirmationMessage h3{color:var(--success);font-size:clamp(15px,1.2vw,17px)}
+        #confirmationMessage p{color:var(--text-secondary);font-size:clamp(12px,0.9vw,13px);line-height:1.6}
+        #confirmationMessage .support-link{display:inline-block;margin-top:8px;padding:8px 18px;background:linear-gradient(135deg,var(--success),#128C7E);border-radius:50px;color:#fff;text-decoration:none;font-weight:bold;font-size:clamp(12px,0.9vw,13px);transition:all var(--transition)}
         #confirmationMessage .support-link:hover{transform:scale(1.03);box-shadow:0 8px 25px #25D36630}
+
+        /* User Guide */
+        #userGuide{margin-top:12px;padding:14px;background:rgba(25,170,255,0.06);border-radius:12px;border:1px solid var(--accent)}
+        #userGuide .guide-title{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+        #userGuide .guide-title h4{color:var(--accent);font-size:clamp(13px,1vw,15px);margin:0}
+        .guide-step{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;margin-bottom:4px;background:rgba(25,170,255,0.04);transition:all 0.3s}
+        .guide-step.done{background:rgba(37,211,102,0.08);border-right:3px solid var(--success)}
+        .guide-step .num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;flex-shrink:0;color:#fff}
+        .guide-step .num.done{background:var(--success)}
+        .guide-step .num.waiting{background:var(--text-muted)}
+        .guide-step .num.active{background:var(--accent)}
+        .guide-step .step-text{font-size:clamp(11px,0.9vw,12px);flex:1}
+        .guide-step .step-text strong{color:var(--accent)}
+        .guide-step .step-check{font-size:16px;margin-right:auto}
+        .guide-step .step-check.done{color:var(--success)}
+        .guide-step .step-check.waiting{color:var(--text-muted)}
 
         .sidebar-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:all var(--transition)}
         .sidebar-overlay.active{opacity:1;pointer-events:auto}
@@ -154,6 +169,10 @@
         .admin-stat-box .label{font-size:9px;color:var(--text-muted)}
         .admin-search{width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:8px;background:rgba(2,8,18,.7);color:var(--text-primary);outline:none;font-size:13px;font-family:'Tajawal',Arial,sans-serif;margin-bottom:10px;transition:all var(--transition)}
         .admin-search:focus{border-color:var(--accent);box-shadow:0 0 15px #008cff20}
+        .admin-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;padding:12px 16px;background:rgba(25,170,255,0.05);border-radius:10px;border:1px solid var(--accent);align-items:center}
+        .admin-controls .label{color:var(--text-secondary);font-size:13px;display:flex;align-items:center;gap:4px}
+        .admin-controls .status{color:var(--text-muted);font-size:12px;display:flex;align-items:center;margin-right:auto}
+        .admin-controls .status span{font-weight:bold;margin-right:4px}
 
         .comments-section{margin-top:10px;padding-top:10px;border-top:1px solid var(--border-color)}
         .comments-section .comments-title{color:var(--text-muted);font-size:12px;margin-bottom:6px;font-weight:700}
@@ -239,7 +258,7 @@
         .request-box .btn-cancel:hover{background:rgba(255,255,255,.05)}
         @keyframes fadeInScale{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
 
-        @media (max-width:650px){.hero{min-height:180px;padding:20px 16px}.video-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.video-info{padding:8px}.video-info h3{font-size:12px}.video-info p{font-size:10px;min-height:25px}.meta{font-size:9px}.login-box{padding:18px 14px}.login-logo img{width:60px;height:60px}.section{padding:20px 0}.profile-stats{grid-template-columns:repeat(3,1fr);gap:6px}.profile-stat{padding:6px}.profile-stat .num{font-size:14px}.modal-box{padding:6px}.comment-input-area{flex-direction:column}.comment-input-area button{width:100%}.support-btn{font-size:12px;padding:6px 12px}.sidebar{width:min(230px,80%)}#commentsContainer{max-height:120px}.admin-user-card{flex-direction:column;align-items:flex-start;gap:3px}.admin-user-card .username{min-width:auto}.admin-stats-grid{grid-template-columns:repeat(2,1fr)}.request-box{padding:25px 20px}}
+        @media (max-width:650px){.hero{min-height:180px;padding:20px 16px}.video-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.video-info{padding:8px}.video-info h3{font-size:12px}.video-info p{font-size:10px;min-height:25px}.meta{font-size:9px}.login-box{padding:16px 12px}.login-logo img{width:55px;height:55px}.section{padding:20px 0}.profile-stats{grid-template-columns:repeat(3,1fr);gap:6px}.profile-stat{padding:6px}.profile-stat .num{font-size:14px}.modal-box{padding:6px}.comment-input-area{flex-direction:column}.comment-input-area button{width:100%}.support-btn{font-size:12px;padding:6px 12px}.sidebar{width:min(230px,80%)}#commentsContainer{max-height:120px}.admin-user-card{flex-direction:column;align-items:flex-start;gap:3px}.admin-user-card .username{min-width:auto}.admin-stats-grid{grid-template-columns:repeat(2,1fr)}.request-box{padding:25px 20px}.guide-step{flex-wrap:wrap}}
         @media (max-width:400px){.video-grid{grid-template-columns:1fr 1fr;gap:6px}.play-btn{width:34px;height:34px;font-size:14px}.brand-name{font-size:11px}.header-actions{gap:3px}.menu-btn{font-size:18px}.header-theme-btn{font-size:14px}}
     </style>
 </head>
@@ -252,37 +271,76 @@
             <div class="logo-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
             <div class="login-subtitle">SECURE ACCESS</div>
             <div class="input-group">
-                <input id="username" class="input" type="text" placeholder=" " autocomplete="username">
+                <input id="username" class="input" type="text" placeholder="اسم المستخدم" autocomplete="username">
                 <span class="input-icon">👤</span>
             </div>
             <div class="input-group">
-                <input id="password" class="input" type="password" placeholder=" " autocomplete="current-password">
+                <input id="password" class="input" type="password" placeholder="كلمة المرور" autocomplete="current-password">
                 <span class="input-icon">🔑</span>
             </div>
-            <button class="login-btn" onclick="login()">دخول</button>
+            <button class="login-btn" onclick="login()">🚪 دخول</button>
             <div id="loginError" class="error"></div>
-            <button class="register-btn" onclick="showRegisterForm()" style="margin-top:10px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">📝 إنشاء حساب جديد</button>
+            
+            <button class="register-btn" onclick="showRegisterForm()" style="margin-top:8px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">📝 إنشاء حساب جديد</button>
+            
+            <!-- Register Form -->
             <div class="register-form" id="registerForm">
                 <div class="register-title">📝 <span>إنشاء حساب جديد</span></div>
                 <div class="input-group">
-                    <input id="regUsername" class="input" type="text" placeholder=" ">
+                    <input id="regUsername" class="input" type="text" placeholder="اسم المستخدم">
                     <span class="input-icon">👤</span>
                 </div>
                 <div class="input-group">
-                    <input id="regPassword" class="input" type="password" placeholder=" ">
+                    <input id="regPassword" class="input" type="password" placeholder="كلمة المرور">
                     <span class="input-icon">🔑</span>
                 </div>
                 <div class="input-group">
-                    <input id="regPhone" class="input" type="tel" placeholder=" ">
+                    <input id="regPhone" class="input" type="tel" placeholder="رقم الجوال (مثال: 01128351702)">
                     <span class="input-icon">📱</span>
                 </div>
-                <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn">✅ إضافة الحساب</button>
+                
+                <!-- User Guide -->
+                <div id="userGuide">
+                    <div class="guide-title">
+                        <span style="font-size:20px;">📖</span>
+                        <h4>خطوات التسجيل</h4>
+                    </div>
+                    
+                    <div class="guide-step" id="step1">
+                        <span class="num waiting" id="step1Num">1</span>
+                        <span class="step-text">
+                            <strong>املأ البيانات</strong>
+                            <span style="color:var(--text-muted);font-size:10px;display:block;">اسم المستخدم - كلمة المرور - رقم الجوال</span>
+                        </span>
+                        <span class="step-check waiting" id="step1Check">⬜</span>
+                    </div>
+                    
+                    <div class="guide-step" id="step2">
+                        <span class="num waiting" id="step2Num">2</span>
+                        <span class="step-text">
+                            <strong>اضغط إنشاء حساب</strong>
+                            <span style="color:var(--text-muted);font-size:10px;display:block;">سيتم إنشاء حسابك فوراً</span>
+                        </span>
+                        <span class="step-check waiting" id="step2Check">⬜</span>
+                    </div>
+                    
+                    <div class="guide-step" id="step3">
+                        <span class="num waiting" id="step3Num">3</span>
+                        <span class="step-text">
+                            <strong>تم الإنشاء ✅</strong>
+                            <span style="color:var(--text-muted);font-size:10px;display:block;">يمكنك الآن تسجيل الدخول</span>
+                        </span>
+                        <span class="step-check waiting" id="step3Check">⬜</span>
+                    </div>
+                </div>
+                
+                <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn" style="margin-top:6px;">✅ إنشاء حساب</button>
             </div>
+            
             <div id="confirmationMessage">
                 <div class="icon">✅</div>
-                <h3>تم إرسال طلبك بنجاح!</h3>
-                <p>سيتم مراجعة طلبك قريباً من قبل فريق الدعم.<br>تواصل مع دعم المنصة لمتابعة الطلب.</p>
-                <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20قدمت%20طلب%20إنشاء%20حساب%20على%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأريد%20متابعة%20الطلب" target="_blank" class="support-link">💬 تواصل مع الدعم</a>
+                <h3>تم إنشاء حسابك بنجاح!</h3>
+                <p>يمكنك الآن تسجيل الدخول باستخدام اسم المستخدم وكلمة المرور.</p>
             </div>
         </div>
     </section>
@@ -382,6 +440,19 @@
                         <div class="admin-stat-box"><div class="num" id="adminTotalBadges">0</div><div class="label">🏅 إجمالي الشارات</div></div>
                         <div class="admin-stat-box"><div class="num" id="adminTotalVideos">0</div><div class="label">🎬 إجمالي المشاهدات</div></div>
                     </div>
+                    
+                    <!-- Admin Controls -->
+                    <div class="admin-controls">
+                        <span class="label">🛡️ تحكم سريع:</span>
+                        <button onclick="unlockMyVideos()" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:0;padding:6px 16px;border-radius:30px;font-weight:bold;cursor:pointer;font-family:'Tajawal',Arial,sans-serif;font-size:12px;transition:all 0.3s;">
+                            🔓 فتح فيديوهاتي
+                        </button>
+                        <button onclick="lockMyVideos()" style="background:linear-gradient(135deg,#ff3344,#cc2233);color:#fff;border:0;padding:6px 16px;border-radius:30px;font-weight:bold;cursor:pointer;font-family:'Tajawal',Arial,sans-serif;font-size:12px;transition:all 0.3s;">
+                            🔒 قفل فيديوهاتي
+                        </button>
+                        <span class="status">الحالة: <span id="adminLockStatus">🔒 مقفلة</span></span>
+                    </div>
+                    
                     <input class="admin-search" id="adminSearch" type="text" placeholder="🔍 بحث عن مستخدم..." oninput="filterAdminUsers()">
                     <div id="adminUsersList"></div>
                 </div>
@@ -408,19 +479,26 @@
                     <div class="support-title">💬 <span>الدعم الفني</span></div>
                     <div class="support-desc">للإستفسارات والمساعدة، تواصل معنا</div>
                     <div class="support-buttons">
-                        <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" target="_blank" class="support-btn whatsapp">
+                        <a href="https://wa.me/201128351702?text=مرحباً%20أنا%20من%20منصة%20SAYODA%20|%20CYBER%20FORCE%20وأحتاج%20مساعدة" 
+                           target="_blank" class="support-btn whatsapp">
                             <span class="btn-icon">💬</span>
                             <span class="btn-text">تواصل عبر واتساب <small>01128351702</small></span>
                         </a>
-                        <a href="https://chat.whatsapp.com/FvCcHqSmDEq7bKtCPKrScm" target="_blank" class="support-btn team">
-                            <span class="btn-icon">💪🏻</span>
-                            <span class="btn-text">كن جزء من الفريق <small>انضم لجروب الواتساب</small></span>
+                        <a href="https://whatsapp.com/channel/0029Vb6vt3eGU3BRhynARz1O" 
+                           target="_blank" class="support-btn team">
+                            <span class="btn-icon">📢</span>
+                            <span class="btn-text">انضم للقناة <small>آخر التحديثات</small></span>
+                        </a>
+                        <a href="https://chat.whatsapp.com/FvCcHqSmDEq7bKtCPKrScm" 
+                           target="_blank" class="support-btn team">
+                            <span class="btn-icon">👥</span>
+                            <span class="btn-text">كن جزء من الفريق <small>انضم للجروب</small></span>
                         </a>
                     </div>
                 </div>
                 <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border-color);">
                     © 2026 SAYODA | CYBER FORCE<br>
-                    <a href="https://t.me/sayoda_elgadar" target="_blank">حقوقي EL-SAYED HASAN</a>
+                    <a href="https://t.me/sayoda_elgadar" target="_blank">EL-SAYED HASAN</a>
                 </div>
             </div>
         </footer>
@@ -458,7 +536,7 @@
                 لفتحها، يرجى التواصل مع الدعم الفني<br>
                 وسيتم فتحها لك في أقرب وقت.
             </p>
-            <a href="https://wa.me/201128351702?text=📚%20طلب%20فتح%20المحاضرات%20على%20منصة%20SAYODA%20|%20CYBER%20FORCE%0A%0A👤%20اسم%20المستخدم:%20[username]%0A📧%20البريد%20الإلكتروني:%20[email]%0A📱%20رقم%20الهاتف:%20[phone]%0A%0A🔓%20أطلب%20فتح%20المحاضرات%20لمشاهدة%20المحتوى%20التعليمي." 
+            <a href="https://wa.me/201128351702?text=📚%20طلب%20فتح%20المحاضرات%20على%20منصة%20SAYODA%20|%20CYBER%20FORCE%0A%0A👤%20اسم%20المستخدم:%20[username]%0A📱%20رقم%20الهاتف:%20[phone]%0A%0A🔓%20أطلب%20فتح%20المحاضرات%20لمشاهدة%20المحتوى%20التعليمي." 
                target="_blank" class="btn-request" id="requestWaBtn">
                 💬 طلب فتح عبر واتساب
             </a>
@@ -466,6 +544,15 @@
             <button class="btn-cancel" onclick="closeRequestModal()">إغلاق</button>
         </div>
     </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <span>✅</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- ===== CONFETTI ===== -->
+    <div id="confettiContainer" class="confetti-container"></div>
 
     <script>
         /* ============================================
@@ -508,7 +595,7 @@
                         videosWatched: u.videos_watched || [],
                         totalRating: u.total_rating || 0,
                         ratingCount: u.rating_count || 0,
-                        videos_locked: u.videos_locked !== undefined ? u.videos_locked : true // 🔒 جديد
+                        videos_locked: u.videos_locked !== undefined ? u.videos_locked : true
                     };
                 });
                 const commentsObj = {};
@@ -539,7 +626,7 @@
                     videos_watched: userData.videosWatched || [],
                     total_rating: userData.totalRating || 0,
                     rating_count: userData.ratingCount || 0,
-                    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true // 🔒
+                    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true
                 }));
                 const { error: deleteError } = await sb.from('users').delete().neq('id', 0);
                 if (deleteError) throw deleteError;
@@ -567,16 +654,16 @@
         }
 
         /* ============================================
-           🤖 BOT TELEGRAM
+           📱 TELEGRAM (للإشعارات فقط)
            ============================================ */
-        const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
-        const CHAT_ID = '7114350905';
+        const BOT_TOKEN = '8655357261:AAFPVQZEi1F4eqeKRDBDGK-kM9rGXciVqVU';
+        
         async function sendTelegramMessage(message) {
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+                    body: JSON.stringify({ chat_id: '7114350905', text: message, parse_mode: 'HTML' })
                 });
                 return true;
             } catch (e) { return false; }
@@ -786,7 +873,7 @@
                         videosWatched: local.videosWatched,
                         totalRating: local.totalRating,
                         ratingCount: local.ratingCount,
-                        videos_locked: true // 🔒 جديد افتراضي
+                        videos_locked: true
                     };
                     await saveCloudData(cloud);
                 }
@@ -844,7 +931,7 @@
                     role: data.role || 'user',
                     active: data.active !== false,
                     password: data.password || '',
-                    videos_locked: data.videos_locked !== undefined ? data.videos_locked : true // 🔒
+                    videos_locked: data.videos_locked !== undefined ? data.videos_locked : true
                 }))
                 .sort((a, b) => b.xp - a.xp);
 
@@ -852,6 +939,15 @@
             document.getElementById('adminTotalXP').textContent = users.reduce((s, u) => s + u.xp, 0);
             document.getElementById('adminTotalBadges').textContent = users.reduce((s, u) => s + u.badges.length, 0);
             document.getElementById('adminTotalVideos').textContent = users.reduce((s, u) => s + u.videosWatched.length, 0);
+
+            // تحديث حالة القفل للمشرف
+            if (currentUser && currentUser.role === 'admin') {
+                const statusEl = document.getElementById('adminLockStatus');
+                if (statusEl) {
+                    statusEl.textContent = currentUser.videos_locked ? '🔒 مقفلة' : '🔓 مفتوحة';
+                    statusEl.style.color = currentUser.videos_locked ? '#ff6678' : '#7fc9ff';
+                }
+            }
 
             const search = document.getElementById('adminSearch')?.value?.toLowerCase() || '';
             const filtered = users.filter(u => u.username.toLowerCase().includes(search) && u.active !== false);
@@ -888,14 +984,93 @@
             }).join('');
         }
 
-        // 🔒 دالة تبديل حالة الفيديوهات لمستخدم معين
+        // ============================================
+        // 🔓 فتح وقفل الفيديوهات للمشرف لنفسه
+        // ============================================
+
+        async function unlockMyVideos() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
+                return;
+            }
+            
+            try {
+                const cloud = await fetchCloudData();
+                const username = currentUser.username;
+                
+                if (cloud.users && cloud.users[username]) {
+                    cloud.users[username].videos_locked = false;
+                    await saveCloudData(cloud);
+                    
+                    currentUser.videos_locked = false;
+                    
+                    renderVideos();
+                    updateProfile();
+                    
+                    const cloud2 = await fetchCloudData();
+                    renderAdminPanel(cloud2);
+                    localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud2));
+                    
+                    const statusEl = document.getElementById('adminLockStatus');
+                    if (statusEl) {
+                        statusEl.textContent = '🔓 مفتوحة';
+                        statusEl.style.color = '#7fc9ff';
+                    }
+                    
+                    showToast('✅ تم فتح كل الفيديوهات لك!');
+                    sendTelegramMessage(`🔓 ${currentUser.username} فتح الفيديوهات لنفسه`);
+                }
+            } catch (e) {
+                showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
+                console.error(e);
+            }
+        }
+
+        async function lockMyVideos() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
+                return;
+            }
+            
+            try {
+                const cloud = await fetchCloudData();
+                const username = currentUser.username;
+                
+                if (cloud.users && cloud.users[username]) {
+                    cloud.users[username].videos_locked = true;
+                    await saveCloudData(cloud);
+                    
+                    currentUser.videos_locked = true;
+                    
+                    renderVideos();
+                    updateProfile();
+                    
+                    const cloud2 = await fetchCloudData();
+                    renderAdminPanel(cloud2);
+                    localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud2));
+                    
+                    const statusEl = document.getElementById('adminLockStatus');
+                    if (statusEl) {
+                        statusEl.textContent = '🔒 مقفلة';
+                        statusEl.style.color = '#ff6678';
+                    }
+                    
+                    showToast('🔒 تم قفل الفيديوهات مرة أخرى.');
+                    sendTelegramMessage(`🔒 ${currentUser.username} قفل الفيديوهات لنفسه`);
+                }
+            } catch (e) {
+                showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
+                console.error(e);
+            }
+        }
+
         async function toggleUserVideos(username) {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
                 return;
             }
             if (username === currentUser.username) {
-                showToast('⚠️ لا يمكنك تغيير حالة فيديوهاتك أثناء تسجيل الدخول.', '⚠️');
+                showToast('⚠️ استخدم الأزرار المخصصة أعلاه لتغيير حالة فيديوهاتك.', '⚠️');
                 return;
             }
             try {
@@ -953,7 +1128,6 @@
         function showRequestModal() {
             const modal = document.getElementById('requestModal');
             modal.classList.add('show');
-            // تحديث رابط واتساب باسم المستخدم الحالي
             const waBtn = document.getElementById('requestWaBtn');
             if (currentUser) {
                 const phone = currentUser.phone || 'غير مسجل';
@@ -1025,26 +1199,81 @@
             document.getElementById('confirmationMessage').classList.remove('show');
         }
 
+        // Update Guide Steps
+        function updateGuideStep(step) {
+            const steps = [
+                { id: 'step1', num: 'step1Num', check: 'step1Check' },
+                { id: 'step2', num: 'step2Num', check: 'step2Check' },
+                { id: 'step3', num: 'step3Num', check: 'step3Check' }
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                const el = document.getElementById(steps[i].id);
+                const numEl = document.getElementById(steps[i].num);
+                const checkEl = document.getElementById(steps[i].check);
+                
+                if (i < step) {
+                    el.classList.add('done');
+                    numEl.className = 'num done';
+                    numEl.textContent = '✅';
+                    checkEl.className = 'step-check done';
+                    checkEl.textContent = '✅';
+                } else if (i === step) {
+                    el.classList.remove('done');
+                    numEl.className = 'num active';
+                    numEl.textContent = i + 1;
+                    checkEl.className = 'step-check waiting';
+                    checkEl.textContent = '⏳';
+                } else {
+                    el.classList.remove('done');
+                    numEl.className = 'num waiting';
+                    numEl.textContent = i + 1;
+                    checkEl.className = 'step-check waiting';
+                    checkEl.textContent = '⬜';
+                }
+            }
+        }
+
+        // Auto update steps on input
+        document.getElementById('regUsername')?.addEventListener('input', function() {
+            if (this.value.length >= 3) updateGuideStep(1);
+        });
+        document.getElementById('regPassword')?.addEventListener('input', function() {
+            if (this.value.length >= 4) updateGuideStep(1);
+        });
+        document.getElementById('regPhone')?.addEventListener('input', function() {
+            if (this.value.length >= 10) updateGuideStep(1);
+        });
+
         async function submitRegistration() {
             const u = document.getElementById('regUsername').value.trim();
             const p = document.getElementById('regPassword').value.trim();
             const ph = document.getElementById('regPhone').value.trim();
-            const btn = document.getElementById('registerSubmitBtn');
             const err = document.getElementById('loginError');
             err.textContent = '';
-            if (!u || !p || !ph) { err.textContent = '⚠️ يرجى ملء جميع الحقول.'; return; }
+            
+            if (!u || !p || !ph) {
+                err.textContent = '⚠️ يرجى ملء جميع الحقول.';
+                return;
+            }
             if (u.length < 3) { err.textContent = '⚠️ اسم المستخدم يجب أن يكون 3 أحرف على الأقل.'; return; }
             if (p.length < 4) { err.textContent = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل.'; return; }
             if (!/^[\d]{10,11}$/.test(ph.replace(/\s/g, ''))) { err.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).'; return; }
-            btn.disabled = true; btn.textContent = '⏳ جاري الإرسال...';
+            
+            const btn = document.getElementById('registerSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري الإنشاء...';
+            updateGuideStep(2);
+            
             try {
                 const cloud = await fetchCloudData();
                 if (!cloud.users) cloud.users = {};
                 if (cloud.users[u]) {
                     err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
-                    btn.disabled = false; btn.textContent = '✅ إضافة الحاسوب';
+                    btn.disabled = false; btn.textContent = '✅ إنشاء حساب';
                     return;
                 }
+                
                 cloud.users[u] = {
                     password: p,
                     role: 'user',
@@ -1058,38 +1287,34 @@
                     videosWatched: [],
                     totalRating: 0,
                     ratingCount: 0,
-                    videos_locked: true // 🔒 جديد - مقفل افتراضي
+                    videos_locked: true
                 };
+                
                 await saveCloudData(cloud);
+                
                 const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
-                const ip = await getIP(); const dev = getDevice();
-                await sendTelegramMessage(`🔐 <b>طلب حساب جديد</b>\n👤 ${sanitizeHTML(u)}\n🔑 ${sanitizeHTML(p)}\n📱 ${sanitizeHTML(ph)}\n🌐 ${ip}\n📱 ${dev.device}\n📅 ${now}`);
+                const ip = await getIP();
+                const dev = getDevice();
+                sendTelegramMessage(`🔐 <b>حساب جديد</b>\n👤 ${sanitizeHTML(u)}\n📱 ${sanitizeHTML(ph)}\n🌐 ${ip}\n📱 ${dev.device}\n📅 ${now}`);
+                
+                document.getElementById('registerForm').style.display = 'none';
                 document.getElementById('confirmationMessage').classList.add('show');
-                document.getElementById('registerForm').classList.remove('show');
-                document.getElementById('regUsername').value = '';
-                document.getElementById('regPassword').value = '';
-                document.getElementById('regPhone').value = '';
+                document.getElementById('loginError').textContent = '';
+                updateGuideStep(3);
                 showToast('✅ تم إنشاء حسابك بنجاح!');
+                
+                // Auto-fill login
+                document.getElementById('username').value = u;
+                document.getElementById('password').value = p;
+                
+                setTimeout(() => login(), 1500);
+                
             } catch (e) {
                 console.error(e);
                 err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
             }
-            btn.disabled = false; btn.textContent = '✅ إضافة الحاسوب';
-        }
-
-        async function getIP() {
-            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; } catch (e) { return 'غير معروف'; }
-        }
-        function getDevice() {
-            const ua = navigator.userAgent;
-            let d = 'غير معروف'; let b = 'غير معروف';
-            if (/Mobile|Android|iPhone|iPad/i.test(ua)) d = '📱 جوال';
-            else if (/Windows|Mac|Linux/i.test(ua)) d = '💻 كمبيوتر';
-            if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) b = 'Chrome';
-            else if (/Firefox/i.test(ua)) b = 'Firefox';
-            else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) b = 'Safari';
-            else if (/Edge/i.test(ua)) b = 'Edge';
-            return { device: d, browser: b };
+            btn.disabled = false;
+            btn.textContent = '✅ إنشاء حساب';
         }
 
         /* ============================================
@@ -1184,7 +1409,7 @@
         }
 
         /* ============================================
-           🎬 RENDER VIDEOS - مع نظام القفل لكل مستخدم
+           🎬 RENDER VIDEOS
            ============================================ */
         function renderVideos() {
             const grid = document.getElementById('videoGrid');
@@ -1207,15 +1432,13 @@
                     const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
                     const watched = videoProgress[id] >= 100 ? '✅' : '';
                     
-                    // 🔒 التحقق من حالة المستخدم
                     let isLocked = false;
                     if (currentUser && currentUser.videos_locked !== undefined) {
-                        isLocked = currentUser.videos_locked; // مقفل حسب حالة المستخدم
+                        isLocked = currentUser.videos_locked;
                     } else {
-                        isLocked = true; // افتراضي مقفل
+                        isLocked = true;
                     }
                     
-                    // لو مش مقفل، نطبق نظام 30%
                     if (!isLocked) {
                         isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
                     }
@@ -1258,14 +1481,11 @@
             const index = parseInt(el?.dataset?.index || 0);
             if (!id) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
             
-            // 🔒 التحقق من قفل المستخدم
             if (currentUser && currentUser.videos_locked !== undefined && currentUser.videos_locked) {
-                // إذا كان المستخدم مقفلة عليه الفيديوهات، نعرض نافذة الطلب
                 showRequestModal();
                 return;
             }
             
-            // ثم التحقق من القفل التراكمي 30%
             if (index > 0) {
                 const prevVideo = videos[index - 1];
                 const prevId = extractID(prevVideo?.youtube_id) || '';
@@ -1332,13 +1552,23 @@
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
         document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
 
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('sayoda_tab_open')) {
-                showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
-                setTimeout(() => window.close(), 1000);
-            } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
-        });
-        window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
+        /* ============================================
+           IP & DEVICE
+           ============================================ */
+        async function getIP() {
+            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; } catch (e) { return 'غير معروف'; }
+        }
+        function getDevice() {
+            const ua = navigator.userAgent;
+            let d = 'غير معروف'; let b = 'غير معروف';
+            if (/Mobile|Android|iPhone|iPad/i.test(ua)) d = '📱 جوال';
+            else if (/Windows|Mac|Linux/i.test(ua)) d = '💻 كمبيوتر';
+            if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) b = 'Chrome';
+            else if (/Firefox/i.test(ua)) b = 'Firefox';
+            else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) b = 'Safari';
+            else if (/Edge/i.test(ua)) b = 'Edge';
+            return { device: d, browser: b };
+        }
 
         /* ============================================
            AUTO LOGIN
@@ -1368,6 +1598,14 @@
                 }
             } catch (e) {}
         })();
+
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('sayoda_tab_open')) {
+                showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
+                setTimeout(() => window.close(), 1000);
+            } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
+        });
+        window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
     </script>
 
 </body>
