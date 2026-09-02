@@ -66,7 +66,7 @@
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
         /* ============================================
-           LOGIN SCREEN - ظهور فوري
+           LOGIN SCREEN
            ============================================ */
         .login-screen {
             min-height: 100vh;
@@ -1996,7 +1996,7 @@
         }
 
         /* ============================================
-           LOGIN
+           LOGIN - مع إظهار لوحة التحكم للمشرفين
            ============================================ */
         async function login() {
             const u = document.getElementById('username').value.trim();
@@ -2026,6 +2026,7 @@
                     sendTelegramMessage(`🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
                     showToast('✅ تم تسجيل الدخول بنجاح!');
 
+                    // ✅ إظهار لوحة التحكم للمشرفين
                     if (userData.role === 'admin') {
                         document.getElementById('adminPanelLink').style.display = 'flex';
                         document.getElementById('adminBadge').style.display = 'inline';
@@ -2064,7 +2065,23 @@
             document.getElementById('app').classList.remove('hidden');
             renderVideos();
             updateProfile();
-            setTimeout(async () => { const cloud = await fetchCloudData(); updateLeaderboard(cloud); }, 600);
+            
+            // ✅ إظهار لوحة التحكم للمشرفين
+            if (currentUser && currentUser.role === 'admin') {
+                document.getElementById('adminPanelLink').style.display = 'flex';
+                document.getElementById('adminBadge').style.display = 'inline';
+                document.getElementById('adminPanel').style.display = 'block';
+                setTimeout(async () => {
+                    const cloud = await fetchCloudData();
+                    renderAdminPanel(cloud);
+                    localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud));
+                }, 500);
+            }
+            
+            setTimeout(async () => { 
+                const cloud = await fetchCloudData(); 
+                updateLeaderboard(cloud); 
+            }, 600);
         }
 
         function logout() {
