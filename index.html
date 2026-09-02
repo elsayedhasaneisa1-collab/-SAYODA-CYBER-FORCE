@@ -163,8 +163,14 @@
         .leaderboard-entry:hover{background:rgba(7,19,33,.7);border-color:#19aaff33}
         .leaderboard-entry .rank{font-size:14px;font-weight:bold;color:var(--accent);width:28px}
         .leaderboard-entry .user{flex:1;font-weight:500;font-size:clamp(12px,1vw,13px)}
+        .leaderboard-entry .user .sub{font-size:10px;color:var(--text-muted);display:block}
+        .leaderboard-entry .badges-count{color:var(--accent);font-size:11px;margin:0 4px}
         .leaderboard-entry .score{color:var(--gold);font-weight:bold;font-size:clamp(12px,1vw,13px)}
-        .leaderboard-entry .badges-count{color:var(--accent);font-size:11px}
+        .leaderboard-entry .total-score{color:var(--gold);font-size:11px;font-weight:bold}
+        .leaderboard-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;padding:10px;background:rgba(7,19,33,.3);border-radius:8px;border:1px solid var(--border-color)}
+        .leaderboard-stats span{color:var(--text-muted);font-size:11px}
+        .leaderboard-refresh{background:rgba(25,170,255,0.1);border:1px solid var(--accent);color:var(--accent);padding:4px 12px;border-radius:30px;font-size:11px;cursor:pointer;font-family:'Tajawal',Arial,sans-serif;transition:all 0.3s}
+        .leaderboard-refresh:hover{background:rgba(25,170,255,0.2)}
 
         .admin-panel{background:var(--card-bg);border-radius:14px;padding:14px;border:1px solid var(--border-color)}
         .admin-user-card{background:rgba(7,19,33,.4);border-radius:10px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--border-color);transition:all var(--transition);display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
@@ -428,10 +434,20 @@
             </div>
         </section>
 
+        <!-- ===== LEADERBOARD ===== -->
         <section id="leaderboard" class="section">
             <div class="container">
-                <div class="section-title"><h2>🏆 <span>المتصدرين</span></h2><p>ترتيب المستخدمين حسب النقاط</p></div>
+                <div class="section-title">
+                    <h2>🏆 <span>المتصدرين</span></h2>
+                    <p>ترتيب المستخدمين حسب النقاط</p>
+                </div>
                 <div style="background:var(--card-bg);border-radius:14px;padding:14px;border:1px solid var(--border-color);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                        <p style="color:var(--text-muted);font-size:12px;">ترتيب المستخدمين حسب النقاط</p>
+                        <button onclick="refreshLeaderboard()" class="leaderboard-refresh">
+                            🔄 تحديث
+                        </button>
+                    </div>
                     <div id="leaderboardList"></div>
                     <div style="margin-top:10px;text-align:center;color:var(--text-muted);font-size:11px;">⚡ يتم تحديث الترتيب تلقائياً</div>
                 </div>
@@ -770,6 +786,7 @@
             const levels = [{ min: 0, title: 'مبتدئ', emoji: '🟢' }, { min: 100, title: 'متعلم', emoji: '🔵' }, { min: 300, title: 'خبير', emoji: '🟣' }, { min: 600, title: 'محترف', emoji: '🟡' }, { min: 1000, title: 'أسطورة', emoji: '🔴' }];
             let newLevel = levels[0];
             for (const l of levels) if (d.xp >= l.min) newLevel = l;
+            
             if (newLevel.title !== d.level) {
                 d.level = newLevel.title; d.levelEmoji = newLevel.emoji;
                 const map = { 'متعلم':'level_2', 'خبير':'level_3', 'محترف':'level_4', 'أسطورة':'level_5' };
@@ -781,7 +798,15 @@
                     syncUserData();
                 }
             }
-            saveUserData(d); updateProfile(); return d;
+            saveUserData(d); updateProfile();
+            
+            // تحديث المتصدرين بعد إضافة XP
+            setTimeout(async () => {
+                const cloud = await fetchCloudData();
+                updateLeaderboard(cloud);
+            }, 1000);
+            
+            return d;
         }
 
         function updateStreak() {
@@ -819,6 +844,98 @@
         }
 
         /* ============================================
+           🏆 LEADERBOARD
+           ============================================ */
+        function updateLeaderboard(cloud) {
+            const list = document.getElementById('leaderboardList');
+            if (!cloud || !cloud.users) {
+                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:14px;">⚠️ لا توجد بيانات</div>';
+                return;
+            }
+
+            // حساب النقاط لكل مستخدم
+            const entries = Object.entries(cloud.users).map(([username, data]) => {
+                const videosWatched = data.videosWatched?.length || 0;
+                const badgesCount = data.badges?.length || 0;
+                const xp = data.xp || 0;
+                
+                // معادلة النقاط: (فيديوهات × 10) + (شارات × 5) + XP
+                const totalScore = (videosWatched * 10) + (badgesCount * 5) + xp;
+                
+                return {
+                    username: username,
+                    xp: xp,
+                    videosWatched: videosWatched,
+                    badges: badgesCount,
+                    totalScore: totalScore,
+                    level: data.level || 'مبتدئ',
+                    levelEmoji: data.levelEmoji || '🟢',
+                    streak: data.streak || 0
+                };
+            });
+
+            // ترتيب تنازلي حسب النقاط
+            entries.sort((a, b) => b.totalScore - a.totalScore);
+
+            if (!entries.length) {
+                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:14px;">لا يوجد مستخدمين بعد</div>';
+                return;
+            }
+
+            // عرض أول 20 مستخدم
+            const medals = ['🥇', '🥈', '🥉'];
+            list.innerHTML = entries.slice(0, 20).map((e, i) => {
+                const rank = i < 3 ? medals[i] : `#${i+1}`;
+                const isMe = e.username === currentUser?.username;
+                
+                return `
+                <div class="leaderboard-entry" style="${isMe ? 'border-color:var(--accent);background:rgba(25,170,255,0.08);' : ''}">
+                    <span class="rank">${rank}</span>
+                    <span class="user">
+                        ${sanitizeHTML(e.username)} 
+                        ${isMe ? '👈' : ''}
+                        <span class="sub">${e.levelEmoji} ${e.level}</span>
+                    </span>
+                    <span class="badges-count">🏅 ${e.badges}</span>
+                    <span class="badges-count">🎬 ${e.videosWatched}</span>
+                    <span class="score">⭐ ${e.xp}</span>
+                    <span class="total-score">🏆 ${e.totalScore}</span>
+                </div>
+                `;
+            }).join('');
+
+            // إضافة إحصائيات سريعة
+            const statsHTML = `
+                <div class="leaderboard-stats">
+                    <span>👥 ${entries.length} مستخدم</span>
+                    <span>⭐ ${entries.reduce((s, e) => s + e.xp, 0)} إجمالي XP</span>
+                    <span>🎬 ${entries.reduce((s, e) => s + e.videosWatched, 0)} فيديو مكتمل</span>
+                    <span>🏅 ${entries.reduce((s, e) => s + e.badges, 0)} شارة</span>
+                </div>
+            `;
+            
+            list.innerHTML += statsHTML;
+        }
+
+        // دالة تحديث يدوي
+        async function refreshLeaderboard() {
+            showToast('🔄 جاري تحديث المتصدرين...');
+            const cloud = await fetchCloudData();
+            updateLeaderboard(cloud);
+            showToast('✅ تم تحديث المتصدرين!');
+        }
+
+        // تحديث المتصدرين كل 30 ثانية
+        setInterval(async function() {
+            try {
+                const cloud = await fetchCloudData();
+                updateLeaderboard(cloud);
+            } catch (e) {
+                console.warn('⚠️ فشل تحديث المتصدرين:', e);
+            }
+        }, 30000);
+
+        /* ============================================
            CONFETTI
            ============================================ */
         function launchConfetti() {
@@ -848,6 +965,7 @@
                 const local = getUserData();
                 const u = currentUser?.username;
                 if (!u) return;
+                
                 if (cloud.users && cloud.users[u]) {
                     if (cloud.users[u].xp > local.xp) {
                         local.xp = cloud.users[u].xp;
@@ -858,7 +976,9 @@
                         local.videosWatched = cloud.users[u].videosWatched || local.videosWatched;
                         local.totalRating = cloud.users[u].totalRating || local.totalRating;
                         local.ratingCount = cloud.users[u].ratingCount || local.ratingCount;
-                        saveUserData(local); updateProfile(); renderVideos();
+                        saveUserData(local);
+                        updateProfile();
+                        renderVideos();
                     } else if (local.xp > cloud.users[u].xp) {
                         cloud.users[u].xp = local.xp;
                         cloud.users[u].level = local.level;
@@ -889,33 +1009,16 @@
                     };
                     await saveCloudData(cloud);
                 }
+                
+                // تحديث المتصدرين
                 updateLeaderboard(cloud);
-                if (currentUser?.role === 'admin') { renderAdminPanel(cloud); }
-            } catch (e) { console.warn('⚠️ خطأ في المزامنة:', e); }
-        }
-
-        /* ============================================
-           LEADERBOARD
-           ============================================ */
-        function updateLeaderboard(cloud) {
-            const list = document.getElementById('leaderboardList');
-            if (!cloud || !cloud.users) return;
-            const entries = Object.entries(cloud.users).map(([u, d]) => ({ username: u, xp: d.xp || 0, badges: d.badges?.length || 0 })).sort((a, b) => b.xp - a.xp);
-            if (!entries.length) {
-                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:14px;">لا يوجد مستخدمين بعد</div>';
-                return;
+                
+                if (currentUser?.role === 'admin') {
+                    renderAdminPanel(cloud);
+                }
+            } catch (e) {
+                console.warn('⚠️ خطأ في المزامنة:', e);
             }
-            const medals = ['🥇', '🥈', '🥉'];
-            list.innerHTML = entries.slice(0, 20).map((e, i) => {
-                const rank = i < 3 ? medals[i] : `#${i+1}`;
-                const isMe = e.username === currentUser?.username;
-                return `<div class="leaderboard-entry" style="${isMe ? 'border-color:var(--accent);background:rgba(25,170,255,0.08);' : ''}">
-                    <span class="rank">${rank}</span>
-                    <span class="user">${sanitizeHTML(e.username)} ${isMe ? '👈' : ''}</span>
-                    <span class="badges-count">🏅 ${e.badges}</span>
-                    <span class="score">⭐ ${e.xp} XP</span>
-                </div>`;
-            }).join('');
         }
 
         /* ============================================
@@ -973,10 +1076,12 @@
                 const avgRating = u.ratingCount > 0 ? (u.totalRating / u.ratingCount).toFixed(1) : '0';
                 const badgesStr = u.badges.length ? u.badges.map(b => `<span class="badge-item">${b}</span>`).join('') : '<span style="color:var(--text-muted);font-size:9px;">لا توجد شارات</span>';
                 const lockedStatus = u.videos_locked ? '🔒 مقفلة' : '🔓 مفتوحة';
+                const totalScore = (u.videosWatched.length * 10) + (u.badges.length * 5) + u.xp;
                 return `
                 <div class="admin-user-card">
                     <span class="username">${sanitizeHTML(u.username)} ${u.username === currentUser?.username ? '👈' : ''}</span>
                     <span class="detail"><span class="label">⭐</span> <span class="value">${u.xp} XP</span></span>
+                    <span class="detail"><span class="label">🏆</span> <span class="value">${totalScore}</span></span>
                     <span class="detail"><span class="label">📊</span> <span class="value">${u.levelEmoji} ${u.level}</span></span>
                     <span class="detail"><span class="label">🔥</span> <span class="value">${u.streak} يوم</span></span>
                     <span class="detail"><span class="label">🎬</span> <span class="value">${u.videosWatched.length}</span></span>
