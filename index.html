@@ -27,37 +27,69 @@
         p,h1,h2,h3,h4,h5,h6,span,div,a{-webkit-user-select:none;user-select:none}
         
         .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 30% 40%,#008cff15,transparent 60%),radial-gradient(circle at 70% 60%,#12baff08,transparent 50%),var(--bg-primary)}
-        .login-box{width:min(380px,100%);padding:30px 25px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(16px)}
-        .login-logo{display:flex;justify-content:center;margin-bottom:12px}
-        .login-logo img{width:80px;height:80px;border-radius:50%;border:3px solid #19aaff55;box-shadow:0 0 40px #008cff25;object-fit:cover;background:var(--bg-primary);pointer-events:none}
-        .logo-text{text-align:center;color:var(--accent);font-size:clamp(18px,2.5vw,22px);font-weight:900}
+        .login-box{width:min(400px,100%);padding:25px 20px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(16px);max-height:98vh;overflow-y:auto}
+        .login-logo{display:flex;justify-content:center;margin-bottom:10px}
+        .login-logo img{width:70px;height:70px;border-radius:50%;border:3px solid #19aaff55;box-shadow:0 0 40px #008cff25;object-fit:cover;background:var(--bg-primary);pointer-events:none}
+        .logo-text{text-align:center;color:var(--accent);font-size:clamp(17px,2.2vw,21px);font-weight:900}
         .logo-text span{color:#fff}
-        .login-subtitle{text-align:center;color:var(--text-muted);font-size:11px;letter-spacing:3px;margin-bottom:20px}
-        .input-group{position:relative;margin-bottom:14px}
-        .input-group .input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:16px;transition:color var(--transition)}
+        .login-subtitle{text-align:center;color:var(--text-muted);font-size:10px;letter-spacing:3px;margin-bottom:14px}
+        .input-group{position:relative;margin-bottom:12px}
+        .input-group .input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:15px;transition:color var(--transition)}
         .input-group .input-icon.active{color:var(--accent)}
-        .input{width:100%;padding:12px 44px 12px 14px;border:2px solid var(--border-color);border-radius:12px;background:rgba(2,8,18,.7);color:var(--text-primary);outline:none;font-size:clamp(14px,1.1vw,15px);font-family:'Tajawal',Arial,sans-serif;transition:all var(--transition)}
+        .input{width:100%;padding:11px 42px 11px 12px;border:2px solid var(--border-color);border-radius:12px;background:rgba(2,8,18,.7);color:var(--text-primary);outline:none;font-size:clamp(13px,1vw,14px);font-family:'Tajawal',Arial,sans-serif;transition:all var(--transition)}
         .input:focus{border-color:var(--accent);box-shadow:0 0 25px #008cff20;transform:scale(1.01)}
-        .input:focus+.input-icon{color:var(--accent)}
-        .login-btn{width:100%;padding:13px;border:0;border-radius:12px;color:#fff;font-size:clamp(15px,1.2vw,17px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--accent-dark),var(--accent));transition:all var(--transition);margin-top:6px;box-shadow:0 0 25px #008cff15}
+        .login-btn{width:100%;padding:12px;border:0;border-radius:12px;color:#fff;font-size:clamp(14px,1.1vw,16px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--accent-dark),var(--accent));transition:all var(--transition);margin-top:4px;box-shadow:0 0 25px #008cff15}
         .login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px #008cff30}
         .login-btn:disabled{opacity:0.6;cursor:not-allowed}
-        .error{min-height:20px;margin-top:10px;text-align:center;color:var(--danger);font-size:13px}
-        .register-form{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-color)}
+        .error{min-height:18px;margin-top:8px;text-align:center;color:var(--danger);font-size:12px}
+        .register-form{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-color)}
         .register-form.show{display:block}
-        .register-form .input{margin-bottom:10px}
-        .register-title{color:var(--accent);font-size:clamp(14px,1.1vw,16px);font-weight:700;margin-bottom:10px;text-align:center}
+        .register-form .input{margin-bottom:8px}
+        .register-title{color:var(--accent);font-size:clamp(13px,1vw,15px);font-weight:700;margin-bottom:8px;text-align:center}
         .register-title span{color:#fff}
-        .register-btn{width:100%;padding:13px;border:0;border-radius:12px;color:#fff;font-size:clamp(15px,1.2vw,17px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--success),#128C7E);transition:all var(--transition);margin-top:4px}
+        .register-btn{width:100%;padding:12px;border:0;border-radius:12px;color:#fff;font-size:clamp(14px,1.1vw,16px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--success),#128C7E);transition:all var(--transition);margin-top:4px}
         .register-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px #25D36630}
         .register-btn:disabled{opacity:0.6;cursor:not-allowed}
-        #confirmationMessage{display:none;margin-top:16px;padding:16px;background:rgba(7,19,33,.6);border:1px solid #25D36655;border-radius:14px;text-align:center}
+        #confirmationMessage{display:none;margin-top:14px;padding:14px;background:rgba(7,19,33,.6);border:1px solid #25D36655;border-radius:14px;text-align:center}
         #confirmationMessage.show{display:block}
-        #confirmationMessage .icon{font-size:40px;margin-bottom:6px}
-        #confirmationMessage h3{color:var(--success);font-size:clamp(16px,1.3vw,18px)}
-        #confirmationMessage p{color:var(--text-secondary);font-size:clamp(13px,1vw,14px);line-height:1.6}
-        #confirmationMessage .support-link{display:inline-block;margin-top:10px;padding:8px 20px;background:linear-gradient(135deg,var(--success),#128C7E);border-radius:50px;color:#fff;text-decoration:none;font-weight:bold;font-size:clamp(13px,1vw,14px);transition:all var(--transition)}
+        #confirmationMessage .icon{font-size:36px;margin-bottom:4px}
+        #confirmationMessage h3{color:var(--success);font-size:clamp(15px,1.2vw,17px)}
+        #confirmationMessage p{color:var(--text-secondary);font-size:clamp(12px,0.9vw,13px);line-height:1.6}
+        #confirmationMessage .support-link{display:inline-block;margin-top:8px;padding:8px 18px;background:linear-gradient(135deg,var(--success),#128C7E);border-radius:50px;color:#fff;text-decoration:none;font-weight:bold;font-size:clamp(12px,0.9vw,13px);transition:all var(--transition)}
         #confirmationMessage .support-link:hover{transform:scale(1.03);box-shadow:0 8px 25px #25D36630}
+
+        /* User Guide */
+        #userGuide{margin-top:12px;padding:14px;background:rgba(25,170,255,0.06);border-radius:12px;border:1px solid var(--accent)}
+        #userGuide .guide-title{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+        #userGuide .guide-title h4{color:var(--accent);font-size:clamp(13px,1vw,15px);margin:0}
+        .guide-step{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;margin-bottom:4px;background:rgba(25,170,255,0.04);transition:all 0.3s}
+        .guide-step.done{background:rgba(37,211,102,0.08);border-right:3px solid var(--success)}
+        .guide-step .num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;flex-shrink:0;color:#fff}
+        .guide-step .num.done{background:var(--success)}
+        .guide-step .num.waiting{background:var(--text-muted)}
+        .guide-step .num.active{background:var(--accent)}
+        .guide-step .step-text{font-size:clamp(11px,0.9vw,12px);flex:1}
+        .guide-step .step-text strong{color:var(--accent)}
+        .guide-step .step-check{font-size:16px;margin-right:auto}
+        .guide-step .step-check.done{color:var(--success)}
+        .guide-step .step-check.waiting{color:var(--text-muted)}
+
+        /* Forgot Password */
+        #forgotPasswordForm{display:none;margin-top:14px;padding:14px;background:rgba(7,19,33,.6);border-radius:12px;border:1px solid var(--gold)}
+        #forgotPasswordForm h3{color:var(--gold);text-align:center;margin-bottom:8px;font-size:clamp(14px,1.1vw,16px)}
+
+        /* OTP Verification */
+        #otpVerification{display:none;margin-top:14px;padding:14px;background:rgba(7,19,33,.6);border-radius:12px;border:1px solid var(--accent)}
+        #otpVerification h3{color:var(--accent);text-align:center;margin-bottom:8px;font-size:clamp(14px,1.1vw,16px)}
+
+        /* Help Buttons */
+        .help-buttons{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+        .help-btn{flex:1;min-width:80px;padding:6px 10px;border:1px solid var(--border-color);border-radius:30px;background:transparent;color:var(--text-secondary);font-size:clamp(10px,0.8vw,11px);cursor:pointer;transition:all var(--transition);font-family:'Tajawal',Arial,sans-serif;text-align:center;text-decoration:none}
+        .help-btn:hover{background:rgba(25,170,255,0.08);border-color:var(--accent);color:var(--accent)}
+        .help-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+        .help-btn.primary:hover{background:var(--accent-dark)}
+        .help-btn.gold{background:var(--gold);color:#1a1a2e;border-color:var(--gold)}
+        .help-btn.gold:hover{background:#f0c000}
 
         .sidebar-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:all var(--transition)}
         .sidebar-overlay.active{opacity:1;pointer-events:auto}
@@ -239,7 +271,7 @@
         .request-box .btn-cancel:hover{background:rgba(255,255,255,.05)}
         @keyframes fadeInScale{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
 
-        @media (max-width:650px){.hero{min-height:180px;padding:20px 16px}.video-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.video-info{padding:8px}.video-info h3{font-size:12px}.video-info p{font-size:10px;min-height:25px}.meta{font-size:9px}.login-box{padding:18px 14px}.login-logo img{width:60px;height:60px}.section{padding:20px 0}.profile-stats{grid-template-columns:repeat(3,1fr);gap:6px}.profile-stat{padding:6px}.profile-stat .num{font-size:14px}.modal-box{padding:6px}.comment-input-area{flex-direction:column}.comment-input-area button{width:100%}.support-btn{font-size:12px;padding:6px 12px}.sidebar{width:min(230px,80%)}#commentsContainer{max-height:120px}.admin-user-card{flex-direction:column;align-items:flex-start;gap:3px}.admin-user-card .username{min-width:auto}.admin-stats-grid{grid-template-columns:repeat(2,1fr)}.request-box{padding:25px 20px}}
+        @media (max-width:650px){.hero{min-height:180px;padding:20px 16px}.video-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.video-info{padding:8px}.video-info h3{font-size:12px}.video-info p{font-size:10px;min-height:25px}.meta{font-size:9px}.login-box{padding:16px 12px}.login-logo img{width:55px;height:55px}.section{padding:20px 0}.profile-stats{grid-template-columns:repeat(3,1fr);gap:6px}.profile-stat{padding:6px}.profile-stat .num{font-size:14px}.modal-box{padding:6px}.comment-input-area{flex-direction:column}.comment-input-area button{width:100%}.support-btn{font-size:12px;padding:6px 12px}.sidebar{width:min(230px,80%)}#commentsContainer{max-height:120px}.admin-user-card{flex-direction:column;align-items:flex-start;gap:3px}.admin-user-card .username{min-width:auto}.admin-stats-grid{grid-template-columns:repeat(2,1fr)}.request-box{padding:25px 20px}.guide-step{flex-wrap:wrap}.help-buttons{flex-direction:column}.help-btn{min-width:auto}}
         @media (max-width:400px){.video-grid{grid-template-columns:1fr 1fr;gap:6px}.play-btn{width:34px;height:34px;font-size:14px}.brand-name{font-size:11px}.header-actions{gap:3px}.menu-btn{font-size:18px}.header-theme-btn{font-size:14px}}
     </style>
 </head>
@@ -252,32 +284,165 @@
             <div class="logo-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
             <div class="login-subtitle">SECURE ACCESS</div>
             <div class="input-group">
-                <input id="username" class="input" type="text" placeholder=" " autocomplete="username">
+                <input id="username" class="input" type="text" placeholder="اسم المستخدم" autocomplete="username">
                 <span class="input-icon">👤</span>
             </div>
             <div class="input-group">
-                <input id="password" class="input" type="password" placeholder=" " autocomplete="current-password">
+                <input id="password" class="input" type="password" placeholder="كلمة المرور" autocomplete="current-password">
                 <span class="input-icon">🔑</span>
             </div>
-            <button class="login-btn" onclick="login()">دخول</button>
+            <button class="login-btn" onclick="login()">🚪 دخول</button>
             <div id="loginError" class="error"></div>
-            <button class="register-btn" onclick="showRegisterForm()" style="margin-top:10px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">📝 إنشاء حساب جديد</button>
+            
+            <!-- Forgot Password -->
+            <button onclick="showForgotForm()" style="background:none; border:none; color: var(--accent); font-size: 12px; margin-top: 8px; cursor: pointer; width:100%; text-align:center; text-decoration: underline;">
+                🔑 نسيت كلمة المرور؟
+            </button>
+            
+            <button class="register-btn" onclick="showRegisterForm()" style="margin-top:8px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">📝 إنشاء حساب جديد</button>
+            
+            <!-- Register Form -->
             <div class="register-form" id="registerForm">
                 <div class="register-title">📝 <span>إنشاء حساب جديد</span></div>
                 <div class="input-group">
-                    <input id="regUsername" class="input" type="text" placeholder=" ">
+                    <input id="regUsername" class="input" type="text" placeholder="اسم المستخدم">
                     <span class="input-icon">👤</span>
                 </div>
                 <div class="input-group">
-                    <input id="regPassword" class="input" type="password" placeholder=" ">
+                    <input id="regPassword" class="input" type="password" placeholder="كلمة المرور">
                     <span class="input-icon">🔑</span>
                 </div>
                 <div class="input-group">
-                    <input id="regPhone" class="input" type="tel" placeholder=" ">
+                    <input id="regPhone" class="input" type="tel" placeholder="رقم الجوال (مثال: 01128351702)">
                     <span class="input-icon">📱</span>
                 </div>
-                <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn">✅ إضافة الحساب</button>
+                <div class="input-group">
+                    <input id="regTelegram" class="input" type="text" placeholder="معرف التلجرام (مثال: sayedhasan)">
+                    <span class="input-icon">✈️</span>
+                </div>
+                
+                <!-- User Guide -->
+                <div id="userGuide">
+                    <div class="guide-title">
+                        <span style="font-size:20px;">📖</span>
+                        <h4>خطوات التسجيل</h4>
+                    </div>
+                    
+                    <div class="guide-step" id="step1">
+                        <span class="num waiting" id="step1Num">1</span>
+                        <span class="step-text">
+                            <strong>أضف البوت</strong>
+                            <a href="https://t.me/sayedhasan_501bot" target="_blank" style="color:var(--accent);text-decoration:none;font-size:11px;display:block;">
+                                🤖 @sayedhasan_501bot
+                            </a>
+                            <span style="color:var(--text-muted);font-size:10px;">وارسل /start</span>
+                        </span>
+                        <span class="step-check waiting" id="step1Check">⬜</span>
+                    </div>
+                    
+                    <div class="guide-step" id="step2">
+                        <span class="num waiting" id="step2Num">2</span>
+                        <span class="step-text">
+                            <strong>املأ البيانات</strong>
+                            <span style="color:var(--text-muted);font-size:10px;display:block;">اسم المستخدم - كلمة المرور - رقم الجوال</span>
+                        </span>
+                        <span class="step-check waiting" id="step2Check">⬜</span>
+                    </div>
+                    
+                    <div class="guide-step" id="step3">
+                        <span class="num waiting" id="step3Num">3</span>
+                        <span class="step-text">
+                            <strong>استلم الكود</strong>
+                            <span style="color:var(--text-muted);font-size:10px;display:block;">هيوصل على البوت @sayedhasan_501bot</span>
+                        </span>
+                        <span class="step-check waiting" id="step3Check">⬜</span>
+                    </div>
+                    
+                    <div class="guide-step" id="step4">
+                        <span class="num waiting" id="step4Num">4</span>
+                        <span class="step-text">
+                            <strong>ادخل الكود</strong>
+                            <span style="color:var(--text-muted);font-size:10px;display:block;">انسخ الكود من البوت وضعه هنا</span>
+                        </span>
+                        <span class="step-check waiting" id="step4Check">⬜</span>
+                    </div>
+                </div>
+                
+                <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn" style="margin-top:6px;">✅ إضافة الحساب</button>
             </div>
+            
+            <!-- OTP Verification -->
+            <div id="otpVerification" style="display:none; margin-top: 14px; padding: 14px; background: rgba(7,19,33,.6); border-radius: 12px; border: 1px solid var(--accent);">
+                <div style="text-align:center; margin-bottom: 8px;">
+                    <span style="font-size:30px;">🔐</span>
+                    <h3 style="color: var(--accent); margin:4px 0;">تأكيد الكود</h3>
+                    <p style="color: var(--text-muted); font-size: 12px;">أدخل الكود المرسل عبر البوت @sayedhasan_501bot</p>
+                </div>
+                <div class="input-group">
+                    <input id="otpInput" class="input" type="text" maxlength="6" placeholder="أدخل الكود (6 أرقام)" autocomplete="one-time-code">
+                    <span class="input-icon">🔐</span>
+                </div>
+                <button class="login-btn" onclick="verifyPhoneOTP()" style="margin-top: 4px;">✅ تأكيد الكود</button>
+                
+                <div class="help-buttons">
+                    <button onclick="resendOTP()" class="help-btn" style="flex:1;">🔄 إعادة إرسال</button>
+                    <a href="https://t.me/sayedhasan_501bot" target="_blank" class="help-btn primary" style="flex:1;">🤖 افتح البوت</a>
+                </div>
+                <div id="otpError" class="error" style="margin-top: 6px;"></div>
+            </div>
+            
+            <!-- Forgot Password Form -->
+            <div id="forgotPasswordForm" style="display:none; margin-top: 14px; padding: 14px; background: rgba(7,19,33,.6); border-radius: 12px; border: 1px solid var(--gold);">
+                <div style="text-align:center; margin-bottom: 8px;">
+                    <span style="font-size:30px;">🔑</span>
+                    <h3 style="color: var(--gold); margin:4px 0;">نسيت كلمة المرور</h3>
+                    <p style="color: var(--text-muted); font-size: 12px;">أدخل رقم جوالك وسنرسل لك كود عبر البوت @sayedhasan_501bot</p>
+                </div>
+                
+                <div id="forgotStep1">
+                    <div class="input-group">
+                        <input id="forgotPhone" class="input" type="tel" placeholder="رقم الجوال" autocomplete="tel">
+                        <span class="input-icon">📱</span>
+                    </div>
+                    <button class="login-btn" onclick="requestForgotOTP()" style="background:linear-gradient(135deg,var(--gold),#f7971e);">
+                        📨 إرسال كود التحقق
+                    </button>
+                </div>
+                
+                <div id="forgotStep2" style="display:none; margin-top: 10px;">
+                    <div class="input-group">
+                        <input id="forgotOTP" class="input" type="text" maxlength="6" placeholder="أدخل الكود (6 أرقام)" autocomplete="one-time-code">
+                        <span class="input-icon">🔐</span>
+                    </div>
+                    <button class="login-btn" onclick="verifyForgotOTP()" style="background:linear-gradient(135deg,var(--success),#128C7E);">
+                        ✅ تأكيد الكود
+                    </button>
+                    <div class="help-buttons">
+                        <button onclick="resendForgotOTP()" class="help-btn" style="flex:1;">🔄 إعادة إرسال</button>
+                        <a href="https://t.me/sayedhasan_501bot" target="_blank" class="help-btn primary" style="flex:1;">🤖 افتح البوت</a>
+                    </div>
+                </div>
+                
+                <div id="forgotStep3" style="display:none; margin-top: 10px;">
+                    <div class="input-group">
+                        <input id="newPassword" class="input" type="password" placeholder="كلمة المرور الجديدة" autocomplete="new-password">
+                        <span class="input-icon">🔑</span>
+                    </div>
+                    <div class="input-group">
+                        <input id="confirmPassword" class="input" type="password" placeholder="تأكيد كلمة المرور" autocomplete="new-password">
+                        <span class="input-icon">✅</span>
+                    </div>
+                    <button class="login-btn" onclick="resetPassword()" style="background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">
+                        🔄 تغيير كلمة المرور
+                    </button>
+                </div>
+                
+                <div id="forgotError" class="error" style="margin-top: 6px;"></div>
+                <button onclick="closeForgotForm()" style="background:none; border:none; color: var(--text-muted); font-size: 12px; margin-top: 6px; cursor: pointer; width:100%; text-align:center;">
+                    ✖️ إلغاء
+                </button>
+            </div>
+            
             <div id="confirmationMessage">
                 <div class="icon">✅</div>
                 <h3>تم إرسال طلبك بنجاح!</h3>
@@ -467,6 +632,15 @@
         </div>
     </div>
 
+    <!-- ===== TOAST ===== -->
+    <div id="toast">
+        <span>✅</span>
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- ===== CONFETTI ===== -->
+    <div id="confettiContainer" class="confetti-container"></div>
+
     <script>
         /* ============================================
            ☁️ SUPABASE
@@ -485,6 +659,13 @@
         }
 
         /* ============================================
+           📱 OTP Functions
+           ============================================ */
+        function generateOTP() {
+            return String(Math.floor(100000 + Math.random() * 900000));
+        }
+
+        /* ============================================
            📦 SUPABASE FUNCTIONS
            ============================================ */
         async function fetchCloudData() {
@@ -500,6 +681,8 @@
                         role: u.role,
                         active: u.active,
                         phone: u.phone || '',
+                        telegram_username: u.telegram_username || '',
+                        chat_id: u.chat_id || '',
                         xp: u.xp || 0,
                         level: u.level || 'مبتدئ',
                         levelEmoji: u.level_emoji || '🟢',
@@ -508,7 +691,7 @@
                         videosWatched: u.videos_watched || [],
                         totalRating: u.total_rating || 0,
                         ratingCount: u.rating_count || 0,
-                        videos_locked: u.videos_locked !== undefined ? u.videos_locked : true // 🔒 جديد
+                        videos_locked: u.videos_locked !== undefined ? u.videos_locked : true
                     };
                 });
                 const commentsObj = {};
@@ -531,6 +714,8 @@
                     role: userData.role || 'user',
                     active: userData.active !== false,
                     phone: userData.phone || '',
+                    telegram_username: userData.telegram_username || '',
+                    chat_id: userData.chat_id || '',
                     xp: userData.xp || 0,
                     level: userData.level || 'مبتدئ',
                     level_emoji: userData.levelEmoji || '🟢',
@@ -539,7 +724,7 @@
                     videos_watched: userData.videosWatched || [],
                     total_rating: userData.totalRating || 0,
                     rating_count: userData.ratingCount || 0,
-                    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true // 🔒
+                    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true
                 }));
                 const { error: deleteError } = await sb.from('users').delete().neq('id', 0);
                 if (deleteError) throw deleteError;
@@ -567,16 +752,366 @@
         }
 
         /* ============================================
-           🤖 BOT TELEGRAM
+           🤖 BOT TELEGRAM - @sayedhasan_501bot
            ============================================ */
-        const BOT_TOKEN = '8608883224:AAFcu-qNACyl0PVfW50Wb-hoVk9NEk4t4Cw';
-        const CHAT_ID = '7114350905';
+        const BOT_TOKEN = '8655357261:AAFPVQZEi1F4eqeKRDBDGK-kM9rGXciVqVU';
+        const BOT_USERNAME = '@sayedhasan_501bot';
+
+        async function saveBotUser(chatId, username, firstName, lastName, phone = null) {
+            try {
+                const { data: existing, error: checkError } = await sb
+                    .from('bot_users')
+                    .select('*')
+                    .eq('chat_id', chatId);
+                    
+                if (checkError) throw checkError;
+                
+                if (existing && existing.length > 0) {
+                    const { error: updateError } = await sb
+                        .from('bot_users')
+                        .update({
+                            username: username,
+                            first_name: firstName,
+                            last_name: lastName,
+                            phone: phone || existing[0].phone,
+                            updated_at: new Date()
+                        })
+                        .eq('chat_id', chatId);
+                        
+                    if (updateError) throw updateError;
+                } else {
+                    const { error: insertError } = await sb
+                        .from('bot_users')
+                        .insert({
+                            chat_id: chatId,
+                            username: username,
+                            first_name: firstName,
+                            last_name: lastName,
+                            phone: phone
+                        });
+                        
+                    if (insertError) throw insertError;
+                }
+                return true;
+            } catch (e) {
+                console.warn('⚠️ فشل حفظ مستخدم البوت:', e);
+                return false;
+            }
+        }
+
+        async function getChatIdByUsername(username) {
+            try {
+                const { data: botData, error: botError } = await sb
+                    .from('bot_users')
+                    .select('chat_id')
+                    .eq('username', username)
+                    .limit(1);
+                    
+                if (botError) throw botError;
+                if (botData && botData.length > 0) {
+                    return botData[0].chat_id;
+                }
+                
+                const { data: userData, error: userError } = await sb
+                    .from('users')
+                    .select('chat_id')
+                    .eq('telegram_username', username)
+                    .limit(1);
+                    
+                if (userError) throw userError;
+                if (userData && userData.length > 0) {
+                    return userData[0].chat_id;
+                }
+                
+                return null;
+            } catch (e) {
+                console.warn('⚠️ فشل البحث عن chat_id:', e);
+                return null;
+            }
+        }
+
+        async function sendOTPByBot(chatId, code, purpose = 'verify') {
+            try {
+                const messages = {
+                    'verify': `🔐 *كود التحقق الخاص بمنصة SAYODA | CYBER FORCE*
+
+📱 كود التحقق الخاص بك هو:
+
+*${code}*
+
+⏳ صالح لمدة 5 دقائق
+
+🔒 لا تشارك هذا الكود مع أي شخص
+
+📌 إذا لم تطلب هذا الكود، تجاهل هذه الرسالة.
+
+🛡️ *SAYODA | CYBER FORCE*`,
+
+                    'reset': `🔑 *إعادة تعيين كلمة المرور - SAYODA | CYBER FORCE*
+
+📱 كود إعادة تعيين كلمة المرور الخاص بك هو:
+
+*${code}*
+
+⏳ صالح لمدة 5 دقائق
+
+🔒 لا تشارك هذا الكود مع أي شخص
+
+📌 إذا لم تطلب هذا الكود، تجاهل هذه الرسالة.
+
+🛡️ *SAYODA | CYBER FORCE*`
+                };
+                
+                const message = messages[purpose] || messages['verify'];
+                
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                const data = await response.json();
+                return data.ok;
+            } catch (e) {
+                console.warn('⚠️ فشل إرسال كود البوت:', e);
+                return false;
+            }
+        }
+
+        async function saveOTPRequest(chatId, phone, code, purpose = 'verify') {
+            try {
+                const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+                
+                const { error } = await sb
+                    .from('otp_requests')
+                    .insert({
+                        chat_id: chatId,
+                        phone: phone,
+                        code: code,
+                        purpose: purpose,
+                        expires_at: expiresAt,
+                        verified: false
+                    });
+                    
+                if (error) throw error;
+                return true;
+            } catch (e) {
+                console.warn('⚠️ فشل حفظ طلب OTP:', e);
+                return false;
+            }
+        }
+
+        async function verifyOTPByChatId(chatId, code) {
+            try {
+                const { data, error } = await sb
+                    .from('otp_requests')
+                    .select('*')
+                    .eq('chat_id', chatId)
+                    .eq('code', code)
+                    .eq('verified', false)
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+                    
+                if (error) throw error;
+                if (!data || data.length === 0) return false;
+                
+                const otp = data[0];
+                const now = new Date();
+                const expires = new Date(otp.expires_at);
+                
+                if (now > expires) return false;
+                
+                await sb
+                    .from('otp_requests')
+                    .update({ verified: true })
+                    .eq('id', otp.id);
+                    
+                return true;
+            } catch (e) {
+                console.warn('⚠️ فشل التحقق من OTP:', e);
+                return false;
+            }
+        }
+
+        async function sendBotMessage(chatId, text, parseMode = 'Markdown') {
+            try {
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: text,
+                        parse_mode: parseMode
+                    })
+                });
+                return response.ok;
+            } catch (e) {
+                console.warn('⚠️ فشل إرسال رسالة البوت:', e);
+                return false;
+            }
+        }
+
+        // ============================================
+        // 📡 Polling System
+        // ============================================
+
+        let botOffset = 0;
+        let isBotRunning = false;
+
+        async function handleBotMessage(chatId, text, username, firstName, lastName) {
+            try {
+                await saveBotUser(chatId, username, firstName, lastName);
+                
+                if (text === '/start') {
+                    const message = `✅ *مرحباً بك في منصة SAYODA | CYBER FORCE*
+
+🤖 تم ربط حسابك بنجاح مع بوت @sayedhasan_501bot!
+
+📱 *الآن يمكنك:*
+
+1️⃣ فتح المنصة
+2️⃣ طلب كود التحقق
+3️⃣ استلام الكود هنا مباشرة
+
+🔐 *خدمات البوت:*
+• كود التحقق للتسجيل
+• كود إعادة تعيين كلمة المرور
+
+🛡️ *SAYODA | CYBER FORCE*`;
+                    
+                    await sendBotMessage(chatId, message);
+                    return true;
+                }
+                
+                return false;
+            } catch (e) {
+                console.warn('⚠️ خطأ في معالجة رسالة البوت:', e);
+                return false;
+            }
+        }
+
+        async function startBotPolling() {
+            if (isBotRunning) return;
+            isBotRunning = true;
+            
+            console.log('🤖 بدء تشغيل البوت @sayedhasan_501bot...');
+            
+            setInterval(async () => {
+                try {
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${botOffset}&timeout=30`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.ok && data.result && data.result.length > 0) {
+                        for (const update of data.result) {
+                            if (update.message) {
+                                const chatId = update.message.chat.id;
+                                const text = update.message.text || '';
+                                const username = update.message.from.username || '';
+                                const firstName = update.message.from.first_name || '';
+                                const lastName = update.message.from.last_name || '';
+                                
+                                await handleBotMessage(chatId, text, username, firstName, lastName);
+                            }
+                            botOffset = update.update_id + 1;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('⚠️ خطأ في Polling:', e);
+                }
+            }, 2000);
+        }
+
+        // ============================================
+        // 🔗 Bot Functions
+        // ============================================
+
+        async function requestBotVerification(phone, telegramUsername) {
+            try {
+                const chatId = await getChatIdByUsername(telegramUsername);
+                
+                if (!chatId) {
+                    showToast('❌ لم يتم العثور على حسابك في البوت. تأكد من أنك أضفت @sayedhasan_501bot وضغطت /start', '❌');
+                    return false;
+                }
+                
+                const code = generateOTP();
+                const sent = await sendOTPByBot(chatId, code, 'verify');
+                
+                if (sent) {
+                    await saveOTPRequest(chatId, phone, code, 'verify');
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.warn('⚠️ فشل طلب التحقق:', e);
+                return false;
+            }
+        }
+
+        async function requestBotPasswordReset(phone) {
+            try {
+                const { data: user, error } = await sb
+                    .from('users')
+                    .select('*')
+                    .eq('phone', phone)
+                    .limit(1);
+                    
+                if (error) throw error;
+                if (!user || user.length === 0) {
+                    showToast('❌ هذا الرقم غير مسجل في المنصة.', '❌');
+                    return false;
+                }
+                
+                const chatId = user[0].chat_id || user[0].telegram_id;
+                
+                if (!chatId) {
+                    showToast('❌ هذا المستخدم ليس لديه حساب في البوت. تأكد من إضافة @sayedhasan_501bot وضغط /start', '❌');
+                    return false;
+                }
+                
+                const code = generateOTP();
+                const sent = await sendOTPByBot(chatId, code, 'reset');
+                
+                if (sent) {
+                    await saveOTPRequest(chatId, phone, code, 'reset');
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.warn('⚠️ فشل طلب إعادة تعيين كلمة المرور:', e);
+                return false;
+            }
+        }
+
+        async function verifyBotCode(chatId, code) {
+            try {
+                const verified = await verifyOTPByChatId(chatId, code);
+                if (verified) {
+                    await sendBotMessage(chatId, '✅ *تم التحقق بنجاح!* يمكنك الآن إكمال العملية في الموقع.');
+                    return true;
+                } else {
+                    await sendBotMessage(chatId, '❌ *الكود غير صحيح أو منتهي الصلاحية.* حاول مرة أخرى.');
+                    return false;
+                }
+            } catch (e) {
+                console.warn('⚠️ فشل التحقق من الكود:', e);
+                return false;
+            }
+        }
+
         async function sendTelegramMessage(message) {
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+                    body: JSON.stringify({ chat_id: '7114350905', text: message, parse_mode: 'HTML' })
                 });
                 return true;
             } catch (e) { return false; }
@@ -778,6 +1313,8 @@
                         role: currentUser.role || 'user',
                         active: true,
                         phone: currentUser.phone || '',
+                        telegram_username: currentUser.telegram_username || '',
+                        chat_id: currentUser.chat_id || '',
                         xp: local.xp,
                         level: local.level,
                         levelEmoji: local.levelEmoji,
@@ -786,7 +1323,7 @@
                         videosWatched: local.videosWatched,
                         totalRating: local.totalRating,
                         ratingCount: local.ratingCount,
-                        videos_locked: true // 🔒 جديد افتراضي
+                        videos_locked: true
                     };
                     await saveCloudData(cloud);
                 }
@@ -844,7 +1381,9 @@
                     role: data.role || 'user',
                     active: data.active !== false,
                     password: data.password || '',
-                    videos_locked: data.videos_locked !== undefined ? data.videos_locked : true // 🔒
+                    telegram_username: data.telegram_username || '',
+                    chat_id: data.chat_id || '',
+                    videos_locked: data.videos_locked !== undefined ? data.videos_locked : true
                 }))
                 .sort((a, b) => b.xp - a.xp);
 
@@ -868,6 +1407,7 @@
                 return `
                 <div class="admin-user-card">
                     <span class="username">${sanitizeHTML(u.username)} ${u.username === currentUser?.username ? '👈' : ''}</span>
+                    <span class="detail"><span class="label">✈️</span> <span class="value">${sanitizeHTML(u.telegram_username || 'غير مسجل')}</span></span>
                     <span class="detail"><span class="label">⭐</span> <span class="value">${u.xp} XP</span></span>
                     <span class="detail"><span class="label">📊</span> <span class="value">${u.levelEmoji} ${u.level}</span></span>
                     <span class="detail"><span class="label">🔥</span> <span class="value">${u.streak} يوم</span></span>
@@ -888,7 +1428,6 @@
             }).join('');
         }
 
-        // 🔒 دالة تبديل حالة الفيديوهات لمستخدم معين
         async function toggleUserVideos(username) {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
@@ -953,7 +1492,6 @@
         function showRequestModal() {
             const modal = document.getElementById('requestModal');
             modal.classList.add('show');
-            // تحديث رابط واتساب باسم المستخدم الحالي
             const waBtn = document.getElementById('requestWaBtn');
             if (currentUser) {
                 const phone = currentUser.phone || 'غير مسجل';
@@ -1025,31 +1563,144 @@
             document.getElementById('confirmationMessage').classList.remove('show');
         }
 
+        // Update Guide Steps
+        function updateGuideStep(step) {
+            const steps = [
+                { id: 'step1', num: 'step1Num', check: 'step1Check', label: 'إضافة البوت' },
+                { id: 'step2', num: 'step2Num', check: 'step2Check', label: 'ملء البيانات' },
+                { id: 'step3', num: 'step3Num', check: 'step3Check', label: 'استلام الكود' },
+                { id: 'step4', num: 'step4Num', check: 'step4Check', label: 'إدخال الكود' }
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                const el = document.getElementById(steps[i].id);
+                const numEl = document.getElementById(steps[i].num);
+                const checkEl = document.getElementById(steps[i].check);
+                
+                if (i < step) {
+                    el.classList.add('done');
+                    numEl.className = 'num done';
+                    numEl.textContent = '✅';
+                    checkEl.className = 'step-check done';
+                    checkEl.textContent = '✅';
+                } else if (i === step) {
+                    el.classList.remove('done');
+                    numEl.className = 'num active';
+                    numEl.textContent = i + 1;
+                    checkEl.className = 'step-check waiting';
+                    checkEl.textContent = '⏳';
+                } else {
+                    el.classList.remove('done');
+                    numEl.className = 'num waiting';
+                    numEl.textContent = i + 1;
+                    checkEl.className = 'step-check waiting';
+                    checkEl.textContent = '⬜';
+                }
+            }
+        }
+
+        // Auto update steps on input
+        document.getElementById('regUsername')?.addEventListener('input', function() {
+            if (this.value.length >= 3) updateGuideStep(2);
+        });
+        document.getElementById('regPhone')?.addEventListener('input', function() {
+            if (this.value.length >= 10) updateGuideStep(2);
+        });
+        document.getElementById('regTelegram')?.addEventListener('input', function() {
+            if (this.value.length >= 3) updateGuideStep(2);
+        });
+
         async function submitRegistration() {
             const u = document.getElementById('regUsername').value.trim();
             const p = document.getElementById('regPassword').value.trim();
             const ph = document.getElementById('regPhone').value.trim();
-            const btn = document.getElementById('registerSubmitBtn');
+            const tgUsername = document.getElementById('regTelegram').value.trim();
             const err = document.getElementById('loginError');
             err.textContent = '';
-            if (!u || !p || !ph) { err.textContent = '⚠️ يرجى ملء جميع الحقول.'; return; }
+            
+            if (!u || !p || !ph || !tgUsername) {
+                err.textContent = '⚠️ يرجى ملء جميع الحقول (بما في ذلك معرف التلجرام).';
+                return;
+            }
             if (u.length < 3) { err.textContent = '⚠️ اسم المستخدم يجب أن يكون 3 أحرف على الأقل.'; return; }
             if (p.length < 4) { err.textContent = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل.'; return; }
             if (!/^[\d]{10,11}$/.test(ph.replace(/\s/g, ''))) { err.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).'; return; }
-            btn.disabled = true; btn.textContent = '⏳ جاري الإرسال...';
+            
+            const btn = document.getElementById('registerSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري التحقق...';
+            updateGuideStep(3);
+            
             try {
                 const cloud = await fetchCloudData();
                 if (!cloud.users) cloud.users = {};
                 if (cloud.users[u]) {
                     err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
-                    btn.disabled = false; btn.textContent = '✅ إضافة الحاسوب';
+                    btn.disabled = false; btn.textContent = '✅ إضافة الحساب';
                     return;
                 }
-                cloud.users[u] = {
-                    password: p,
+                
+                const sent = await requestBotVerification(ph, tgUsername);
+                
+                if (sent) {
+                    sessionStorage.setItem('temp_reg_data', JSON.stringify({
+                        username: u,
+                        password: p,
+                        phone: ph,
+                        telegram_username: tgUsername
+                    }));
+                    
+                    document.getElementById('otpVerification').style.display = 'block';
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('loginError').textContent = '';
+                    updateGuideStep(4);
+                    showToast('✅ تم إرسال كود التحقق عبر البوت @sayedhasan_501bot!');
+                } else {
+                    err.textContent = '❌ فشل إرسال الكود. تأكد من إضافة البوت @sayedhasan_501bot وضغط /start';
+                }
+            } catch (e) {
+                console.error(e);
+                err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+            }
+            btn.disabled = false;
+            btn.textContent = '✅ إضافة الحساب';
+        }
+
+        async function verifyPhoneOTP() {
+            const code = document.getElementById('otpInput').value.trim();
+            const err = document.getElementById('otpError');
+            err.textContent = '';
+            
+            if (!code || code.length !== 6) {
+                err.textContent = '⚠️ أدخل الكود المكون من 6 أرقام.';
+                return;
+            }
+            
+            const tempData = JSON.parse(sessionStorage.getItem('temp_reg_data') || '{}');
+            if (!tempData.username) {
+                err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+                return;
+            }
+            
+            const chatId = await getChatIdByUsername(tempData.telegram_username);
+            if (!chatId) {
+                err.textContent = '❌ لم نجد حسابك في البوت. تأكد من إضافة @sayedhasan_501bot وضغط /start';
+                return;
+            }
+            
+            const verified = await verifyBotCode(chatId, code);
+            
+            if (verified) {
+                const cloud = await fetchCloudData();
+                if (!cloud.users) cloud.users = {};
+                
+                cloud.users[tempData.username] = {
+                    password: tempData.password,
                     role: 'user',
                     active: true,
-                    phone: ph,
+                    phone: tempData.phone,
+                    telegram_username: tempData.telegram_username,
+                    chat_id: chatId,
                     xp: 0,
                     level: 'مبتدئ',
                     levelEmoji: '🟢',
@@ -1058,38 +1709,214 @@
                     videosWatched: [],
                     totalRating: 0,
                     ratingCount: 0,
-                    videos_locked: true // 🔒 جديد - مقفل افتراضي
+                    videos_locked: true
                 };
+                
                 await saveCloudData(cloud);
+                
                 const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
-                const ip = await getIP(); const dev = getDevice();
-                await sendTelegramMessage(`🔐 <b>طلب حساب جديد</b>\n👤 ${sanitizeHTML(u)}\n🔑 ${sanitizeHTML(p)}\n📱 ${sanitizeHTML(ph)}\n🌐 ${ip}\n📱 ${dev.device}\n📅 ${now}`);
+                const ip = await getIP();
+                const dev = getDevice();
+                await sendTelegramMessage(`🔐 <b>حساب جديد تم إنشاؤه</b>\n👤 ${sanitizeHTML(tempData.username)}\n📱 ${sanitizeHTML(tempData.phone)}\n✈️ ${sanitizeHTML(tempData.telegram_username)}\n🌐 ${ip}\n📱 ${dev.device}\n📅 ${now}`);
+                
+                document.getElementById('otpVerification').style.display = 'none';
                 document.getElementById('confirmationMessage').classList.add('show');
-                document.getElementById('registerForm').classList.remove('show');
-                document.getElementById('regUsername').value = '';
-                document.getElementById('regPassword').value = '';
-                document.getElementById('regPhone').value = '';
+                document.getElementById('loginError').textContent = '';
                 showToast('✅ تم إنشاء حسابك بنجاح!');
+                
+                sessionStorage.removeItem('temp_reg_data');
+            } else {
+                err.textContent = '❌ الكود غير صحيح أو منتهي الصلاحية. حاول مرة أخرى.';
+            }
+        }
+
+        async function resendOTP() {
+            const tempData = JSON.parse(sessionStorage.getItem('temp_reg_data') || '{}');
+            if (!tempData.phone || !tempData.telegram_username) {
+                showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
+                return;
+            }
+            
+            const sent = await requestBotVerification(tempData.phone, tempData.telegram_username);
+            if (sent) {
+                showToast('🔄 تم إرسال كود جديد عبر البوت @sayedhasan_501bot!');
+            } else {
+                showToast('❌ فشل إرسال الكود، حاول مرة أخرى.', '❌');
+            }
+        }
+
+        /* ============================================
+           FORGOT PASSWORD
+           ============================================ */
+        function showForgotForm() {
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+            document.getElementById('forgotStep1').style.display = 'block';
+            document.getElementById('forgotStep2').style.display = 'none';
+            document.getElementById('forgotStep3').style.display = 'none';
+            document.getElementById('forgotError').textContent = '';
+            document.getElementById('loginError').textContent = '';
+        }
+
+        function closeForgotForm() {
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.getElementById('forgotPhone').value = '';
+            document.getElementById('forgotOTP').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('forgotError').textContent = '';
+        }
+
+        async function requestForgotOTP() {
+            const phone = document.getElementById('forgotPhone').value.trim();
+            const err = document.getElementById('forgotError');
+            err.textContent = '';
+            
+            if (!phone) {
+                err.textContent = '⚠️ يرجى إدخال رقم الجوال.';
+                return;
+            }
+            
+            if (!/^[\d]{10,11}$/.test(phone.replace(/\s/g, ''))) {
+                err.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).';
+                return;
+            }
+            
+            const sent = await requestBotPasswordReset(phone);
+            
+            if (sent) {
+                document.getElementById('forgotStep1').style.display = 'none';
+                document.getElementById('forgotStep2').style.display = 'block';
+                err.textContent = '';
+                showToast('✅ تم إرسال كود إعادة التعيين عبر البوت @sayedhasan_501bot!');
+                sessionStorage.setItem('forgot_phone', phone);
+            } else {
+                err.textContent = '❌ فشل إرسال الكود. تأكد من إضافة البوت @sayedhasan_501bot وضغط /start';
+            }
+        }
+
+        async function verifyForgotOTP() {
+            const code = document.getElementById('forgotOTP').value.trim();
+            const err = document.getElementById('forgotError');
+            err.textContent = '';
+            
+            if (!code || code.length !== 6) {
+                err.textContent = '⚠️ أدخل الكود المكون من 6 أرقام.';
+                return;
+            }
+            
+            const phone = sessionStorage.getItem('forgot_phone');
+            if (!phone) {
+                err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+                return;
+            }
+            
+            try {
+                const { data: user, error } = await sb
+                    .from('users')
+                    .select('*')
+                    .eq('phone', phone)
+                    .limit(1);
+                    
+                if (error) throw error;
+                if (!user || user.length === 0) {
+                    err.textContent = '❌ هذا الرقم غير مسجل في المنصة.';
+                    return;
+                }
+                
+                const chatId = user[0].chat_id || user[0].telegram_id;
+                if (!chatId) {
+                    err.textContent = '❌ هذا المستخدم ليس لديه حساب في البوت. تأكد من إضافة @sayedhasan_501bot وضغط /start';
+                    return;
+                }
+                
+                const verified = await verifyBotCode(chatId, code);
+                
+                if (verified) {
+                    document.getElementById('forgotStep2').style.display = 'none';
+                    document.getElementById('forgotStep3').style.display = 'block';
+                    err.textContent = '';
+                    showToast('✅ تم التحقق بنجاح! أدخل كلمة المرور الجديدة.');
+                    sessionStorage.setItem('forgot_username', user[0].username);
+                } else {
+                    err.textContent = '❌ الكود غير صحيح أو منتهي الصلاحية. حاول مرة أخرى.';
+                }
             } catch (e) {
                 console.error(e);
                 err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
             }
-            btn.disabled = false; btn.textContent = '✅ إضافة الحاسوب';
         }
 
-        async function getIP() {
-            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; } catch (e) { return 'غير معروف'; }
+        async function resendForgotOTP() {
+            const phone = sessionStorage.getItem('forgot_phone');
+            if (!phone) {
+                showToast('❌ حدث خطأ، حاول مرة أخرى.', '❌');
+                return;
+            }
+            
+            const sent = await requestBotPasswordReset(phone);
+            if (sent) {
+                showToast('🔄 تم إرسال كود جديد عبر البوت @sayedhasan_501bot!');
+            } else {
+                showToast('❌ فشل إرسال الكود، حاول مرة أخرى.', '❌');
+            }
         }
-        function getDevice() {
-            const ua = navigator.userAgent;
-            let d = 'غير معروف'; let b = 'غير معروف';
-            if (/Mobile|Android|iPhone|iPad/i.test(ua)) d = '📱 جوال';
-            else if (/Windows|Mac|Linux/i.test(ua)) d = '💻 كمبيوتر';
-            if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) b = 'Chrome';
-            else if (/Firefox/i.test(ua)) b = 'Firefox';
-            else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) b = 'Safari';
-            else if (/Edge/i.test(ua)) b = 'Edge';
-            return { device: d, browser: b };
+
+        async function resetPassword() {
+            const newPass = document.getElementById('newPassword').value.trim();
+            const confirmPass = document.getElementById('confirmPassword').value.trim();
+            const err = document.getElementById('forgotError');
+            err.textContent = '';
+            
+            if (!newPass || !confirmPass) {
+                err.textContent = '⚠️ يرجى ملء جميع الحقول.';
+                return;
+            }
+            
+            if (newPass.length < 4) {
+                err.textContent = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل.';
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                err.textContent = '⚠️ كلمة المرور غير متطابقة.';
+                return;
+            }
+            
+            const username = sessionStorage.getItem('forgot_username');
+            if (!username) {
+                err.textContent = '❌ حدث خطأ، يرجى المحاولة مرة أخرى.';
+                return;
+            }
+            
+            try {
+                const cloud = await fetchCloudData();
+                if (cloud.users && cloud.users[username]) {
+                    cloud.users[username].password = newPass;
+                    await saveCloudData(cloud);
+                    
+                    await sendTelegramMessage(`🔑 <b>تم تغيير كلمة المرور</b>\n👤 ${sanitizeHTML(username)}\n🔄 تم التغيير عبر نظام استعادة كلمة المرور`);
+                    
+                    document.getElementById('forgotPasswordForm').style.display = 'none';
+                    document.getElementById('forgotError').textContent = '';
+                    document.getElementById('forgotPhone').value = '';
+                    document.getElementById('forgotOTP').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                    
+                    showToast('✅ تم تغيير كلمة المرور بنجاح!');
+                    
+                    document.getElementById('username').value = username;
+                    document.getElementById('password').value = newPass;
+                    
+                    sessionStorage.removeItem('forgot_username');
+                    sessionStorage.removeItem('forgot_phone');
+                    
+                    setTimeout(() => login(), 1000);
+                }
+            } catch (e) {
+                console.error(e);
+                err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+            }
         }
 
         /* ============================================
@@ -1184,7 +2011,7 @@
         }
 
         /* ============================================
-           🎬 RENDER VIDEOS - مع نظام القفل لكل مستخدم
+           🎬 RENDER VIDEOS
            ============================================ */
         function renderVideos() {
             const grid = document.getElementById('videoGrid');
@@ -1207,15 +2034,13 @@
                     const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
                     const watched = videoProgress[id] >= 100 ? '✅' : '';
                     
-                    // 🔒 التحقق من حالة المستخدم
                     let isLocked = false;
                     if (currentUser && currentUser.videos_locked !== undefined) {
-                        isLocked = currentUser.videos_locked; // مقفل حسب حالة المستخدم
+                        isLocked = currentUser.videos_locked;
                     } else {
-                        isLocked = true; // افتراضي مقفل
+                        isLocked = true;
                     }
                     
-                    // لو مش مقفل، نطبق نظام 30%
                     if (!isLocked) {
                         isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
                     }
@@ -1258,14 +2083,11 @@
             const index = parseInt(el?.dataset?.index || 0);
             if (!id) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
             
-            // 🔒 التحقق من قفل المستخدم
             if (currentUser && currentUser.videos_locked !== undefined && currentUser.videos_locked) {
-                // إذا كان المستخدم مقفلة عليه الفيديوهات، نعرض نافذة الطلب
                 showRequestModal();
                 return;
             }
             
-            // ثم التحقق من القفل التراكمي 30%
             if (index > 0) {
                 const prevVideo = videos[index - 1];
                 const prevId = extractID(prevVideo?.youtube_id) || '';
@@ -1332,13 +2154,23 @@
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
         document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
 
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('sayoda_tab_open')) {
-                showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
-                setTimeout(() => window.close(), 1000);
-            } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
-        });
-        window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
+        /* ============================================
+           IP & DEVICE
+           ============================================ */
+        async function getIP() {
+            try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; } catch (e) { return 'غير معروف'; }
+        }
+        function getDevice() {
+            const ua = navigator.userAgent;
+            let d = 'غير معروف'; let b = 'غير معروف';
+            if (/Mobile|Android|iPhone|iPad/i.test(ua)) d = '📱 جوال';
+            else if (/Windows|Mac|Linux/i.test(ua)) d = '💻 كمبيوتر';
+            if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) b = 'Chrome';
+            else if (/Firefox/i.test(ua)) b = 'Firefox';
+            else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) b = 'Safari';
+            else if (/Edge/i.test(ua)) b = 'Edge';
+            return { device: d, browser: b };
+        }
 
         /* ============================================
            AUTO LOGIN
@@ -1368,6 +2200,22 @@
                 }
             } catch (e) {}
         })();
+
+        /* ============================================
+           🚀 START BOT
+           ============================================ */
+        window.addEventListener('DOMContentLoaded', function() {
+            startBotPolling();
+            console.log('🤖 جاهزية البوت @sayedhasan_501bot...');
+        });
+
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('sayoda_tab_open')) {
+                showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
+                setTimeout(() => window.close(), 1000);
+            } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
+        });
+        window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
     </script>
 
 </body>
