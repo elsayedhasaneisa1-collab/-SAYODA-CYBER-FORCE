@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SAYODA | CYBER FORCE</title>
     
-    <!-- Supabase Library - تحميل سريع -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         /* ============================================
-           ROOT & RESET - خفيف وسريع
+           RESET & ROOT
            ============================================ */
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
         :root {
             --bg-primary: #020812;
-            --bg-secondary: rgba(7, 19, 33, .85);
+            --bg-secondary: rgba(7, 19, 33, .92);
             --text-primary: #fff;
             --text-secondary: #c0d0e0;
             --text-muted: #60788c;
@@ -45,7 +45,6 @@
             min-height: 100vh;
             -webkit-user-select: none;
             user-select: none;
-            transition: background var(--transition), color var(--transition);
             overflow-x: hidden;
         }
         body.light-mode {
@@ -60,44 +59,14 @@
         .hidden { display: none !important; }
 
         /* ============================================
-           SCROLLBAR - خفيف
+           SCROLLBAR
            ============================================ */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
         /* ============================================
-           UTILITY - سريع
-           ============================================ */
-        .container { width: min(1100px, 94%); margin: auto; }
-        .section { padding: 30px 0; }
-        .section-title h2 {
-            font-size: clamp(20px, 3vw, 28px);
-            font-weight: 900;
-        }
-        .section-title h2 span { color: var(--accent); }
-        .section-title p {
-            margin-top: 4px;
-            color: var(--text-muted);
-            font-size: clamp(13px, 1.2vw, 15px);
-        }
-
-        /* ============================================
-           IMAGE & TEXT PROTECTION
-           ============================================ */
-        img {
-            -webkit-user-drag: none;
-            user-drag: none;
-            -webkit-touch-callout: none;
-            pointer-events: none;
-        }
-        p, h1, h2, h3, h4, h5, h6, span, div, a {
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        /* ============================================
-           SPLASH SCREEN - خفيف
+           SPLASH - ظهور سريع جداً
            ============================================ */
         #splash {
             position: fixed;
@@ -108,54 +77,57 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.4s ease;
         }
-        #splash.fade { opacity: 0; pointer-events: none; }
+        #splash.fade {
+            opacity: 0;
+            pointer-events: none;
+        }
         .splash-container { text-align: center; max-width: 600px; padding: 20px; }
         .splash-title {
-            font-size: clamp(24px, 4vw, 38px);
+            font-size: clamp(22px, 4vw, 36px);
             font-weight: 900;
             color: var(--accent);
-            min-height: 55px;
+            min-height: 50px;
         }
         .splash-title .highlight { color: #fff; }
         .splash-title .cursor {
             display: inline-block;
             width: 2px;
-            height: clamp(24px, 4vw, 38px);
+            height: clamp(22px, 4vw, 36px);
             background: var(--accent);
             animation: blink 0.8s step-end infinite;
             vertical-align: middle;
         }
         .splash-sub {
-            font-size: clamp(13px, 1.2vw, 15px);
+            font-size: clamp(12px, 1.2vw, 14px);
             color: var(--text-secondary);
-            margin-top: 12px;
+            margin-top: 10px;
             line-height: 1.6;
             opacity: 0;
             transform: translateY(15px);
-            animation: slideUp 0.6s ease 1.2s forwards;
+            animation: slideUp 0.6s ease 0.8s forwards;
         }
         .splash-tag {
-            font-size: clamp(14px, 1.5vw, 18px);
+            font-size: clamp(13px, 1.5vw, 17px);
             color: var(--accent);
-            margin-top: 15px;
+            margin-top: 12px;
             font-weight: 700;
             letter-spacing: 2px;
             opacity: 0;
             transform: translateY(15px);
-            animation: slideUp 0.6s ease 1.8s forwards;
+            animation: slideUp 0.6s ease 1.2s forwards;
         }
         .splash-loader {
-            width: 30px;
-            height: 30px;
-            margin-top: 15px;
+            width: 28px;
+            height: 28px;
+            margin-top: 12px;
             border: 2px solid #1a3a55;
             border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             opacity: 0;
-            animation: spin 0.8s linear infinite, fadeIn 0.4s ease 2.2s forwards;
+            animation: spin 0.8s linear infinite, fadeIn 0.4s ease 1.6s forwards;
         }
         @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
         @keyframes slideUp { to { opacity:1; transform:translateY(0); } }
@@ -163,7 +135,7 @@
         @keyframes spin { to { transform:rotate(360deg); } }
 
         /* ============================================
-           LOGIN SCREEN - تحميل سريع
+           LOGIN SCREEN - ظهور فوري
            ============================================ */
         .login-screen {
             min-height: 100vh;
@@ -174,11 +146,9 @@
             background: radial-gradient(circle at 30% 40%, #008cff15, transparent 60%),
                         radial-gradient(circle at 70% 60%, #12baff08, transparent 50%),
                         var(--bg-primary);
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 1;
+            transform: none;
         }
-        .login-screen.show { transform: translateY(0); opacity: 1; }
         .login-box {
             width: min(380px, 100%);
             padding: 30px 25px;
@@ -187,12 +157,9 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             backdrop-filter: blur(16px);
-            transform: translateY(15px);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+            opacity: 1;
+            transform: none;
         }
-        .login-screen.show .login-box { transform: translateY(0); opacity: 1; }
-
         .login-logo {
             display: flex;
             justify-content: center;
@@ -207,10 +174,7 @@
             object-fit: cover;
             background: var(--bg-primary);
             pointer-events: none;
-            transition: transform var(--transition);
         }
-        .login-logo img:hover { transform: scale(1.05); }
-
         .logo-text {
             text-align: center;
             color: var(--accent);
@@ -218,7 +182,6 @@
             font-weight: 900;
         }
         .logo-text span { color: #fff; }
-
         .login-subtitle {
             text-align: center;
             color: var(--text-muted);
@@ -226,7 +189,6 @@
             letter-spacing: 3px;
             margin-bottom: 20px;
         }
-
         .input-group {
             position: relative;
             margin-bottom: 14px;
@@ -241,7 +203,6 @@
             transition: color var(--transition);
         }
         .input-group .input-icon.active { color: var(--accent); }
-
         .input {
             width: 100%;
             padding: 12px 44px 12px 14px;
@@ -260,7 +221,6 @@
             transform: scale(1.01);
         }
         .input:focus + .input-icon { color: var(--accent); }
-
         .login-btn {
             width: 100%;
             padding: 13px;
@@ -281,7 +241,6 @@
             box-shadow: 0 12px 35px #008cff30;
         }
         .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
         .error {
             min-height: 20px;
             margin-top: 10px;
@@ -289,8 +248,6 @@
             color: var(--danger);
             font-size: 13px;
         }
-
-        /* Register Form */
         .register-form {
             display: none;
             margin-top: 16px;
@@ -299,7 +256,6 @@
         }
         .register-form.show { display: block; }
         .register-form .input { margin-bottom: 10px; }
-
         .register-title {
             color: var(--accent);
             font-size: clamp(14px, 1.1vw, 16px);
@@ -308,7 +264,6 @@
             text-align: center;
         }
         .register-title span { color: #fff; }
-
         .register-btn {
             width: 100%;
             padding: 13px;
@@ -328,7 +283,6 @@
             box-shadow: 0 12px 35px #25D36630;
         }
         .register-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
         #confirmationMessage {
             display: none;
             margin-top: 16px;
@@ -367,8 +321,31 @@
         }
 
         /* ============================================
-           SIDEBAR - خفيف
+           باقي الـ Styles (مختصرة)
            ============================================ */
+        .container { width: min(1100px, 94%); margin: auto; }
+        .section { padding: 30px 0; }
+        .section-title h2 {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 900;
+        }
+        .section-title h2 span { color: var(--accent); }
+        .section-title p {
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: clamp(13px, 1.2vw, 15px);
+        }
+        img {
+            -webkit-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+            pointer-events: none;
+        }
+        p, h1, h2, h3, h4, h5, h6, span, div, a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
         .sidebar-overlay {
             position: fixed;
             inset: 0;
@@ -421,7 +398,6 @@
             transition: all var(--transition);
         }
         .sidebar-close:hover { color: var(--danger); transform: rotate(90deg); }
-
         .sidebar-nav { flex: 1; }
         .sidebar-nav a {
             display: flex;
@@ -449,7 +425,6 @@
             padding: 2px 8px;
             border-radius: 30px;
         }
-
         .sidebar-footer {
             padding-top: 14px;
             border-top: 1px solid var(--border-color);
@@ -493,9 +468,6 @@
         }
         .sidebar-footer .logout-btn:hover { background: rgba(255, 51, 68, .1); }
 
-        /* ============================================
-           HEADER - خفيف
-           ============================================ */
         header {
             height: 56px;
             position: sticky;
@@ -527,7 +499,6 @@
             font-weight: 900;
         }
         .brand-name span { color: #fff; }
-
         .header-actions {
             display: flex;
             align-items: center;
@@ -571,16 +542,13 @@
             margin-right: 4px;
         }
 
-        /* ============================================
-           HERO - خفيف
-           ============================================ */
         .hero {
-            min-height: 250px;
+            min-height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 30px 20px;
+            padding: 25px 20px;
             background: radial-gradient(circle at center, #008cff10, transparent 60%);
         }
         .badge {
@@ -610,9 +578,6 @@
             font-size: clamp(15px, 1.5vw, 18px);
         }
 
-        /* ============================================
-           VIDEOS - تحميل سريع مع Lazy Loading
-           ============================================ */
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -734,9 +699,6 @@
         .level-4 { background: #8a8a4a55; color: #ffd77f; }
         .level-5 { background: #8a4a4a55; color: #ff7f7f; }
 
-        /* ============================================
-           STARS RATING
-           ============================================ */
         .stars { display: flex; gap: 2px; margin-top: 4px; }
         .star {
             font-size: 14px;
@@ -747,9 +709,6 @@
         .star.active { color: var(--gold); }
         .star:hover { transform: scale(1.1); }
 
-        /* ============================================
-           LEADERBOARD - خفيف
-           ============================================ */
         .leaderboard-entry {
             display: flex;
             align-items: center;
@@ -786,9 +745,6 @@
             font-size: 11px;
         }
 
-        /* ============================================
-           ADMIN PANEL - خفيف
-           ============================================ */
         .admin-panel {
             background: var(--card-bg);
             border-radius: 14px;
@@ -871,9 +827,6 @@
             box-shadow: 0 0 15px #008cff20;
         }
 
-        /* ============================================
-           COMMENTS - خفيف
-           ============================================ */
         .comments-section {
             margin-top: 10px;
             padding-top: 10px;
@@ -950,9 +903,6 @@
         }
         .comment-input-area button:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* ============================================
-           MODAL (VIDEO PLAYER) - خفيف
-           ============================================ */
         .modal {
             display: none;
             position: fixed;
@@ -1031,9 +981,6 @@
         #commentsContainer .comment-input-area input { font-size: 11px; padding: 5px 8px; }
         #commentsContainer .comment-input-area button { font-size: 11px; padding: 5px 12px; }
 
-        /* ============================================
-           PROFILE - خفيف
-           ============================================ */
         .profile-content {
             background: var(--card-bg);
             border-radius: 14px;
@@ -1088,9 +1035,6 @@
             border: 1px solid #19aaff33;
         }
 
-        /* ============================================
-           FOOTER & SUPPORT - خفيف
-           ============================================ */
         footer {
             margin-top: 16px;
             padding: 25px 20px;
@@ -1150,9 +1094,6 @@
             display: block;
         }
 
-        /* ============================================
-           TOAST - خفيف
-           ============================================ */
         #toast {
             position: fixed;
             bottom: 60px;
@@ -1174,9 +1115,6 @@
         }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 
-        /* ============================================
-           CONFETTI - خفيف
-           ============================================ */
         .confetti-container {
             position: fixed;
             inset: 0;
@@ -1195,9 +1133,6 @@
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* ============================================
-           KICK MESSAGE - خفيف
-           ============================================ */
         #kickMessage {
             display: none;
             position: fixed;
@@ -1243,11 +1178,8 @@
         }
         .kick-box .btn:hover { transform: scale(1.04); }
 
-        /* ============================================
-           MOBILE RESPONSIVE - خفيف
-           ============================================ */
         @media (max-width: 650px) {
-            .hero { min-height: 200px; padding: 25px 16px; }
+            .hero { min-height: 180px; padding: 20px 16px; }
             .video-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
             .video-info { padding: 8px; }
             .video-info h3 { font-size: 12px; }
@@ -1302,13 +1234,12 @@
     <div id="confettiContainer" class="confetti-container"></div>
 
     <!-- ===== LOGIN ===== -->
-    <section id="loginScreen" class="login-screen">
+    <section id="loginScreen" class="login-screen" style="display:flex;">
         <div class="login-box">
             <div class="login-logo"><img src="logo.png" alt="SAYODA Logo" onerror="this.style.display='none'"></div>
             <div class="logo-text">🛡️ SAYODA <span>|</span> CYBER FORCE</div>
             <div class="login-subtitle">SECURE ACCESS</div>
             
-            <!-- Login Form -->
             <div class="input-group">
                 <input id="username" class="input" type="text" placeholder=" " autocomplete="username">
                 <span class="input-icon">👤</span>
@@ -1320,10 +1251,8 @@
             <button class="login-btn" onclick="login()">دخول</button>
             <div id="loginError" class="error"></div>
             
-            <!-- Register Button -->
             <button class="register-btn" onclick="showRegisterForm()" style="margin-top:10px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">📝 إنشاء حساب جديد</button>
             
-            <!-- Register Form -->
             <div class="register-form" id="registerForm">
                 <div class="register-title">📝 <span>إنشاء حساب جديد</span></div>
                 <div class="input-group">
@@ -1341,7 +1270,6 @@
                 <button class="register-btn" onclick="submitRegistration()" id="registerSubmitBtn">✅ إضافة الحساب</button>
             </div>
             
-            <!-- Confirmation Message -->
             <div id="confirmationMessage">
                 <div class="icon">✅</div>
                 <h3>تم إرسال طلبك بنجاح!</h3>
@@ -1394,7 +1322,6 @@
             </div>
         </section>
 
-        <!-- ===== PROFILE ===== -->
         <section id="profile" class="section">
             <div class="container">
                 <div class="section-title"><h2>👤 <span>ملفي الشخصي</span></h2></div>
@@ -1423,7 +1350,6 @@
             </div>
         </section>
 
-        <!-- ===== LEADERBOARD ===== -->
         <section id="leaderboard" class="section">
             <div class="container">
                 <div class="section-title"><h2>🏆 <span>المتصدرين</span></h2><p>ترتيب المستخدمين حسب النقاط</p></div>
@@ -1434,7 +1360,6 @@
             </div>
         </section>
 
-        <!-- ===== ADMIN PANEL ===== -->
         <section id="adminPanel" class="section" style="display:none;">
             <div class="container">
                 <div class="section-title">
@@ -1454,7 +1379,6 @@
             </div>
         </section>
 
-        <!-- ===== VIDEOS ===== -->
         <section id="videos" class="section">
             <div class="container">
                 <div class="section-title"><h2>🎬 <span>مكتبة الفيديوهات</span></h2><p>محتوى SAYODA | CYBER FORCE</p></div>
@@ -1516,6 +1440,24 @@
 
     <script>
         /* ============================================
+           🚀 تشغيل فوري - تخطي الـ Splash
+           ============================================ */
+        document.addEventListener('DOMContentLoaded', function() {
+            // إخفاء الـ Splash فوراً
+            const splash = document.getElementById('splash');
+            if (splash) {
+                splash.style.display = 'none';
+            }
+            // إظهار صفحة تسجيل الدخول
+            const loginScreen = document.getElementById('loginScreen');
+            if (loginScreen) {
+                loginScreen.style.display = 'flex';
+                loginScreen.style.opacity = '1';
+                loginScreen.style.transform = 'none';
+            }
+        });
+
+        /* ============================================
            🛡️ XSS PROTECTION
            ============================================ */
         function sanitizeHTML(text) {
@@ -1529,7 +1471,7 @@
         }
 
         /* ============================================
-           ☁️ SUPABASE - التخزين السحابي
+           ☁️ SUPABASE
            ============================================ */
         const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_s87EATCli6z8pxXKO-HK-A_ybL9tNtQ';
@@ -1537,19 +1479,16 @@
 
         async function fetchCloudData() {
             try {
-                // جلب المستخدمين
                 const { data: users, error: usersError } = await supabase
                     .from('users')
                     .select('*');
                 if (usersError) throw usersError;
 
-                // جلب التعليقات
                 const { data: comments, error: commentsError } = await supabase
                     .from('comments')
                     .select('*');
                 if (commentsError) throw commentsError;
 
-                // تحويل البيانات للشكل المطلوب
                 const usersObj = {};
                 users.forEach(u => {
                     usersObj[u.username] = {
@@ -1587,7 +1526,6 @@
 
         async function saveCloudData(data) {
             try {
-                // حفظ المستخدمين
                 const usersArray = Object.entries(data.users || {}).map(([username, userData]) => ({
                     username: username,
                     password: userData.password || '',
@@ -1604,14 +1542,12 @@
                     rating_count: userData.ratingCount || 0
                 }));
 
-                // حذف المستخدمين الموجودين
                 const { error: deleteError } = await supabase
                     .from('users')
                     .delete()
                     .neq('id', 0);
                 if (deleteError) throw deleteError;
 
-                // إضافة المستخدمين الجدد
                 if (usersArray.length > 0) {
                     const { error: insertError } = await supabase
                         .from('users')
@@ -1619,7 +1555,6 @@
                     if (insertError) throw insertError;
                 }
 
-                // حفظ التعليقات
                 const commentsArray = [];
                 Object.entries(data.comments || {}).forEach(([videoId, comments]) => {
                     comments.forEach(c => {
@@ -1632,14 +1567,12 @@
                     });
                 });
 
-                // حذف التعليقات القديمة
                 const { error: deleteCommentsError } = await supabase
                     .from('comments')
                     .delete()
                     .neq('id', 0);
                 if (deleteCommentsError) throw deleteCommentsError;
 
-                // إضافة التعليقات الجديدة
                 if (commentsArray.length > 0) {
                     const { error: insertCommentsError } = await supabase
                         .from('comments')
@@ -2030,14 +1963,15 @@
         }
 
         /* ============================================
-           SPLASH TYPING EFFECT
+           SPLASH - كتابة سريعة
            ============================================ */
         const texts = ['🛡️ SAYODA | CYBER FORCE', '🚀 اتعلم • طبّق • احمي', '💻 Ethical Hacking Platform'];
         let ti = 0, ci = 0, del = false;
         const titleEl = document.getElementById('splashTitle');
-        const cursor = titleEl.querySelector('.cursor');
+        const cursor = titleEl?.querySelector('.cursor');
 
         function type() {
+            if (!titleEl || !cursor) return;
             const cur = texts[ti];
             if (del) { titleEl.innerHTML = cur.substring(0, ci--) + ' <span class="cursor"></span>'; }
             else { titleEl.innerHTML = cur.substring(0, ci++) + ' <span class="cursor"></span>'; }
@@ -2045,12 +1979,7 @@
             else if (del && ci === 0) { del = false; ti = (ti + 1) % texts.length; }
             setTimeout(type, del ? 30 : 50);
         }
-        setTimeout(type, 300);
-        setTimeout(() => {
-            document.getElementById('splash').classList.add('fade');
-            document.getElementById('loginScreen').classList.add('show');
-            setTimeout(() => document.getElementById('splash').style.display = 'none', 300);
-        }, 500);
+        setTimeout(type, 100);
 
         /* ============================================
            TOAST
@@ -2304,7 +2233,6 @@
                     const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
                     const watched = videoProgress[id] >= 100 ? '✅' : '';
                     
-                    // 🔒 Lock system: requires 30% from previous video
                     const isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
                     
                     return `<div class="video-card ${isLocked ? 'locked' : ''}">
@@ -2347,7 +2275,6 @@
             const index = parseInt(el?.dataset?.index || 0);
             if (!id) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
             
-            // 🔒 Check lock (30%)
             if (index > 0) {
                 const prevVideo = videos[index - 1];
                 const prevId = extractID(prevVideo?.youtube_id) || '';
