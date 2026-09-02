@@ -66,75 +66,6 @@
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
         /* ============================================
-           SPLASH - ظهور سريع جداً
-           ============================================ */
-        #splash {
-            position: fixed;
-            inset: 0;
-            z-index: 999999;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.4s ease;
-        }
-        #splash.fade {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .splash-container { text-align: center; max-width: 600px; padding: 20px; }
-        .splash-title {
-            font-size: clamp(22px, 4vw, 36px);
-            font-weight: 900;
-            color: var(--accent);
-            min-height: 50px;
-        }
-        .splash-title .highlight { color: #fff; }
-        .splash-title .cursor {
-            display: inline-block;
-            width: 2px;
-            height: clamp(22px, 4vw, 36px);
-            background: var(--accent);
-            animation: blink 0.8s step-end infinite;
-            vertical-align: middle;
-        }
-        .splash-sub {
-            font-size: clamp(12px, 1.2vw, 14px);
-            color: var(--text-secondary);
-            margin-top: 10px;
-            line-height: 1.6;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: slideUp 0.6s ease 0.8s forwards;
-        }
-        .splash-tag {
-            font-size: clamp(13px, 1.5vw, 17px);
-            color: var(--accent);
-            margin-top: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: slideUp 0.6s ease 1.2s forwards;
-        }
-        .splash-loader {
-            width: 28px;
-            height: 28px;
-            margin-top: 12px;
-            border: 2px solid #1a3a55;
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            opacity: 0;
-            animation: spin 0.8s linear infinite, fadeIn 0.4s ease 1.6s forwards;
-        }
-        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-        @keyframes slideUp { to { opacity:1; transform:translateY(0); } }
-        @keyframes fadeIn { to { opacity:1; } }
-        @keyframes spin { to { transform:rotate(360deg); } }
-
-        /* ============================================
            LOGIN SCREEN - ظهور فوري
            ============================================ */
         .login-screen {
@@ -146,8 +77,6 @@
             background: radial-gradient(circle at 30% 40%, #008cff15, transparent 60%),
                         radial-gradient(circle at 70% 60%, #12baff08, transparent 50%),
                         var(--bg-primary);
-            opacity: 1;
-            transform: none;
         }
         .login-box {
             width: min(380px, 100%);
@@ -157,8 +86,6 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             backdrop-filter: blur(16px);
-            opacity: 1;
-            transform: none;
         }
         .login-logo {
             display: flex;
@@ -321,7 +248,7 @@
         }
 
         /* ============================================
-           باقي الـ Styles (مختصرة)
+           باقي الـ Styles
            ============================================ */
         .container { width: min(1100px, 94%); margin: auto; }
         .section { padding: 30px 0; }
@@ -1214,26 +1141,7 @@
 
 <body>
 
-    <!-- ===== SPLASH ===== -->
-    <div id="splash">
-        <div class="splash-container">
-            <div class="splash-title" id="splashTitle">
-                <span class="highlight">🛡️</span> SAYODA <span class="highlight">|</span> CYBER FORCE
-                <span class="cursor"></span>
-            </div>
-            <div class="splash-sub">💻 منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking 🔐<br>هدفنا إنك تتعلم، تفهم، وتطور مهاراتك في حماية الأنظمة واكتشاف الثغرات بشكل قانوني وآمن.</div>
-            <div class="splash-tag">🚀 اتعلم • طبّق • احمي</div>
-            <div class="splash-loader"></div>
-        </div>
-    </div>
-
-    <!-- ===== TOAST ===== -->
-    <div id="toast">✅ <span id="toastMessage"></span></div>
-
-    <!-- ===== CONFETTI ===== -->
-    <div id="confettiContainer" class="confetti-container"></div>
-
-    <!-- ===== LOGIN ===== -->
+    <!-- ===== LOGIN SCREEN ===== -->
     <section id="loginScreen" class="login-screen" style="display:flex;">
         <div class="login-box">
             <div class="login-logo"><img src="logo.png" alt="SAYODA Logo" onerror="this.style.display='none'"></div>
@@ -1440,22 +1348,11 @@
 
     <script>
         /* ============================================
-           🚀 تشغيل فوري - تخطي الـ Splash
+           ☁️ SUPABASE - تعريف موحد
            ============================================ */
-        document.addEventListener('DOMContentLoaded', function() {
-            // إخفاء الـ Splash فوراً
-            const splash = document.getElementById('splash');
-            if (splash) {
-                splash.style.display = 'none';
-            }
-            // إظهار صفحة تسجيل الدخول
-            const loginScreen = document.getElementById('loginScreen');
-            if (loginScreen) {
-                loginScreen.style.display = 'flex';
-                loginScreen.style.opacity = '1';
-                loginScreen.style.transform = 'none';
-            }
-        });
+        const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_s87EATCli6z8pxXKO-HK-A_ybL9tNtQ';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         /* ============================================
            🛡️ XSS PROTECTION
@@ -1471,20 +1368,16 @@
         }
 
         /* ============================================
-           ☁️ SUPABASE
+           📦 SUPABASE - دوال التخزين السحابي
            ============================================ */
-        const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_s87EATCli6z8pxXKO-HK-A_ybL9tNtQ';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         async function fetchCloudData() {
             try {
-                const { data: users, error: usersError } = await supabase
+                const { data: users, error: usersError } = await sb
                     .from('users')
                     .select('*');
                 if (usersError) throw usersError;
 
-                const { data: comments, error: commentsError } = await supabase
+                const { data: comments, error: commentsError } = await sb
                     .from('comments')
                     .select('*');
                 if (commentsError) throw commentsError;
@@ -1542,14 +1435,14 @@
                     rating_count: userData.ratingCount || 0
                 }));
 
-                const { error: deleteError } = await supabase
+                const { error: deleteError } = await sb
                     .from('users')
                     .delete()
                     .neq('id', 0);
                 if (deleteError) throw deleteError;
 
                 if (usersArray.length > 0) {
-                    const { error: insertError } = await supabase
+                    const { error: insertError } = await sb
                         .from('users')
                         .insert(usersArray);
                     if (insertError) throw insertError;
@@ -1567,14 +1460,14 @@
                     });
                 });
 
-                const { error: deleteCommentsError } = await supabase
+                const { error: deleteCommentsError } = await sb
                     .from('comments')
                     .delete()
                     .neq('id', 0);
                 if (deleteCommentsError) throw deleteCommentsError;
 
                 if (commentsArray.length > 0) {
-                    const { error: insertCommentsError } = await supabase
+                    const { error: insertCommentsError } = await sb
                         .from('comments')
                         .insert(commentsArray);
                     if (insertCommentsError) throw insertCommentsError;
@@ -1961,25 +1854,6 @@
             const cloud = JSON.parse(localStorage.getItem('sayoda_cloud_cache') || '{}');
             renderAdminPanel(cloud);
         }
-
-        /* ============================================
-           SPLASH - كتابة سريعة
-           ============================================ */
-        const texts = ['🛡️ SAYODA | CYBER FORCE', '🚀 اتعلم • طبّق • احمي', '💻 Ethical Hacking Platform'];
-        let ti = 0, ci = 0, del = false;
-        const titleEl = document.getElementById('splashTitle');
-        const cursor = titleEl?.querySelector('.cursor');
-
-        function type() {
-            if (!titleEl || !cursor) return;
-            const cur = texts[ti];
-            if (del) { titleEl.innerHTML = cur.substring(0, ci--) + ' <span class="cursor"></span>'; }
-            else { titleEl.innerHTML = cur.substring(0, ci++) + ' <span class="cursor"></span>'; }
-            if (!del && ci === cur.length) { setTimeout(() => del = true, 1500); }
-            else if (del && ci === 0) { del = false; ti = (ti + 1) % texts.length; }
-            setTimeout(type, del ? 30 : 50);
-        }
-        setTimeout(type, 100);
 
         /* ============================================
            TOAST
