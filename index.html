@@ -611,9 +611,9 @@
                 <button class="close-btn" onclick="closeVideo()">×</button>
             </div>
             <div class="player-wrapper">
-                <iframe id="player" src="" allowfullscreen 
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-presentation"
-                    referrerpolicy="no-referrer">
+                <iframe id="player" src="" allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin">
                 </iframe>
             </div>
             <div id="commentsContainer" style="margin-top:10px;padding:0 4px;"></div>
@@ -1844,7 +1844,7 @@
             views[vid] = (views[vid] || 0) + 1;
             localStorage.setItem('sayoda_views', JSON.stringify(views));
             document.getElementById('videoTitle').textContent = sanitizeHTML(title) || 'SAYODA | CYBER FORCE';
-            document.getElementById('player').src = `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1`;
+            document.getElementById('player').src = `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1&origin=https%3A%2F%2Felsayedhasaneisa1-collab.github.io`;
             document.getElementById('videoModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
             renderComments(vid);
