@@ -17,6 +17,9 @@
     <meta name="twitter:description" content="منصة تعليمية متخصصة في الأمن السيبراني والـ Ethical Hacking">
     <meta name="twitter:image" content="https://elsayedhasaneisa1-collab.github.io/-SAYODA-CYBER-FORCE/logo.png">
     
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+    
     <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
@@ -38,6 +41,56 @@
         img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;pointer-events:none}
         p,h1,h2,h3,h4,h5,h6,span,div,a{-webkit-user-select:none;user-select:none}
         
+        /* Watermark on videos */
+        .video-card::after {
+            content: '🛡️ SAYODA | CYBER FORCE';
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            color: rgba(255,255,255,0.12);
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 5;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        /* Guest Banner */
+        #guestBanner {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            position: sticky;
+            top: 56px;
+            z-index: 99;
+            border-bottom: 2px solid var(--gold);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        #guestBanner a {
+            color: #1a1a2e;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #guestBanner .close-guest {
+            background: rgba(0,0,0,0.1);
+            border: none;
+            color: #1a1a2e;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0 6px;
+            border-radius: 50%;
+            line-height: 1;
+        }
+        
         .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 30% 40%,#008cff15,transparent 60%),radial-gradient(circle at 70% 60%,#12baff08,transparent 50%),var(--bg-primary)}
         .login-box{width:min(400px,100%);padding:25px 20px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(16px);max-height:98vh;overflow-y:auto}
         .login-logo{display:flex;justify-content:center;margin-bottom:10px}
@@ -53,6 +106,8 @@
         .login-btn{width:100%;padding:12px;border:0;border-radius:12px;color:#fff;font-size:clamp(14px,1.1vw,16px);font-weight:bold;font-family:'Tajawal',Arial,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--accent-dark),var(--accent));transition:all var(--transition);margin-top:4px;box-shadow:0 0 25px #008cff15}
         .login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px #008cff30}
         .login-btn:disabled{opacity:0.6;cursor:not-allowed}
+        .login-btn.guest-btn{background:transparent;border:1px solid var(--text-muted);color:var(--text-secondary);box-shadow:none;margin-top:6px}
+        .login-btn.guest-btn:hover{background:rgba(255,255,255,0.05);border-color:var(--accent);color:var(--accent)}
         .error{min-height:18px;margin-top:8px;text-align:center;color:var(--danger);font-size:12px}
         .register-form{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-color)}
         .register-form.show{display:block}
@@ -118,6 +173,7 @@
         .header-theme-btn{background:none;border:none;color:var(--text-secondary);font-size:clamp(16px,2vw,20px);cursor:pointer;padding:4px 6px;border-radius:8px;transition:all var(--transition)}
         .header-theme-btn:hover{background:rgba(25,170,255,.1);color:var(--accent)}
         .admin-badge{background:var(--gold);color:#1a1a2e;font-size:9px;font-weight:bold;padding:2px 8px;border-radius:30px;margin-right:4px}
+        .guest-badge{background:var(--gold);color:#1a1a2e;font-size:9px;font-weight:bold;padding:2px 8px;border-radius:30px;margin-right:4px}
 
         .hero{min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px 20px;background:radial-gradient(circle at center,#008cff10,transparent 60%)}
         .badge{display:inline-block;padding:4px 14px;border:1px solid #168bd055;border-radius:30px;color:var(--accent);font-size:10px;font-weight:bold;letter-spacing:2px;margin-bottom:10px;background:#008cff08}
@@ -131,6 +187,7 @@
         .video-card.locked{opacity:0.6;pointer-events:none}
         .video-card.locked .play-overlay{cursor:not-allowed}
         .video-card.locked .play-btn{background:#555;box-shadow:none}
+        .video-card.guest-hidden{display:none}
         .thumbnail{position:relative;aspect-ratio:16/9;overflow:hidden;background:#01060d}
         .thumbnail img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;transition:transform 0.3s}
         .video-card:hover .thumbnail img{transform:scale(1.04)}
@@ -161,7 +218,7 @@
 
         .leaderboard-entry{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(7,19,33,.4);border-radius:8px;margin-bottom:4px;border:1px solid var(--border-color);transition:all var(--transition)}
         .leaderboard-entry:hover{background:rgba(7,19,33,.7);border-color:#19aaff33}
-        .leaderboard-entry .rank{font-size:14px;font-weight:bold;color:var(--accent);width:28px}
+        .leaderboard-entry .rank{font-size:14px;font-weight:bold;color:var(--accent);width:28px;flex-shrink:0}
         .leaderboard-entry .user{flex:1;font-weight:500;font-size:clamp(12px,1vw,13px)}
         .leaderboard-entry .user .sub{font-size:10px;color:var(--text-muted);display:block}
         .leaderboard-entry .badges-count{color:var(--accent);font-size:11px;margin:0 4px}
@@ -212,7 +269,7 @@
         .close-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border-color);background:rgba(7,19,33,.8);color:#fff;font-size:18px;cursor:pointer;transition:all var(--transition);flex-shrink:0}
         .close-btn:hover{background:#102b42;transform:rotate(90deg)}
         .player-wrapper{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#000;flex-shrink:0}
-        .player-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+        .player-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
         #commentsContainer{margin-top:10px;padding:0 4px;flex-shrink:0;max-height:150px;overflow-y:auto}
         #commentsContainer .comments-section{margin-top:0;padding-top:6px}
         #commentsContainer .comment-item{padding:4px 6px;margin-bottom:2px}
@@ -248,6 +305,7 @@
         .support-btn .btn-icon{font-size:18px}
         .support-btn .btn-text small{font-size:9px;font-weight:normal;opacity:0.8;display:block}
 
+        /* Toast */
         #toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;background:rgba(7,19,33,.95);border:1px solid var(--border-color);border-radius:10px;backdrop-filter:blur(10px);color:#fff;z-index:99999;transition:all 0.4s;opacity:0;pointer-events:none;font-size:clamp(12px,1vw,13px);max-width:90%;text-align:center}
         #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 
@@ -282,6 +340,14 @@
 </head>
 <body>
 
+    <!-- ===== GUEST BANNER ===== -->
+    <div id="guestBanner">
+        👤 أنت تتصفح كضيف. 
+        <a onclick="showRegisterForm(); document.getElementById('guestBanner').style.display='none';">سجل الآن</a> 
+        لفتح كل المحتويات!
+        <button class="close-guest" onclick="document.getElementById('guestBanner').style.display='none';">✕</button>
+    </div>
+
     <!-- ===== LOGIN SCREEN ===== -->
     <section id="loginScreen" class="login-screen" style="display:flex;">
         <div class="login-box">
@@ -297,6 +363,10 @@
                 <span class="input-icon">🔑</span>
             </div>
             <button class="login-btn" onclick="login()">🚪 دخول</button>
+            
+            <!-- Guest Login Button -->
+            <button class="login-btn guest-btn" onclick="guestLogin()">👤 دخول كضيف</button>
+            
             <div id="loginError" class="error"></div>
             
             <button class="register-btn" onclick="showRegisterForm()" style="margin-top:8px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a2e;">📝 إنشاء حساب جديد</button>
@@ -392,6 +462,7 @@
                 <span class="brand-name">SAYODA <span>|</span> CYBER FORCE</span>
             </a>
             <div class="header-actions">
+                <span id="guestBadge" style="display:none;" class="guest-badge">👤 ضيف</span>
                 <span id="adminBadge" style="display:none;" class="admin-badge">👑 Admin</span>
                 <button class="header-theme-btn" onclick="toggleTheme()" title="تغيير الثيم">🌙</button>
                 <button class="menu-btn" onclick="toggleSidebar()">☰</button>
@@ -539,7 +610,12 @@
                 <h3 id="videoTitle">SAYODA | CYBER FORCE</h3>
                 <button class="close-btn" onclick="closeVideo()">×</button>
             </div>
-            <div class="player-wrapper"><iframe id="player" src="" allowfullscreen></iframe></div>
+            <div class="player-wrapper">
+                <iframe id="player" src="" allowfullscreen 
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-presentation"
+                    referrerpolicy="no-referrer">
+                </iframe>
+            </div>
             <div id="commentsContainer" style="margin-top:10px;padding:0 4px;"></div>
         </div>
     </div>
@@ -575,7 +651,7 @@
 
     <!-- ===== TOAST ===== -->
     <div id="toast">
-        <span>✅</span>
+        <span id="toastIcon">✅</span>
         <span id="toastMessage"></span>
     </div>
 
@@ -698,7 +774,87 @@
         }
 
         /* ============================================
-           💬 COMMENTS
+           🛡️ CONTENT PROTECTION
+           ============================================ */
+        // منع النقر بزر اليمين على الصور والفيديوهات
+        document.addEventListener('contextmenu', e => {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || e.target.closest('.video-card')) {
+                e.preventDefault();
+                showToast('🚫 غير مسموح بتحميل المحتوى', '🚫');
+                return false;
+            }
+        });
+
+        // منع السحب
+        document.addEventListener('dragstart', e => {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // منع حفظ الصور بالضغط المطول (للموبايل)
+        document.addEventListener('touchstart', e => {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+                e.preventDefault();
+                return false;
+            }
+        }, { passive: false });
+
+        // منع حفظ الصفحة
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+                e.preventDefault();
+                showToast('🚫 غير مسموح بحفظ الصفحة', '🚫');
+                return false;
+            }
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        /* ============================================
+           👤 GUEST MODE
+           ============================================ */
+        let isGuest = false;
+
+        function guestLogin() {
+            const guestId = 'guest_' + Date.now();
+            currentUser = {
+                username: 'ضيف',
+                role: 'guest',
+                active: true,
+                videos_locked: false, // الضيف يشوف الفيديوهات المفتوحة
+                isGuest: true,
+                guestId: guestId
+            };
+            isGuest = true;
+            
+            sessionStorage.setItem('sayoda_user', 'guest');
+            sessionStorage.setItem('sayoda_guest_id', guestId);
+            sessionStorage.setItem('sayoda_is_guest', 'true');
+            
+            loadProgress();
+            showPlatform();
+            
+            // إظهار البانر والبادج
+            document.getElementById('guestBanner').style.display = 'flex';
+            document.getElementById('guestBadge').style.display = 'inline';
+            
+            showToast('👤 مرحباً بك كضيف! بعض المحتويات مقفلة.', '👤');
+        }
+
+        function checkGuestPermission(action) {
+            if (currentUser?.isGuest) {
+                showToast('⚠️ يجب تسجيل الدخول لعمل هذا', '⚠️');
+                return false;
+            }
+            return true;
+        }
+
+        /* ============================================
+           💬 COMMENTS (مع منع الضيف)
            ============================================ */
         let commentsCache = {};
         async function loadComments(videoId) {
@@ -734,11 +890,18 @@
                     html += `<div class="comment-item"><span class="comment-user">${sanitizeHTML(c.username)}</span><span class="comment-time">${time}</span><div class="comment-text">${sanitizeHTML(c.text)}</div></div>`;
                 });
             }
-            html += `<div class="comment-input-area"><input type="text" id="commentInput" placeholder="اكتب تعليقك..." maxlength="500"><button onclick="postComment('${videoId}')" id="commentBtn">إرسال</button></div></div>`;
+            // منع الضيف من التعليق
+            if (currentUser?.isGuest) {
+                html += `<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:6px;">🔒 يجب تسجيل الدخول للتعليق</div>`;
+            } else {
+                html += `<div class="comment-input-area"><input type="text" id="commentInput" placeholder="اكتب تعليقك..." maxlength="500"><button onclick="postComment('${videoId}')" id="commentBtn">إرسال</button></div>`;
+            }
+            html += `</div>`;
             container.innerHTML = html;
             document.getElementById('commentInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') postComment(videoId); });
         }
         async function postComment(videoId) {
+            if (!checkGuestPermission('التعليق')) return;
             const input = document.getElementById('commentInput');
             const btn = document.getElementById('commentBtn');
             const text = input.value.trim();
@@ -800,7 +963,6 @@
             }
             saveUserData(d); updateProfile();
             
-            // تحديث المتصدرين بعد إضافة XP
             setTimeout(async () => {
                 const cloud = await fetchCloudData();
                 updateLeaderboard(cloud);
@@ -848,18 +1010,20 @@
            ============================================ */
         function updateLeaderboard(cloud) {
             const list = document.getElementById('leaderboardList');
+            if (!list) {
+                console.warn('⚠️ عنصر leaderboardList غير موجود');
+                return;
+            }
+            
             if (!cloud || !cloud.users) {
                 list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:14px;">⚠️ لا توجد بيانات</div>';
                 return;
             }
 
-            // حساب النقاط لكل مستخدم
             const entries = Object.entries(cloud.users).map(([username, data]) => {
                 const videosWatched = data.videosWatched?.length || 0;
                 const badgesCount = data.badges?.length || 0;
                 const xp = data.xp || 0;
-                
-                // معادلة النقاط: (فيديوهات × 10) + (شارات × 5) + XP
                 const totalScore = (videosWatched * 10) + (badgesCount * 5) + xp;
                 
                 return {
@@ -874,7 +1038,6 @@
                 };
             });
 
-            // ترتيب تنازلي حسب النقاط
             entries.sort((a, b) => b.totalScore - a.totalScore);
 
             if (!entries.length) {
@@ -882,11 +1045,10 @@
                 return;
             }
 
-            // عرض أول 20 مستخدم
             const medals = ['🥇', '🥈', '🥉'];
             list.innerHTML = entries.slice(0, 20).map((e, i) => {
                 const rank = i < 3 ? medals[i] : `#${i+1}`;
-                const isMe = e.username === currentUser?.username;
+                const isMe = e.username === currentUser?.username && !currentUser?.isGuest;
                 
                 return `
                 <div class="leaderboard-entry" style="${isMe ? 'border-color:var(--accent);background:rgba(25,170,255,0.08);' : ''}">
@@ -904,7 +1066,6 @@
                 `;
             }).join('');
 
-            // إضافة إحصائيات سريعة
             const statsHTML = `
                 <div class="leaderboard-stats">
                     <span>👥 ${entries.length} مستخدم</span>
@@ -917,15 +1078,18 @@
             list.innerHTML += statsHTML;
         }
 
-        // دالة تحديث يدوي
         async function refreshLeaderboard() {
             showToast('🔄 جاري تحديث المتصدرين...');
-            const cloud = await fetchCloudData();
-            updateLeaderboard(cloud);
-            showToast('✅ تم تحديث المتصدرين!');
+            try {
+                const cloud = await fetchCloudData();
+                updateLeaderboard(cloud);
+                showToast('✅ تم تحديث المتصدرين!');
+            } catch(e) {
+                showToast('❌ حدث خطأ في التحديث', '❌');
+                console.error(e);
+            }
         }
 
-        // تحديث المتصدرين كل 30 ثانية
         setInterval(async function() {
             try {
                 const cloud = await fetchCloudData();
@@ -964,7 +1128,7 @@
                 const cloud = await fetchCloudData();
                 const local = getUserData();
                 const u = currentUser?.username;
-                if (!u) return;
+                if (!u || currentUser?.isGuest) return;
                 
                 if (cloud.users && cloud.users[u]) {
                     if (cloud.users[u].xp > local.xp) {
@@ -1010,7 +1174,6 @@
                     await saveCloudData(cloud);
                 }
                 
-                // تحديث المتصدرين
                 updateLeaderboard(cloud);
                 
                 if (currentUser?.role === 'admin') {
@@ -1055,7 +1218,6 @@
             document.getElementById('adminTotalBadges').textContent = users.reduce((s, u) => s + u.badges.length, 0);
             document.getElementById('adminTotalVideos').textContent = users.reduce((s, u) => s + u.videosWatched.length, 0);
 
-            // تحديث حالة القفل للمشرف
             if (currentUser && currentUser.role === 'admin') {
                 const statusEl = document.getElementById('adminLockStatus');
                 if (statusEl) {
@@ -1262,8 +1424,17 @@
            ============================================ */
         function showToast(msg, icon = '✅') {
             const t = document.getElementById('toast');
-            document.getElementById('toastMessage').textContent = msg;
-            t.querySelector('span:first-child').textContent = icon;
+            const messageEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+            
+            if (!t || !messageEl) {
+                console.warn('⚠️ عناصر التوست غير موجودة');
+                alert(msg);
+                return;
+            }
+            
+            if (iconEl) iconEl.textContent = icon;
+            messageEl.textContent = msg;
             t.classList.add('show');
             clearTimeout(t._timer);
             t._timer = setTimeout(() => t.classList.remove('show'), 2500);
@@ -1299,24 +1470,15 @@
         }
 
         /* ============================================
-           SECURITY
-           ============================================ */
-        document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') { e.preventDefault(); return false; } });
-        document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') { e.preventDefault(); return false; } });
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) { e.preventDefault(); return false; }
-            if (e.key === 'F12') { e.preventDefault(); return false; }
-        });
-
-        /* ============================================
            REGISTER
            ============================================ */
         function showRegisterForm() {
             document.getElementById('registerForm').classList.toggle('show');
             document.getElementById('confirmationMessage').classList.remove('show');
+            // إخفاء البانر لو ضيف
+            document.getElementById('guestBanner').style.display = 'none';
         }
 
-        // Update Guide Steps
         function updateGuideStep(step) {
             const steps = [
                 { id: 'step1', num: 'step1Num', check: 'step1Check' },
@@ -1351,7 +1513,6 @@
             }
         }
 
-        // Auto update steps on input
         document.getElementById('regUsername')?.addEventListener('input', function() {
             if (this.value.length >= 3) updateGuideStep(1);
         });
@@ -1420,7 +1581,6 @@
                 updateGuideStep(3);
                 showToast('✅ تم إنشاء حسابك بنجاح!');
                 
-                // Auto-fill login
                 document.getElementById('username').value = u;
                 document.getElementById('password').value = p;
                 
@@ -1449,9 +1609,16 @@
                 const userData = users[u];
                 if (userData && userData.password === p && userData.active !== false) {
                     currentUser = { username: u, ...userData };
+                    isGuest = false;
                     sessionStorage.setItem('sayoda_user', u);
                     sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
                     sessionStorage.setItem('sayoda_auth_token', btoa(u + '|' + sessionStorage.getItem('sayoda_session_id') + '|' + 'SAYODA_SECRET_2026'));
+                    sessionStorage.removeItem('sayoda_is_guest');
+                    sessionStorage.removeItem('sayoda_guest_id');
+                    
+                    document.getElementById('guestBadge').style.display = 'none';
+                    document.getElementById('guestBanner').style.display = 'none';
+                    
                     loadProgress(); showPlatform(); updateStreak(); await syncUserData();
                     const ip = await getIP(); const dev = getDevice(); const d2 = getUserData();
                     sendTelegramMessage(`🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
@@ -1503,14 +1670,20 @@
                     localStorage.setItem('sayoda_cloud_cache', JSON.stringify(cloud));
                 }, 500);
             }
-            setTimeout(async () => { const cloud = await fetchCloudData(); updateLeaderboard(cloud); }, 600);
+            setTimeout(async () => { 
+                const cloud = await fetchCloudData(); 
+                updateLeaderboard(cloud); 
+            }, 600);
         }
 
         function logout() {
             sessionStorage.removeItem('sayoda_user');
             sessionStorage.removeItem('sayoda_session_id');
             sessionStorage.removeItem('sayoda_auth_token');
+            sessionStorage.removeItem('sayoda_is_guest');
+            sessionStorage.removeItem('sayoda_guest_id');
             currentUser = null;
+            isGuest = false;
             location.reload();
         }
 
@@ -1526,7 +1699,7 @@
         }
 
         /* ============================================
-           🎬 RENDER VIDEOS
+           🎬 RENDER VIDEOS (مع دعم الضيف)
            ============================================ */
         function renderVideos() {
             const grid = document.getElementById('videoGrid');
@@ -1536,6 +1709,10 @@
                     grid.innerHTML = '<div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--text-muted);font-size:13px;">📹 لا توجد فيديوهات حاليًا.</div>';
                     return;
                 }
+                
+                const isGuest = currentUser?.isGuest || false;
+                
+                let visibleCount = 0;
                 grid.innerHTML = videos.map((v, i) => {
                     const title = sanitizeHTML(v?.title || `فيديو ${i+1}`);
                     const desc = sanitizeHTML(v?.description || '');
@@ -1548,6 +1725,12 @@
                     const rating = ratings[id] || 0;
                     const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
                     const watched = videoProgress[id] >= 100 ? '✅' : '';
+                    
+                    // لو ضيف: يشوف بس الفيديوهات اللي locked = false
+                    if (isGuest && v.locked !== false) {
+                        return `<div class="video-card guest-hidden"></div>`;
+                    }
+                    visibleCount++;
                     
                     let isLocked = false;
                     if (currentUser && currentUser.videos_locked !== undefined) {
@@ -1576,12 +1759,27 @@
                         </div>
                     </div>`;
                 }).join('');
+                
+                // لو ضيف وكل الفيديوهات مقفلة
+                if (isGuest && visibleCount === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column:1/-1;padding:40px 20px;text-align:center;background:var(--card-bg);border-radius:14px;border:1px solid var(--border-color);">
+                            <span style="font-size:48px;display:block;margin-bottom:10px;">🔒</span>
+                            <h3 style="color:var(--text-secondary);">المحتوى مقفل للضيوف</h3>
+                            <p style="color:var(--text-muted);font-size:13px;margin-top:8px;">سجل دخولك أو أنشئ حساباً مجاناً لفتح كل المحاضرات 🚀</p>
+                            <button onclick="showRegisterForm()" style="margin-top:12px;padding:10px 24px;border:0;border-radius:30px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-weight:bold;cursor:pointer;font-size:14px;font-family:'Tajawal',Arial,sans-serif;">
+                                📝 إنشاء حساب الآن
+                            </button>
+                        </div>
+                    `;
+                }
             }).catch(() => {
                 grid.innerHTML = '<div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--text-muted);font-size:13px;">⚠️ تعذر تحميل الفيديوهات.</div>';
             });
         }
 
         function rateVideo(id, rating) {
+            if (!checkGuestPermission('التقييم')) return;
             ratings[id] = rating;
             localStorage.setItem('sayoda_ratings', JSON.stringify(ratings));
             const d = getUserData();
@@ -1692,6 +1890,27 @@
            ============================================ */
         (async function() {
             try {
+                const isGuestSession = sessionStorage.getItem('sayoda_is_guest') === 'true';
+                
+                if (isGuestSession) {
+                    // استعادة جلسة الضيف
+                    const guestId = sessionStorage.getItem('sayoda_guest_id') || 'guest_' + Date.now();
+                    currentUser = {
+                        username: 'ضيف',
+                        role: 'guest',
+                        active: true,
+                        videos_locked: false,
+                        isGuest: true,
+                        guestId: guestId
+                    };
+                    isGuest = true;
+                    loadProgress(); showPlatform();
+                    document.getElementById('guestBanner').style.display = 'flex';
+                    document.getElementById('guestBadge').style.display = 'inline';
+                    showToast('👤 مرحباً بك كضيف!', '👤');
+                    return;
+                }
+                
                 const u = sessionStorage.getItem('sayoda_user');
                 if (u) {
                     const cloud = await fetchCloudData();
@@ -1699,6 +1918,7 @@
                     const userData = users[u];
                     if (userData && userData.active !== false) {
                         currentUser = { username: u, ...userData };
+                        isGuest = false;
                         loadProgress(); showPlatform(); updateStreak(); await syncUserData();
                         showToast('✅ مرحباً بعودتك!', '👋');
                         if (userData.role === 'admin') {
@@ -1723,6 +1943,16 @@
             } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
         });
         window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
+        
+        setTimeout(async function() {
+            try {
+                const cloud = await fetchCloudData();
+                updateLeaderboard(cloud);
+                console.log('✅ تم تحديث المتصدرين تلقائياً');
+            } catch(e) {
+                console.warn('⚠️ فشل التحديث التلقائي:', e);
+            }
+        }, 1000);
     </script>
 
 </body>
