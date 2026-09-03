@@ -962,12 +962,10 @@
                 }
             }
             saveUserData(d); updateProfile();
-            
-            setTimeout(async () => {
-                const cloud = await fetchCloudData();
-                updateLeaderboard(cloud);
-            }, 1000);
-            
+
+            // مزامنة النقاط فورًا مع Supabase حتى يظهر التغيير لجميع المستخدمين.
+            syncUserData();
+
             return d;
         }
 
@@ -1125,60 +1123,86 @@
            ============================================ */
         async function syncUserData() {
             try {
-                const cloud = await fetchCloudData();
-                const local = getUserData();
                 const u = currentUser?.username;
                 if (!u || currentUser?.isGuest) return;
-                
-                if (cloud.users && cloud.users[u]) {
-                    if (cloud.users[u].xp > local.xp) {
-                        local.xp = cloud.users[u].xp;
-                        local.level = cloud.users[u].level || local.level;
-                        local.levelEmoji = cloud.users[u].levelEmoji || local.levelEmoji;
-                        local.streak = cloud.users[u].streak || local.streak;
-                        local.badges = cloud.users[u].badges || local.badges;
-                        local.videosWatched = cloud.users[u].videosWatched || local.videosWatched;
-                        local.totalRating = cloud.users[u].totalRating || local.totalRating;
-                        local.ratingCount = cloud.users[u].ratingCount || local.ratingCount;
-                        saveUserData(local);
-                        updateProfile();
-                        renderVideos();
-                    } else if (local.xp > cloud.users[u].xp) {
-                        cloud.users[u].xp = local.xp;
-                        cloud.users[u].level = local.level;
-                        cloud.users[u].levelEmoji = local.levelEmoji;
-                        cloud.users[u].streak = local.streak;
-                        cloud.users[u].badges = local.badges;
-                        cloud.users[u].videosWatched = local.videosWatched;
-                        cloud.users[u].totalRating = local.totalRating;
-                        cloud.users[u].ratingCount = local.ratingCount;
-                        await saveCloudData(cloud);
-                    }
+
+                const local = getUserData();
+                const { data: cloudUser, error } = await sb
+                    .from('users')
+                    .select('*')
+                    .eq('username', u)
+                    .maybeSingle();
+
+                if (error) throw error;
+
+                // لو السحابة عندها XP أعلى، نحافظ عليه بدل ما نرجعه للخلف.
+                const cloudXP = Number(cloudUser?.xp || 0);
+                const finalXP = Math.max(Number(local.xp || 0), cloudXP);
+
+                const mergeUnique = (a, b) => [...new Set([...(Array.isArray(a) ? a : []), ...(Array.isArray(b) ? b : [])])];
+                const finalVideos = mergeUnique(cloudUser?.videos_watched, local.videosWatched);
+                const finalBadges = mergeUnique(cloudUser?.badges, local.badges);
+                const finalStreak = Math.max(Number(local.streak || 0), Number(cloudUser?.streak || 0));
+                const finalTotalRating = Math.max(Number(local.totalRating || 0), Number(cloudUser?.total_rating || 0));
+                const finalRatingCount = Math.max(Number(local.ratingCount || 0), Number(cloudUser?.rating_count || 0));
+
+                const levels = [
+                    { min: 0, title: 'مبتدئ', emoji: '🟢' },
+                    { min: 100, title: 'متعلم', emoji: '🔵' },
+                    { min: 300, title: 'خبير', emoji: '🟣' },
+                    { min: 600, title: 'محترف', emoji: '🟡' },
+                    { min: 1000, title: 'أسطورة', emoji: '🔴' }
+                ];
+                let finalLevel = levels[0];
+                for (const level of levels) if (finalXP >= level.min) finalLevel = level;
+
+                const payload = {
+                    xp: finalXP,
+                    level: finalLevel.title,
+                    level_emoji: finalLevel.emoji,
+                    streak: finalStreak,
+                    badges: finalBadges,
+                    videos_watched: finalVideos,
+                    total_rating: finalTotalRating,
+                    rating_count: finalRatingCount
+                };
+
+                if (cloudUser) {
+                    const { error: updateError } = await sb
+                        .from('users')
+                        .update(payload)
+                        .eq('username', u);
+                    if (updateError) throw updateError;
                 } else {
-                    if (!cloud.users) cloud.users = {};
-                    cloud.users[u] = {
+                    // المستخدم غير موجود في السحابة: أنشئ سجله بدون حذف أي مستخدم آخر.
+                    const { error: insertError } = await sb.from('users').insert({
+                        username: u,
                         password: currentUser.password || '',
                         role: currentUser.role || 'user',
                         active: true,
                         phone: currentUser.phone || '',
-                        xp: local.xp,
-                        level: local.level,
-                        levelEmoji: local.levelEmoji,
-                        streak: local.streak,
-                        badges: local.badges,
-                        videosWatched: local.videosWatched,
-                        totalRating: local.totalRating,
-                        ratingCount: local.ratingCount,
-                        videos_locked: true
-                    };
-                    await saveCloudData(cloud);
+                        videos_locked: true,
+                        ...payload
+                    });
+                    if (insertError) throw insertError;
                 }
-                
-                updateLeaderboard(cloud);
-                
-                if (currentUser?.role === 'admin') {
-                    renderAdminPanel(cloud);
-                }
+
+                // تحديث النسخة المحلية بالقيم المؤكدة من السحابة.
+                local.xp = finalXP;
+                local.level = finalLevel.title;
+                local.levelEmoji = finalLevel.emoji;
+                local.streak = finalStreak;
+                local.badges = finalBadges;
+                local.videosWatched = finalVideos;
+                local.totalRating = finalTotalRating;
+                local.ratingCount = finalRatingCount;
+                saveUserData(local);
+                updateProfile();
+
+                const freshCloud = await fetchCloudData();
+                updateLeaderboard(freshCloud);
+
+                if (currentUser?.role === 'admin') renderAdminPanel(freshCloud);
             } catch (e) {
                 console.warn('⚠️ خطأ في المزامنة:', e);
             }
