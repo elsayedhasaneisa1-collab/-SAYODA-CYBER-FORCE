@@ -843,19 +843,42 @@ function launchConfetti() {
 }
 
 /* ============================================
-   🔄 SYNC
+   🔄 SYNC — الإصلاح الجديد ✨
    ============================================ */
 async function syncUserData() {
     try {
         const u = currentUser?.username;
         if (!u || currentUser?.isGuest) return;
+        
+        const d = getUserData();
+        
         const payload = {
+            // ✅ بيانات التقدم الكاملة
+            xp: d.xp,
+            level: d.level,
+            level_emoji: d.levelEmoji,
+            streak: d.streak,
+            badges: d.badges,
+            videos_watched: d.videosWatched,
+            total_rating: d.totalRating,
+            rating_count: d.ratingCount,
+            // ✅ بيانات المشاهدة
             views: currentUser.views || {},
             ratings: currentUser.ratings || {},
             video_progress: currentUser.videoProgress || {}
         };
-        await sb.from('users').update(payload).eq('username', u);
-    } catch (e) {}
+        
+        console.log('💾 Syncing to Supabase:', payload);
+        
+        const { error } = await sb.from('users').update(payload).eq('username', u);
+        if (error) {
+            console.error('❌ Sync error:', error);
+        } else {
+            console.log('✅ Synced successfully');
+        }
+    } catch (e) {
+        console.error('❌ Sync exception:', e);
+    }
 }
 
 /* ============================================
@@ -1660,10 +1683,6 @@ document.addEventListener('keydown', e => {
     try {
         const user = JSON.parse(savedUser);
 
-        // ✅ الأدمن يفضل في index.html ويشوف كل حاجة زي المستخدم العادي
-        // (اتشال التحويل التلقائي لـ admin.html)
-        // زر لوحة التحكم هيظهر تلقائياً في الهيدر والسايدبار لو role === 'admin'
-
         if (user.role === 'guest' || user.isGuest) {
             currentUser = { username: 'ضيف', role: 'guest', active: true, videos_locked: false, isGuest: true };
             isGuest = true;
@@ -1690,23 +1709,67 @@ document.addEventListener('keydown', e => {
                 return;
             }
 
-            currentUser = { username: user.username, ...userData };
-            isGuest = false;
-            currentUser.userData = {
-                xp: Number(userData.xp || 0),
-                level: userData.level || 'مبتدئ',
-                levelEmoji: userData.level_emoji || '🟢',
-                streak: Number(userData.streak || 0),
-                lastVisit: userData.last_visit || null,
-                videosWatched: Array.isArray(userData.videos_watched) ? userData.videos_watched : [],
-                badges: Array.isArray(userData.badges) ? userData.badges : [],
-                totalRating: Number(userData.total_rating || 0),
-                ratingCount: Number(userData.rating_count || 0)
+            // ✅ fallback من sessionStorage
+            const cached = JSON.parse(sessionStorage.getItem('sayoda_user') || '{}');
+
+            currentUser = { 
+                username: user.username, 
+                ...userData,
+                xp: (userData.xp !== null && userData.xp !== undefined) ? Number(userData.xp) : Number(cached.xp || 0),
+                level: userData.level || cached.level || 'مبتدئ',
+                level_emoji: userData.level_emoji || cached.level_emoji || '🟢',
+                streak: (userData.streak !== null && userData.streak !== undefined) ? Number(userData.streak) : Number(cached.streak || 0),
+                badges: (Array.isArray(userData.badges) && userData.badges.length > 0) ? userData.badges : (Array.isArray(cached.badges) ? cached.badges : []),
+                videos_watched: (Array.isArray(userData.videos_watched) && userData.videos_watched.length > 0) ? userData.videos_watched : (Array.isArray(cached.videos_watched) ? cached.videos_watched : []),
+                total_rating: (userData.total_rating !== null && userData.total_rating !== undefined) ? Number(userData.total_rating) : Number(cached.total_rating || 0),
+                rating_count: (userData.rating_count !== null && userData.rating_count !== undefined) ? Number(userData.rating_count) : Number(cached.rating_count || 0),
+                videos_locked: (userData.videos_locked !== null && userData.videos_locked !== undefined) ? userData.videos_locked : (cached.videos_locked !== undefined ? cached.videos_locked : true),
+                banned_features: userData.banned_features || cached.banned_features || [],
+                views: userData.views || cached.views || {},
+                ratings: userData.ratings || cached.ratings || {},
+                video_progress: userData.video_progress || cached.video_progress || {}
             };
-            currentUser.views = userData.views || {};
-            currentUser.ratings = userData.ratings || {};
-            currentUser.videoProgress = userData.video_progress || {};
-            currentUser.banned_features = userData.banned_features || [];
+
+            isGuest = false;
+
+            currentUser.userData = {
+                xp: currentUser.xp,
+                level: currentUser.level,
+                levelEmoji: currentUser.level_emoji,
+                streak: currentUser.streak,
+                lastVisit: userData.last_visit || cached.last_visit || null,
+                videosWatched: currentUser.videos_watched,
+                badges: currentUser.badges,
+                totalRating: currentUser.total_rating,
+                ratingCount: currentUser.rating_count
+            };
+
+            // ✅ نحدّث sessionStorage بالبيانات الحديثة
+            try {
+                const updatedSession = {
+                    ...cached,
+                    username: currentUser.username,
+                    role: currentUser.role,
+                    active: currentUser.active,
+                    phone: currentUser.phone,
+                    xp: currentUser.xp,
+                    level: currentUser.level,
+                    level_emoji: currentUser.level_emoji,
+                    streak: currentUser.streak,
+                    badges: currentUser.badges,
+                    videos_watched: currentUser.videos_watched,
+                    total_rating: currentUser.total_rating,
+                    rating_count: currentUser.rating_count,
+                    videos_locked: currentUser.videos_locked,
+                    banned_features: currentUser.banned_features,
+                    views: currentUser.views,
+                    ratings: currentUser.ratings,
+                    video_progress: currentUser.video_progress
+                };
+                sessionStorage.setItem('sayoda_user', JSON.stringify(updatedSession));
+            } catch(e) {
+                console.error('sessionStorage update failed:', e);
+            }
 
             document.getElementById('app').classList.remove('hidden');
             document.getElementById('guestBadge').style.display = 'none';

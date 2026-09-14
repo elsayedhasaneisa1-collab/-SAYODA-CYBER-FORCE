@@ -912,11 +912,11 @@ async function login(e) {
 
     try {
         const { data: userData, error } = await sb
-            .from('users')
-            .select('username, password, role, active, phone')
-            .eq('username', u)
-            .eq('password', p)
-            .maybeSingle();
+    .from('users')
+    .select('*')
+    .eq('username', u)
+    .eq('password', p)
+    .maybeSingle();
 
         if (error) {
             showMsg('loginMsg', '❌ خطأ في الاتصال. حاول تاني.', 'error');
@@ -938,13 +938,27 @@ async function login(e) {
         resetRateLimit();
 
         const session = {
-            username: sanitize(userData.username),
-            role: sanitize(userData.role || 'user'),
-            active: userData.active !== false,
-            phone: sanitize(userData.phone || ''),
-            loginAt: Date.now()
-        };
-        sessionStorage.setItem('sayoda_user', JSON.stringify(session));
+    username: sanitize(userData.username),
+    role: sanitize(userData.role || 'user'),
+    active: userData.active !== false,
+    phone: sanitize(userData.phone || ''),
+    xp: Number(userData.xp || 0),
+    level: sanitize(userData.level || 'مبتدئ'),
+    level_emoji: sanitize(userData.level_emoji || '🟢'),
+    streak: Number(userData.streak || 0),
+    badges: Array.isArray(userData.badges) ? userData.badges : [],
+    videos_watched: Array.isArray(userData.videos_watched) ? userData.videos_watched : [],
+    total_rating: Number(userData.total_rating || 0),
+    rating_count: Number(userData.rating_count || 0),
+    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true,
+    banned_features: Array.isArray(userData.banned_features) ? userData.banned_features : [],
+    views: userData.views || {},
+    ratings: userData.ratings || {},
+    video_progress: userData.video_progress || {},
+    last_login: userData.last_login || null,
+    loginAt: Date.now()
+};
+sessionStorage.setItem('sayoda_user', JSON.stringify(session));
 
         try {
             await sb.rpc('update_last_login', { p_username: u });
@@ -1087,12 +1101,26 @@ async function submitRegistration(e) {
         showMsg('registerMsg', '✅ تم إنشاء حسابك! جاري التحويل...', 'success');
 
         sessionStorage.setItem('sayoda_user', JSON.stringify({
-            username: u,
-            role: 'user',
-            active: true,
-            phone: ph,
-            loginAt: Date.now()
-        }));
+    username: u,
+    role: 'user',
+    active: true,
+    phone: ph,
+    xp: 0,
+    level: 'مبتدئ',
+    level_emoji: '🟢',
+    streak: 0,
+    badges: [],
+    videos_watched: [],
+    total_rating: 0,
+    rating_count: 0,
+    videos_locked: true,
+    banned_features: [],
+    views: {},
+    ratings: {},
+    video_progress: {},
+    last_login: null,
+    loginAt: Date.now()
+}));
 
         setTimeout(() => { window.location.href = './index.html'; }, 1000);
 
