@@ -1,35 +1,13 @@
 {
-  "name": "SAYODA | CYBER FORCE",
-  "short_name": "SAYODA",
-  "description": "منصة SAYODA | CYBER FORCE التعليمية للأمن السيبراني والـ Ethical Hacking",
-  "lang": "ar",
-  "dir": "rtl",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#020812",
-  "theme_color": "#020812",
-  "categories": ["education", "technology", "security"],
-  "icons": [
-    {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "فتح SAYODA",
-      "short_name": "SAYODA",
-      "url": "./"
-    }
+  "name":"SAYODA | CYBER FORCE",
+  "short_name":"SAYODA",
+  "description":"منصة SAYODA | CYBER FORCE",
+  "lang":"ar", "dir":"rtl", "start_url":"./", "scope":"./",
+  "display":"standalone", "orientation":"portrait-primary",
+  "background_color":"#020812", "theme_color":"#020812",
+  "categories":["education","technology","security"],
+  "icons":[
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ]
 }
