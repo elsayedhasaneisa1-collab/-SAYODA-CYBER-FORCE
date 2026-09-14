@@ -683,7 +683,7 @@
            ☁️ SUPABASE
            ============================================ */
         const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_s87EATCli6z8pxXKO-HK-A_ybL9tNtQ';
+        const SUPABASE_KEY = 'sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN';
         const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         /* ============================================
@@ -719,10 +719,7 @@
                         videosWatched: u.videos_watched || [],
                         totalRating: u.total_rating || 0,
                         ratingCount: u.rating_count || 0,
-                        videos_locked: u.videos_locked !== undefined ? u.videos_locked : true,
-                        views: u.views || {},
-                        ratings: u.ratings || {},
-                        videoProgress: u.video_progress || {}
+                        videos_locked: u.videos_locked !== undefined ? u.videos_locked : true
                     };
                 });
                 const commentsObj = {};
@@ -753,10 +750,7 @@
                     videos_watched: userData.videosWatched || [],
                     total_rating: userData.totalRating || 0,
                     rating_count: userData.ratingCount || 0,
-                    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true,
-                    views: userData.views || {},
-                    ratings: userData.ratings || {},
-                    video_progress: userData.videoProgress || {}
+                    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true
                 }));
                 const { error: deleteError } = await sb.from('users').delete().neq('id', 0);
                 if (deleteError) throw deleteError;
@@ -856,11 +850,9 @@
                 guestId: guestId
             };
             isGuest = true;
-            
-            sessionStorage.setItem('sayoda_user', 'guest');
-            sessionStorage.setItem('sayoda_guest_id', guestId);
-            sessionStorage.setItem('sayoda_is_guest', 'true');
-            
+
+
+
             loadProgress();
             showPlatform();
             
@@ -944,29 +936,25 @@
            USER DATA
            ============================================ */
         function getUserData() {
-            if (!currentUser || currentUser.isGuest) {
-                return { xp:0, level:'مبتدئ', levelEmoji:'🟢', streak:0, lastVisit:null, videosWatched:[], badges:[], totalRating:0, ratingCount:0 };
-            }
-            if (!currentUser.userData) currentUser.userData = {};
-            const d = currentUser.userData;
-            return {
-                xp: Number(d.xp || currentUser.xp || 0),
-                level: d.level || currentUser.level || 'مبتدئ',
-                levelEmoji: d.levelEmoji || currentUser.levelEmoji || '🟢',
-                streak: Number(d.streak || currentUser.streak || 0),
-                lastVisit: d.lastVisit || null,
-                videosWatched: Array.isArray(d.videosWatched) ? d.videosWatched : (currentUser.videosWatched || []),
-                badges: Array.isArray(d.badges) ? d.badges : (currentUser.badges || []),
-                totalRating: Number(d.totalRating || currentUser.totalRating || 0),
-                ratingCount: Number(d.ratingCount || currentUser.ratingCount || 0)
+            if (!currentUser) return { xp:0, level:'مبتدئ', levelEmoji:'🟢', streak:0, lastVisit:null, videosWatched:[], badges:[], totalRating:0, ratingCount:0 };
+            return currentUser.userData || {
+                xp: Number(currentUser.xp || 0),
+                level: currentUser.level || 'مبتدئ',
+                levelEmoji: currentUser.levelEmoji || '🟢',
+                streak: Number(currentUser.streak || 0),
+                lastVisit: currentUser.lastVisit || null,
+                videosWatched: Array.isArray(currentUser.videosWatched) ? currentUser.videosWatched : [],
+                badges: Array.isArray(currentUser.badges) ? currentUser.badges : [],
+                totalRating: Number(currentUser.totalRating || 0),
+                ratingCount: Number(currentUser.ratingCount || 0)
             };
         }
         function saveUserData(d) {
             if (!currentUser || currentUser.isGuest) return;
             currentUser.userData = {...d};
-            currentUser.xp=d.xp; currentUser.level=d.level; currentUser.levelEmoji=d.levelEmoji;
-            currentUser.streak=d.streak; currentUser.videosWatched=d.videosWatched;
-            currentUser.badges=d.badges; currentUser.totalRating=d.totalRating; currentUser.ratingCount=d.ratingCount;
+            currentUser.xp = d.xp; currentUser.level = d.level; currentUser.levelEmoji = d.levelEmoji;
+            currentUser.streak = d.streak; currentUser.videosWatched = d.videosWatched;
+            currentUser.badges = d.badges; currentUser.totalRating = d.totalRating; currentUser.ratingCount = d.ratingCount;
             syncUserData();
         }
 
@@ -1168,87 +1156,18 @@
             try {
                 const u = currentUser?.username;
                 if (!u || currentUser?.isGuest) return;
-
-                const local = getUserData();
-                const { data: cloudUser, error } = await sb
-                    .from('users')
-                    .select('*')
-                    .eq('username', u)
-                    .maybeSingle();
-
-                if (error) throw error;
-
-                // لو السحابة عندها XP أعلى، نحافظ عليه بدل ما نرجعه للخلف.
-                const cloudXP = Number(cloudUser?.xp || 0);
-                const finalXP = Math.max(Number(local.xp || 0), cloudXP);
-
-                const mergeUnique = (a, b) => [...new Set([...(Array.isArray(a) ? a : []), ...(Array.isArray(b) ? b : [])])];
-                const finalVideos = mergeUnique(cloudUser?.videos_watched, local.videosWatched);
-                const finalBadges = mergeUnique(cloudUser?.badges, local.badges);
-                const finalStreak = Math.max(Number(local.streak || 0), Number(cloudUser?.streak || 0));
-                const finalTotalRating = Math.max(Number(local.totalRating || 0), Number(cloudUser?.total_rating || 0));
-                const finalRatingCount = Math.max(Number(local.ratingCount || 0), Number(cloudUser?.rating_count || 0));
-
-                const levels = [
-                    { min: 0, title: 'مبتدئ', emoji: '🟢' },
-                    { min: 100, title: 'متعلم', emoji: '🔵' },
-                    { min: 300, title: 'خبير', emoji: '🟣' },
-                    { min: 600, title: 'محترف', emoji: '🟡' },
-                    { min: 1000, title: 'أسطورة', emoji: '🔴' }
-                ];
-                let finalLevel = levels[0];
-                for (const level of levels) if (finalXP >= level.min) finalLevel = level;
-
+                const d = getUserData();
                 const payload = {
-                    xp: finalXP,
-                    level: finalLevel.title,
-                    level_emoji: finalLevel.emoji,
-                    streak: finalStreak,
-                    badges: finalBadges,
-                    videos_watched: finalVideos,
-                    total_rating: finalTotalRating,
-                    rating_count: finalRatingCount
+                    views: currentUser.views || {},
+                    ratings: currentUser.ratings || {},
+                    video_progress: currentUser.videoProgress || {}
                 };
-
-                if (cloudUser) {
-                    const { error: updateError } = await sb
-                        .from('users')
-                        .update(payload)
-                        .eq('username', u);
-                    if (updateError) throw updateError;
-                } else {
-                    // المستخدم غير موجود في السحابة: أنشئ سجله بدون حذف أي مستخدم آخر.
-                    const { error: insertError } = await sb.from('users').insert({
-                        username: u,
-                        password: currentUser.password || '',
-                        role: currentUser.role || 'user',
-                        active: true,
-                        phone: currentUser.phone || '',
-                        videos_locked: true,
-                        ...payload
-                    });
-                    if (insertError) throw insertError;
+                const { error } = await sb.from('users').update(payload).eq('username', u);
+                if (error) {
+                    // لو الأعمدة الجديدة غير موجودة، لا نكسر تسجيل الدخول.
+                    console.warn('Cloud profile sync:', error.message);
                 }
-
-                // تحديث النسخة المحلية بالقيم المؤكدة من السحابة.
-                local.xp = finalXP;
-                local.level = finalLevel.title;
-                local.levelEmoji = finalLevel.emoji;
-                local.streak = finalStreak;
-                local.badges = finalBadges;
-                local.videosWatched = finalVideos;
-                local.totalRating = finalTotalRating;
-                local.ratingCount = finalRatingCount;
-                saveUserData(local);
-                updateProfile();
-
-                const freshCloud = await fetchCloudData();
-                updateLeaderboard(freshCloud);
-
-                if (currentUser?.role === 'admin') renderAdminPanel(freshCloud);
-            } catch (e) {
-                console.warn('⚠️ خطأ في المزامنة:', e);
-            }
+            } catch (e) { console.warn('Cloud sync:', e); }
         }
 
         /* ============================================
@@ -1364,7 +1283,7 @@
                     
                     const cloud2 = await fetchCloudData();
                     renderAdminPanel(cloud2);
-                    
+
                     const statusEl = document.getElementById('adminLockStatus');
                     if (statusEl) {
                         statusEl.textContent = '🔓 مفتوحة';
@@ -1401,7 +1320,7 @@
                     
                     const cloud2 = await fetchCloudData();
                     renderAdminPanel(cloud2);
-                    
+
                     const statusEl = document.getElementById('adminLockStatus');
                     if (statusEl) {
                         statusEl.textContent = '🔒 مقفلة';
@@ -1521,7 +1440,7 @@
             const btns = document.querySelectorAll('.theme-toggle, .header-theme-btn');
             const icon = document.body.classList.contains('light-mode') ? '🌞' : '🌙';
             btns.forEach(b => b.textContent = icon);
-            
+
         }
         if (false) {
             document.body.classList.add('light-mode');
@@ -1674,43 +1593,78 @@
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
             const err = document.getElementById('loginError');
+            const btn = document.querySelector('#loginScreen button[type="submit"], #loginScreen .login-btn, #loginButton');
             err.textContent = '';
             if (!u || !p) { err.textContent = 'اكتب اسم المستخدم وكلمة المرور.'; return; }
+            if (btn) { btn.disabled = true; btn.dataset.oldText = btn.textContent; btn.textContent = '⏳ جاري تسجيل الدخول...'; }
             try {
-                const cloud = await fetchCloudData();
-                const users = cloud.users || {};
-                const userData = users[u];
-                if (userData && userData.password === p && userData.active !== false) {
-                    currentUser = { username: u, ...userData };
-                    isGuest = false;
-                    sessionStorage.setItem('sayoda_user', u);
-                    sessionStorage.setItem('sayoda_session_id', 'session_' + Date.now());
-                    sessionStorage.setItem('sayoda_auth_token', btoa(u + '|' + sessionStorage.getItem('sayoda_session_id') + '|' + 'SAYODA_SECRET_2026'));
-                    sessionStorage.removeItem('sayoda_is_guest');
-                    sessionStorage.removeItem('sayoda_guest_id');
-                    
-                    document.getElementById('guestBadge').style.display = 'none';
-                    document.getElementById('guestBanner').style.display = 'none';
-                    
-                    loadProgress(); showPlatform(); updateStreak(); await syncUserData();
-                    const ip = await getIP(); const dev = getDevice(); const d2 = getUserData();
-                    sendTelegramMessage(`🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
-                    showToast('✅ تم تسجيل الدخول بنجاح!');
-                    if (userData.role === 'admin') {
-                        document.getElementById('adminPanelLink').style.display = 'none';
-                        document.getElementById('adminBadge').style.display = 'inline';
-                        document.getElementById('adminLaunchButton').style.display = 'inline-flex';
-                        setTimeout(async () => {
-                            const cloud2 = await fetchCloudData();
-                            renderAdminPanel(cloud2);
-                        }, 500);
-                    }
-                } else {
+                // تسجيل الدخول من قاعدة البيانات مباشرة، بدون users.json أو localStorage.
+                const { data: userData, error } = await sb
+                    .from('users')
+                    .select('*')
+                    .eq('username', u)
+                    .eq('password', p)
+                    .maybeSingle();
+
+                if (error) {
+                    console.error('SUPABASE LOGIN ERROR:', error);
+                    err.textContent = '❌ تعذر الاتصال بقاعدة البيانات: ' + (error.message || 'خطأ غير معروف');
+                    return;
+                }
+                if (!userData) {
                     err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.';
+                    return;
+                }
+                if (userData.active === false) {
+                    err.textContent = '❌ هذا الحساب غير مفعل.';
+                    return;
+                }
+
+                currentUser = { username: u, ...userData };
+                isGuest = false;
+                currentUser.userData = {
+                    xp: Number(userData.xp || 0),
+                    level: userData.level || 'مبتدئ',
+                    levelEmoji: userData.level_emoji || '🟢',
+                    streak: Number(userData.streak || 0),
+                    lastVisit: userData.last_visit || null,
+                    videosWatched: Array.isArray(userData.videos_watched) ? userData.videos_watched : [],
+                    badges: Array.isArray(userData.badges) ? userData.badges : [],
+                    totalRating: Number(userData.total_rating || 0),
+                    ratingCount: Number(userData.rating_count || 0)
+                };
+                currentUser.views = userData.views || {};
+                currentUser.ratings = userData.ratings || {};
+                currentUser.videoProgress = userData.video_progress || {};
+
+                // لا يتم تخزين بيانات الدخول في localStorage أو sessionStorage.
+                document.getElementById('guestBadge').style.display = 'none';
+                document.getElementById('guestBanner').style.display = 'none';
+
+                loadProgress();
+                showPlatform();
+                updateStreak();
+
+                if (typeof loadUserNotifications === 'function') {
+                    setTimeout(() => loadUserNotifications(true), 300);
+                }
+
+                showToast('✅ تم تسجيل الدخول بنجاح!');
+
+                if (userData.role === 'admin') {
+                    document.getElementById('adminPanelLink').style.display = 'none';
+                    document.getElementById('adminBadge').style.display = 'inline';
+                    document.getElementById('adminLaunchButton').style.display = 'inline-flex';
+                    setTimeout(async () => {
+                        const cloud2 = await fetchCloudData();
+                        renderAdminPanel(cloud2);
+                    }, 500);
                 }
             } catch (e) {
-                console.error(e);
-                err.textContent = 'حدث خطأ غير متوقع.';
+                console.error('LOGIN ERROR:', e);
+                err.textContent = '❌ حدث خطأ غير متوقع: ' + (e.message || 'حاول مرة أخرى.');
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = btn.dataset.oldText || 'تسجيل الدخول'; }
             }
         }
 
@@ -1722,17 +1676,8 @@
         let views = {};
         let ratings = {};
 
-        function loadProgress() {
-            if (!currentUser || currentUser.isGuest) { videoProgress = {}; views = {}; ratings = {}; return; }
-            videoProgress = {...(currentUser.videoProgress || {})};
-            views = {...(currentUser.views || {})};
-            ratings = {...(currentUser.ratings || {})};
-        }
-        function saveProgress() {
-            if (!currentUser || currentUser.isGuest) return;
-            currentUser.videoProgress = {...videoProgress};
-            syncUserData();
-        }
+        function loadProgress() { videoProgress = currentUser?.videoProgress ? {...currentUser.videoProgress} : {}; views = currentUser?.views ? {...currentUser.views} : {}; ratings = currentUser?.ratings ? {...currentUser.ratings} : {}; }
+        function saveProgress() { if (!currentUser || currentUser.isGuest) return; currentUser.videoProgress = {...videoProgress}; syncUserData(); }
 
         function showPlatform() {
             document.getElementById('loginScreen').style.display = 'none';
@@ -1746,6 +1691,7 @@
                 setTimeout(async () => {
                     const cloud = await fetchCloudData();
                     renderAdminPanel(cloud);
+
                 }, 500);
             }
             setTimeout(async () => { 
@@ -1755,11 +1701,11 @@
         }
 
         function logout() {
-            sessionStorage.removeItem('sayoda_user');
-            sessionStorage.removeItem('sayoda_session_id');
-            sessionStorage.removeItem('sayoda_auth_token');
-            sessionStorage.removeItem('sayoda_is_guest');
-            sessionStorage.removeItem('sayoda_guest_id');
+
+
+
+
+
             currentUser = null;
             isGuest = false;
             location.reload();
@@ -1859,7 +1805,7 @@
         function rateVideo(id, rating) {
             if (!checkGuestPermission('التقييم')) return;
             ratings[id] = rating;
-            if (currentUser && !currentUser.isGuest) { currentUser.ratings = {...ratings}; syncUserData(); }
+
             const d = getUserData();
             d.totalRating = (d.totalRating || 0) + rating;
             d.ratingCount = (d.ratingCount || 0) + 1;
@@ -1896,7 +1842,7 @@
             const vid = String(id || '').trim();
             if (!vid) { showToast('⚠️ Video ID غير صحيح.', '⚠️'); return; }
             views[vid] = (views[vid] || 0) + 1;
-            if (currentUser && !currentUser.isGuest) { currentUser.views = {...views}; syncUserData(); }
+
             document.getElementById('videoTitle').textContent = sanitizeHTML(title) || 'SAYODA | CYBER FORCE';
             document.getElementById('player').src = `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1&origin=https%3A%2F%2Felsayedhasaneisa1-collab.github.io`;
             document.getElementById('videoModal').style.display = 'flex';
@@ -1965,61 +1911,13 @@
 
         /* ============================================
            AUTO LOGIN
+           لا يتم حفظ جلسة الدخول في المتصفح.
+           المستخدم يسجل الدخول من قاعدة البيانات عند فتح الصفحة.
            ============================================ */
         (async function() {
-            try {
-                const isGuestSession = sessionStorage.getItem('sayoda_is_guest') === 'true';
-                
-                if (isGuestSession) {
-                    // استعادة جلسة الضيف
-                    const guestId = sessionStorage.getItem('sayoda_guest_id') || 'guest_' + Date.now();
-                    currentUser = {
-                        username: 'ضيف',
-                        role: 'guest',
-                        active: true,
-                        videos_locked: false,
-                        isGuest: true,
-                        guestId: guestId
-                    };
-                    isGuest = true;
-                    loadProgress(); showPlatform();
-                    document.getElementById('guestBanner').style.display = 'flex';
-                    document.getElementById('guestBadge').style.display = 'inline';
-                    showToast('👤 مرحباً بك كضيف!', '👤');
-                    return;
-                }
-                
-                const u = sessionStorage.getItem('sayoda_user');
-                if (u) {
-                    const cloud = await fetchCloudData();
-                    const users = cloud.users || {};
-                    const userData = users[u];
-                    if (userData && userData.active !== false) {
-                        currentUser = { username: u, ...userData };
-                        isGuest = false;
-                        loadProgress(); showPlatform(); updateStreak(); await syncUserData();
-                        showToast('✅ مرحباً بعودتك!', '👋');
-                        if (userData.role === 'admin') {
-                            document.getElementById('adminPanelLink').style.display = 'none';
-                            document.getElementById('adminBadge').style.display = 'inline';
-                            document.getElementById('adminLaunchButton').style.display = 'inline-flex';
-                            setTimeout(async () => {
-                                const cloud2 = await fetchCloudData();
-                                renderAdminPanel(cloud2);
-                            }, 500);
-                        }
-                    }
-                }
-            } catch (e) {}
+            // لا توجد جلسة محفوظة محلياً.
         })();
 
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('sayoda_tab_open')) {
-                showToast('⚠️ الصفحة مفتوحة بالفعل في تبويب آخر.', '⚠️');
-                setTimeout(() => window.close(), 1000);
-            } else { sessionStorage.setItem('sayoda_tab_open', 'true'); }
-        });
-        window.addEventListener('beforeunload', function() { sessionStorage.removeItem('sayoda_tab_open'); });
         
         setTimeout(async function() {
             try {
