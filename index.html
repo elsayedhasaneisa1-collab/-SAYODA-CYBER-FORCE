@@ -734,8 +734,10 @@
             }
         }
 
+        // ✅ تم إصلاح الدالة: استخدام upsert بدل الحذف والإدخال
         async function saveCloudData(data) {
             try {
+                // 1. تحديث/إضافة المستخدمين باستخدام upsert (بدون حذف)
                 const usersArray = Object.entries(data.users || {}).map(([username, userData]) => ({
                     username: username,
                     password: userData.password || '',
@@ -752,24 +754,33 @@
                     rating_count: userData.ratingCount || 0,
                     videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true
                 }));
-                const { error: deleteError } = await sb.from('users').delete().neq('id', 0);
-                if (deleteError) throw deleteError;
+
                 if (usersArray.length > 0) {
-                    const { error: insertError } = await sb.from('users').insert(usersArray);
-                    if (insertError) throw insertError;
+                    const { error: upsertError } = await sb.from('users').upsert(usersArray, { onConflict: 'username' });
+                    if (upsertError) throw upsertError;
                 }
+
+                // 2. التعامل مع التعليقات
                 const commentsArray = [];
                 Object.entries(data.comments || {}).forEach(([videoId, comments]) => {
                     comments.forEach(c => {
-                        commentsArray.push({ video_id: videoId, username: c.username, text: c.text, time: c.time || new Date().toISOString() });
+                        commentsArray.push({ 
+                            video_id: videoId, 
+                            username: c.username, 
+                            text: c.text, 
+                            time: c.time || new Date().toISOString() 
+                        });
                     });
                 });
+
                 const { error: deleteCommentsError } = await sb.from('comments').delete().neq('id', 0);
                 if (deleteCommentsError) throw deleteCommentsError;
+                
                 if (commentsArray.length > 0) {
                     const { error: insertCommentsError } = await sb.from('comments').insert(commentsArray);
                     if (insertCommentsError) throw insertCommentsError;
                 }
+
                 return true;
             } catch (e) {
                 console.warn('⚠️ فشل حفظ البيانات:', e);
@@ -796,7 +807,6 @@
         /* ============================================
            🛡️ CONTENT PROTECTION
            ============================================ */
-        // منع النقر بزر اليمين على الصور والفيديوهات
         document.addEventListener('contextmenu', e => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || e.target.closest('.video-card')) {
                 e.preventDefault();
@@ -805,7 +815,6 @@
             }
         });
 
-        // منع السحب
         document.addEventListener('dragstart', e => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
                 e.preventDefault();
@@ -813,7 +822,6 @@
             }
         });
 
-        // منع حفظ الصور بالضغط المطول (للموبايل)
         document.addEventListener('touchstart', e => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
                 e.preventDefault();
@@ -821,7 +829,6 @@
             }
         }, { passive: false });
 
-        // منع حفظ الصفحة
         document.addEventListener('keydown', e => {
             if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
                 e.preventDefault();
@@ -845,18 +852,15 @@
                 username: 'ضيف',
                 role: 'guest',
                 active: true,
-                videos_locked: false, // الضيف يشوف الفيديوهات المفتوحة
+                videos_locked: false,
                 isGuest: true,
                 guestId: guestId
             };
             isGuest = true;
 
-
-
             loadProgress();
             showPlatform();
             
-            // إظهار البانر والبادج
             document.getElementById('guestBanner').style.display = 'flex';
             document.getElementById('guestBadge').style.display = 'inline';
             
@@ -908,7 +912,6 @@
                     html += `<div class="comment-item"><span class="comment-user">${sanitizeHTML(c.username)}</span><span class="comment-time">${time}</span><div class="comment-text">${sanitizeHTML(c.text)}</div></div>`;
                 });
             }
-            // منع الضيف من التعليق
             if (currentUser?.isGuest) {
                 html += `<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:6px;">🔒 يجب تسجيل الدخول للتعليق</div>`;
             } else {
@@ -993,10 +996,7 @@
                 }
             }
             saveUserData(d); updateProfile();
-
-            // مزامنة النقاط فورًا مع Supabase حتى يظهر التغيير لجميع المستخدمين.
             syncUserData();
-
             return d;
         }
 
@@ -1039,22 +1039,16 @@
            ============================================ */
         function updateLeaderboard(cloud) {
             const list = document.getElementById('leaderboardList');
-            if (!list) {
-                console.warn('⚠️ عنصر leaderboardList غير موجود');
-                return;
-            }
-            
+            if (!list) return;
             if (!cloud || !cloud.users) {
                 list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:14px;">⚠️ لا توجد بيانات</div>';
                 return;
             }
-
             const entries = Object.entries(cloud.users).map(([username, data]) => {
                 const videosWatched = data.videosWatched?.length || 0;
                 const badgesCount = data.badges?.length || 0;
                 const xp = data.xp || 0;
                 const totalScore = (videosWatched * 10) + (badgesCount * 5) + xp;
-                
                 return {
                     username: username,
                     xp: xp,
@@ -1066,19 +1060,15 @@
                     streak: data.streak || 0
                 };
             });
-
             entries.sort((a, b) => b.totalScore - a.totalScore);
-
             if (!entries.length) {
                 list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:14px;">لا يوجد مستخدمين بعد</div>';
                 return;
             }
-
             const medals = ['🥇', '🥈', '🥉'];
             list.innerHTML = entries.slice(0, 20).map((e, i) => {
                 const rank = i < 3 ? medals[i] : `#${i+1}`;
                 const isMe = e.username === currentUser?.username && !currentUser?.isGuest;
-                
                 return `
                 <div class="leaderboard-entry" style="${isMe ? 'border-color:var(--accent);background:rgba(25,170,255,0.08);' : ''}">
                     <span class="rank">${rank}</span>
@@ -1094,7 +1084,6 @@
                 </div>
                 `;
             }).join('');
-
             const statsHTML = `
                 <div class="leaderboard-stats">
                     <span>👥 ${entries.length} مستخدم</span>
@@ -1103,7 +1092,6 @@
                     <span>🏅 ${entries.reduce((s, e) => s + e.badges, 0)} شارة</span>
                 </div>
             `;
-            
             list.innerHTML += statsHTML;
         }
 
@@ -1123,9 +1111,7 @@
             try {
                 const cloud = await fetchCloudData();
                 updateLeaderboard(cloud);
-            } catch (e) {
-                console.warn('⚠️ فشل تحديث المتصدرين:', e);
-            }
+            } catch (e) {}
         }, 30000);
 
         /* ============================================
@@ -1164,7 +1150,6 @@
                 };
                 const { error } = await sb.from('users').update(payload).eq('username', u);
                 if (error) {
-                    // لو الأعمدة الجديدة غير موجودة، لا نكسر تسجيل الدخول.
                     console.warn('Cloud profile sync:', error.message);
                 }
             } catch (e) { console.warn('Cloud sync:', e); }
@@ -1179,7 +1164,7 @@
         async function hubAddVideo(){if(!currentUser||currentUser.role!=='admin')return;const title=hubVideoTitle.value.trim(),url=hubVideoUrl.value.trim();if(!title||!url){showToast('⚠️ اكتب عنوان الفيديو والرابط.','⚠️');return}const {error}=await sb.rpc('admin_add_video',{p_username:currentUser.username,p_password:currentUser.password,p_title:title,p_description:hubVideoDescription.value.trim(),p_youtube_url:url,p_category:hubVideoCategory.value.trim()||'Cybersecurity',p_thumbnail:hubVideoThumbnail.value.trim()||'sayed.png'});if(error){showToast('❌ '+error.message,'❌');return}hubVideoTitle.value='';hubVideoUrl.value='';hubVideoDescription.value='';showToast('✅ تم نشر الفيديو.');await loadAdminHub();renderVideos();}
         async function hubDeleteVideo(id){if(!confirm('حذف هذا الفيديو؟'))return;const {error}=await sb.rpc('admin_delete_video',{p_username:currentUser.username,p_password:currentUser.password,p_video_id:id});if(error){showToast('❌ '+error.message,'❌');return}showToast('🗑️ تم حذف الفيديو.');loadAdminHub();renderVideos();}
         async function hubSendNotification(){if(!currentUser||currentUser.role!=='admin')return;const title=hubNotificationTitle.value.trim(),body=hubNotificationBody.value.trim();if(!title||!body){showToast('⚠️ اكتب عنوان ومحتوى الإشعار.','⚠️');return}const {error}=await sb.rpc('admin_send_notification',{p_username:currentUser.username,p_password:currentUser.password,p_title:title,p_body:body,p_target:'all'});if(error){showToast('❌ '+error.message,'❌');return}hubNotificationTitle.value='';hubNotificationBody.value='';showToast('📢 تم إرسال الإشعار بنجاح.');loadAdminHub();}
-        async function loadAdminHub(){if(!currentUser||currentUser.role!=='admin')return;try{const v=await sb.from('videos').select('*').order('created_at',{ascending:false}).limit(100);if(!v.error){const a=v.data||[];hubVideoCount.textContent=a.length;hubPublishedCount.textContent=a.filter(x=>x.published!==false).length;hubVideosList.innerHTML=a.map(x=>`<div class="hub-row"><div class="hub-row-main"><div class="hub-row-title">🎬 ${sanitizeHTML(x.title||'بدون عنوان')}</div><div class="hub-row-text">${sanitizeHTML(x.description||'')}<br>${sanitizeHTML(x.category||'Cybersecurity')}</div></div><div class="hub-row-actions"><button class="hub-danger" onclick="hubDeleteVideo('${x.id}')">🗑️ حذف</button></div></div>`).join('')||'<div class="hub-muted">لا توجد فيديوهات مضافة من لوحة التحكم.</div>'}else{hubVideosList.innerHTML='<div class="hub-muted">تعذر تحميل الفيديوهات: '+sanitizeHTML(v.error.message)+'</div>'}const n=await sb.from('notifications').select('*').eq('target','all').order('created_at',{ascending:false}).limit(100);if(!n.error){const a=n.data||[];hubNotificationCount.textContent=a.length;hubNotificationsList.innerHTML=a.map(x=>`<div class="hub-row"><div class="hub-row-main"><div class="hub-row-title">📢 ${sanitizeHTML(x.title||'')}</div><div class="hub-row-text">${sanitizeHTML(x.body||'')}<br>${new Date(x.created_at).toLocaleString('ar-EG')}</div></div></div>`).join('')||'<div class="hub-muted">لا توجد إشعارات مرسلة.</div>'}else{hubNotificationsList.innerHTML='<div class="hub-muted">تعذر تحميل الإشعارات. تأكد من تشغيل SQL الخاص بالإشعارات.</div>'}const cloud=await fetchCloudData();renderAdminPanel(cloud)}catch(e){console.error(e)}}
+        async function loadAdminHub(){if(!currentUser||currentUser.role!=='admin')return;try{const v=await sb.from('videos').select('*').order('created_at',{ascending:false}).limit(100);if(!v.error){const a=v.data||[];hubVideoCount.textContent=a.length;hubPublishedCount.textContent=a.filter(x=>x.published!==false).length;hubVideosList.innerHTML=a.map(x=>`<div class="hub-row"><div class="hub-row-main"><div class="hub-row-title">🎬 ${sanitizeHTML(x.title||'بدون عنوان')}</div><div class="hub-row-text">${sanitizeHTML(x.description||'')}<br>${sanitizeHTML(x.category||'Cybersecurity')}</div></div><div class="hub-row-actions"><button class="hub-danger" onclick="hubDeleteVideo('${x.id}')">🗑️ حذف</button></div></div>`).join('')||'<div class="hub-muted">لا توجد فيديوهات مضافة من لوحة التحكم.</div>'}else{hubVideosList.innerHTML='<div class="hub-muted">تعذر تحميل الفيديوهات: '+sanitizeHTML(v.error.message)+'</div>'}const n=await sb.from('notifications').select('*').eq('target','all').order('created_at',{ascending:false}).limit(100);if(!n.error){const a=n.data||[];hubNotificationCount.textContent=a.length;hubNotificationsList.innerHTML=a.map(x=>`<div class="hub-row"><div class="hub-row-main"><div class="hub-row-title">📢 ${sanitizeHTML(x.title||'')}</div><div class="hub-row-text">${sanitizeHTML(x.body||'')}<br>${new Date(x.created_at).toLocaleString('ar-EG')}</div></div></div>`).join('')||'<div class="hub-muted">لا توجد إشعارات مرسلة.</div>'}else{hubNotificationsList.innerHTML='<div class="hub-muted">تعذر تحميل الإشعارات.</div>'}const cloud=await fetchCloudData();renderAdminPanel(cloud)}catch(e){console.error(e)}}
         document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAdminHub()});
 
         function renderAdminPanel(cloud) {
@@ -1189,7 +1174,6 @@
                 container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:16px;">لا يوجد مستخدمين بعد</div>';
                 return;
             }
-
             const users = Object.entries(cloud.users)
                 .map(([username, data]) => ({
                     username: username,
@@ -1258,38 +1242,27 @@
             }).join('');
         }
 
-        // ============================================
-        // 🔓 فتح وقفل الفيديوهات للمشرف لنفسه
-        // ============================================
-
         async function unlockMyVideos() {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
                 return;
             }
-            
             try {
                 const cloud = await fetchCloudData();
                 const username = currentUser.username;
-                
                 if (cloud.users && cloud.users[username]) {
                     cloud.users[username].videos_locked = false;
                     await saveCloudData(cloud);
-                    
                     currentUser.videos_locked = false;
-                    
                     renderVideos();
                     updateProfile();
-                    
                     const cloud2 = await fetchCloudData();
                     renderAdminPanel(cloud2);
-
                     const statusEl = document.getElementById('adminLockStatus');
                     if (statusEl) {
                         statusEl.textContent = '🔓 مفتوحة';
                         statusEl.style.color = '#7fc9ff';
                     }
-                    
                     showToast('✅ تم فتح كل الفيديوهات لك!');
                     sendTelegramMessage(`🔓 ${currentUser.username} فتح الفيديوهات لنفسه`);
                 }
@@ -1304,29 +1277,22 @@
                 showToast('⚠️ فقط المشرف يمكنه فعل هذا.', '⚠️');
                 return;
             }
-            
             try {
                 const cloud = await fetchCloudData();
                 const username = currentUser.username;
-                
                 if (cloud.users && cloud.users[username]) {
                     cloud.users[username].videos_locked = true;
                     await saveCloudData(cloud);
-                    
                     currentUser.videos_locked = true;
-                    
                     renderVideos();
                     updateProfile();
-                    
                     const cloud2 = await fetchCloudData();
                     renderAdminPanel(cloud2);
-
                     const statusEl = document.getElementById('adminLockStatus');
                     if (statusEl) {
                         statusEl.textContent = '🔒 مقفلة';
                         statusEl.style.color = '#ff6678';
                     }
-                    
                     showToast('🔒 تم قفل الفيديوهات مرة أخرى.');
                     sendTelegramMessage(`🔒 ${currentUser.username} قفل الفيديوهات لنفسه`);
                 }
@@ -1418,13 +1384,7 @@
             const t = document.getElementById('toast');
             const messageEl = document.getElementById('toastMessage');
             const iconEl = document.getElementById('toastIcon');
-            
-            if (!t || !messageEl) {
-                console.warn('⚠️ عناصر التوست غير موجودة');
-                alert(msg);
-                return;
-            }
-            
+            if (!t || !messageEl) { alert(msg); return; }
             if (iconEl) iconEl.textContent = icon;
             messageEl.textContent = msg;
             t.classList.add('show');
@@ -1435,16 +1395,13 @@
         /* ============================================
            THEME
            ============================================ */
+        // ✅ تم إصلاح toggleTheme لحفظ التفضيل
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
-            const btns = document.querySelectorAll('.theme-toggle, .header-theme-btn');
-            const icon = document.body.classList.contains('light-mode') ? '🌞' : '🌙';
-            btns.forEach(b => b.textContent = icon);
-
-        }
-        if (false) {
-            document.body.classList.add('light-mode');
-            document.querySelectorAll('.theme-toggle, .header-theme-btn').forEach(b => b.textContent = '🌞');
+            const isLight = document.body.classList.contains('light-mode');
+            const icon = isLight ? '🌞' : '🌙';
+            document.querySelectorAll('.theme-toggle, .header-theme-btn').forEach(b => b.textContent = icon);
+            localStorage.setItem('sayoda-theme', isLight ? 'light' : 'dark');
         }
 
         /* ============================================
@@ -1467,7 +1424,6 @@
         function showRegisterForm() {
             document.getElementById('registerForm').classList.toggle('show');
             document.getElementById('confirmationMessage').classList.remove('show');
-            // إخفاء البانر لو ضيف
             document.getElementById('guestBanner').style.display = 'none';
         }
 
@@ -1477,12 +1433,10 @@
                 { id: 'step2', num: 'step2Num', check: 'step2Check' },
                 { id: 'step3', num: 'step3Num', check: 'step3Check' }
             ];
-            
             for (let i = 0; i < steps.length; i++) {
                 const el = document.getElementById(steps[i].id);
                 const numEl = document.getElementById(steps[i].num);
                 const checkEl = document.getElementById(steps[i].check);
-                
                 if (i < step) {
                     el.classList.add('done');
                     numEl.className = 'num done';
@@ -1515,6 +1469,7 @@
             if (this.value.length >= 10) updateGuideStep(1);
         });
 
+        // ✅ تم إصلاح submitRegistration للتحقق من المستخدم مباشرة في Supabase
         async function submitRegistration() {
             const u = document.getElementById('regUsername').value.trim();
             const p = document.getElementById('regPassword').value.trim();
@@ -1536,31 +1491,39 @@
             updateGuideStep(2);
             
             try {
-                const cloud = await fetchCloudData();
-                if (!cloud.users) cloud.users = {};
-                if (cloud.users[u]) {
+                // التحقق من وجود المستخدم مباشرة في Supabase
+                const { data: existingUser, error: checkError } = await sb
+                    .from('users')
+                    .select('username')
+                    .eq('username', u)
+                    .maybeSingle();
+                
+                if (checkError) throw checkError;
+                if (existingUser) {
                     err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
                     btn.disabled = false; btn.textContent = '✅ إنشاء حساب';
                     return;
                 }
                 
-                cloud.users[u] = {
+                // إضافة المستخدم الجديد مباشرة
+                const { error: insertError } = await sb.from('users').insert({
+                    username: u,
                     password: p,
                     role: 'user',
                     active: true,
                     phone: ph,
                     xp: 0,
                     level: 'مبتدئ',
-                    levelEmoji: '🟢',
+                    level_emoji: '🟢',
                     streak: 0,
                     badges: [],
-                    videosWatched: [],
-                    totalRating: 0,
-                    ratingCount: 0,
+                    videos_watched: [],
+                    total_rating: 0,
+                    rating_count: 0,
                     videos_locked: true
-                };
+                });
                 
-                await saveCloudData(cloud);
+                if (insertError) throw insertError;
                 
                 const now = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
                 const ip = await getIP();
@@ -1598,7 +1561,6 @@
             if (!u || !p) { err.textContent = 'اكتب اسم المستخدم وكلمة المرور.'; return; }
             if (btn) { btn.disabled = true; btn.dataset.oldText = btn.textContent; btn.textContent = '⏳ جاري تسجيل الدخول...'; }
             try {
-                // تسجيل الدخول من قاعدة البيانات مباشرة، بدون users.json أو localStorage.
                 const { data: userData, error } = await sb
                     .from('users')
                     .select('*')
@@ -1637,17 +1599,12 @@
                 currentUser.ratings = userData.ratings || {};
                 currentUser.videoProgress = userData.video_progress || {};
 
-                // لا يتم تخزين بيانات الدخول في localStorage أو sessionStorage.
                 document.getElementById('guestBadge').style.display = 'none';
                 document.getElementById('guestBanner').style.display = 'none';
 
                 loadProgress();
                 showPlatform();
                 updateStreak();
-
-                if (typeof loadUserNotifications === 'function') {
-                    setTimeout(() => loadUserNotifications(true), 300);
-                }
 
                 showToast('✅ تم تسجيل الدخول بنجاح!');
 
@@ -1676,6 +1633,12 @@
         let views = {};
         let ratings = {};
 
+        // ✅ تحميل التصميم المحفوظ عند بداية التشغيل
+        if (localStorage.getItem('sayoda-theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.querySelectorAll('.theme-toggle, .header-theme-btn').forEach(b => b.textContent = '🌞');
+        }
+
         function loadProgress() { videoProgress = currentUser?.videoProgress ? {...currentUser.videoProgress} : {}; views = currentUser?.views ? {...currentUser.views} : {}; ratings = currentUser?.ratings ? {...currentUser.ratings} : {}; }
         function saveProgress() { if (!currentUser || currentUser.isGuest) return; currentUser.videoProgress = {...videoProgress}; syncUserData(); }
 
@@ -1691,7 +1654,6 @@
                 setTimeout(async () => {
                     const cloud = await fetchCloudData();
                     renderAdminPanel(cloud);
-
                 }, 500);
             }
             setTimeout(async () => { 
@@ -1701,11 +1663,6 @@
         }
 
         function logout() {
-
-
-
-
-
             currentUser = null;
             isGuest = false;
             location.reload();
@@ -1723,7 +1680,7 @@
         }
 
         /* ============================================
-           🎬 RENDER VIDEOS (مع دعم الضيف)
+           🎬 RENDER VIDEOS
            ============================================ */
         function renderVideos() {
             const grid = document.getElementById('videoGrid');
@@ -1735,7 +1692,6 @@
                 }
                 
                 const isGuest = currentUser?.isGuest || false;
-                
                 let visibleCount = 0;
                 grid.innerHTML = videos.map((v, i) => {
                     const title = sanitizeHTML(v?.title || `فيديو ${i+1}`);
@@ -1750,7 +1706,6 @@
                     const badge = progress > 0 ? `<span class="progress-badge">${Math.round(progress)}%</span>` : '';
                     const watched = videoProgress[id] >= 100 ? '✅' : '';
                     
-                    // لو ضيف: يشوف بس الفيديوهات اللي locked = false
                     if (isGuest && v.locked !== false) {
                         return `<div class="video-card guest-hidden"></div>`;
                     }
@@ -1784,7 +1739,6 @@
                     </div>`;
                 }).join('');
                 
-                // لو ضيف وكل الفيديوهات مقفلة
                 if (isGuest && visibleCount === 0) {
                     grid.innerHTML = `
                         <div style="grid-column:1/-1;padding:40px 20px;text-align:center;background:var(--card-bg);border-radius:14px;border:1px solid var(--border-color);">
@@ -1805,7 +1759,6 @@
         function rateVideo(id, rating) {
             if (!checkGuestPermission('التقييم')) return;
             ratings[id] = rating;
-
             const d = getUserData();
             d.totalRating = (d.totalRating || 0) + rating;
             d.ratingCount = (d.ratingCount || 0) + 1;
@@ -1910,15 +1863,8 @@
         }
 
         /* ============================================
-           AUTO LOGIN
-           لا يتم حفظ جلسة الدخول في المتصفح.
-           المستخدم يسجل الدخول من قاعدة البيانات عند فتح الصفحة.
+           AUTO INIT
            ============================================ */
-        (async function() {
-            // لا توجد جلسة محفوظة محلياً.
-        })();
-
-        
         setTimeout(async function() {
             try {
                 const cloud = await fetchCloudData();
