@@ -337,15 +337,11 @@
         @media (max-width:650px){.hero{min-height:180px;padding:20px 16px}.video-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.video-info{padding:8px}.video-info h3{font-size:12px}.video-info p{font-size:10px;min-height:25px}.meta{font-size:9px}.login-box{padding:16px 12px}.login-logo img{width:55px;height:55px}.section{padding:20px 0}.profile-stats{grid-template-columns:repeat(3,1fr);gap:6px}.profile-stat{padding:6px}.profile-stat .num{font-size:14px}.modal-box{padding:6px}.comment-input-area{flex-direction:column}.comment-input-area button{width:100%}.support-btn{font-size:12px;padding:6px 12px}.sidebar{width:min(230px,80%)}#commentsContainer{max-height:120px}.admin-user-card{flex-direction:column;align-items:flex-start;gap:3px}.admin-user-card .username{min-width:auto}.admin-stats-grid{grid-template-columns:repeat(2,1fr)}.request-box{padding:25px 20px}.guide-step{flex-wrap:wrap}}
         @media (max-width:400px){.video-grid{grid-template-columns:1fr 1fr;gap:6px}.play-btn{width:34px;height:34px;font-size:14px}.brand-name{font-size:11px}.header-actions{gap:3px}.menu-btn{font-size:18px}.header-theme-btn{font-size:14px}}
     
-        .notification-bell{position:relative;border:1px solid var(--border-color);background:var(--card-bg);color:var(--text-primary);border-radius:12px;width:38px;height:38px;cursor:pointer;font-size:16px}
-        .notification-count{position:absolute;top:-5px;right:-5px;background:#ff3344;color:#fff;border-radius:20px;min-width:17px;height:17px;font-size:9px;display:none;align-items:center;justify-content:center}
-        .notifications-panel{position:fixed;top:70px;right:14px;width:min(390px,calc(100vw - 28px));max-height:70vh;overflow:auto;z-index:10001;background:rgba(3,10,22,.98);border:1px solid #19aaff55;border-radius:18px;display:none;direction:rtl;box-shadow:0 20px 60px #0009}
-        .notifications-panel.show{display:block}.notifications-head{padding:13px;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center}.notification-item{padding:12px;border-bottom:1px solid #ffffff0d}.notification-item.unread{background:#19aaff12}.notification-item .ntitle{font-weight:900;font-size:12px}.notification-item .ntext{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.7}.notification-item .ntime{font-size:9px;color:#71839a;margin-top:5px}
-        .admin-feature-box{margin:14px 0;padding:14px;border:1px solid var(--border-color);border-radius:15px;background:rgba(25,170,255,.035)}.admin-feature-box h3{font-size:14px;margin-bottom:10px;color:var(--accent)}.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.admin-form-grid .full{grid-column:1/-1}.admin-input{width:100%;padding:10px;border:1px solid var(--border-color);border-radius:9px;background:#020812;color:var(--text-primary);font-family:'Tajawal',Arial,sans-serif}.admin-primary-btn{border:0;border-radius:10px;padding:9px 14px;background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#fff;font-family:'Tajawal',Arial,sans-serif;font-weight:900;cursor:pointer}.admin-item-list{display:grid;gap:7px;margin-top:10px}.admin-item{padding:9px;border:1px solid var(--border-color);border-radius:10px;display:flex;justify-content:space-between;gap:8px;align-items:center}.admin-item-title{font-size:11px;font-weight:900}.admin-item-meta{font-size:9px;color:var(--text-muted);margin-top:3px}.admin-danger-btn{border:1px solid #ff3344;background:#ff33441a;color:#ff6678;border-radius:8px;padding:6px 9px;font-family:'Tajawal',Arial,sans-serif;cursor:pointer}
-        .pwa-install-notice{position:fixed;left:15px;right:15px;bottom:18px;z-index:99999;max-width:430px;margin:auto;padding:14px;border:1px solid #19aaff66;border-radius:17px;background:rgba(3,10,22,.98);box-shadow:0 14px 45px #0009;direction:rtl;color:#fff}.pwa-install-notice button{border-radius:9px;padding:8px 13px;font-family:'Tajawal',Arial,sans-serif;font-weight:800;cursor:pointer}.pwa-install-now{border:0;background:#149eff;color:#fff}.pwa-install-later{border:1px solid #304256;background:#101b29;color:#fff}
-        @media(max-width:650px){.admin-form-grid{grid-template-columns:1fr}.admin-form-grid .full{grid-column:auto}.notifications-panel{right:8px;width:calc(100vw - 16px)}}
+/* ===== SAYODA ADMIN HUB ===== */
+.admin-launch-btn{display:none;border:1px solid rgba(255,215,0,.5);background:linear-gradient(135deg,#1b2638,#0b1220);color:#ffd84d;padding:7px 12px;border-radius:12px;font-family:Tajawal,Arial,sans-serif;font-weight:900;font-size:11px;cursor:pointer;box-shadow:0 0 18px rgba(255,215,0,.10);transition:.2s}.admin-launch-btn:hover{transform:translateY(-1px);box-shadow:0 0 25px rgba(255,215,0,.22)}
+.admin-hub{position:fixed;inset:0;z-index:20000;display:none;background:rgba(0,4,10,.72);backdrop-filter:blur(10px);padding:14px}.admin-hub.open{display:flex;align-items:center;justify-content:center}.admin-hub-box{width:min(1050px,100%);height:min(92vh,780px);background:linear-gradient(145deg,#071321,#020812);border:1px solid rgba(25,170,255,.28);border-radius:24px;box-shadow:0 30px 100px #000c;overflow:hidden;display:flex;flex-direction:column;direction:rtl}.admin-hub-head{padding:15px 18px;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;background:rgba(25,170,255,.035)}.admin-hub-brand{display:flex;gap:10px;align-items:center}.admin-hub-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#008cff,#19aaff);box-shadow:0 0 25px #008cff35}.admin-hub-title{font-weight:900;font-size:15px}.admin-hub-sub{font-size:9px;color:var(--text-muted);margin-top:2px}.admin-hub-close{border:1px solid #ffffff18;background:#ffffff08;color:#fff;width:35px;height:35px;border-radius:10px;cursor:pointer;font-size:17px}.admin-tabs{display:flex;gap:7px;padding:11px 14px;border-bottom:1px solid var(--border-color);overflow:auto}.admin-tab{white-space:nowrap;border:1px solid var(--border-color);background:#ffffff05;color:var(--text-secondary);border-radius:11px;padding:9px 13px;font-family:Tajawal,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer}.admin-tab.active{color:#fff;background:linear-gradient(135deg,#087bd8,#19aaff);border-color:#19aaff;box-shadow:0 5px 20px #008cff22}.admin-hub-body{overflow:auto;padding:14px}.admin-view{display:none}.admin-view.active{display:block}.admin-mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.admin-mini{padding:12px;border:1px solid var(--border-color);border-radius:14px;background:#ffffff04;text-align:center}.admin-mini b{display:block;font-size:20px;color:#fff}.admin-mini span{font-size:9px;color:var(--text-muted)}.hub-form{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hub-form .full{grid-column:1/-1}.hub-input{width:100%;padding:11px;border:1px solid var(--border-color);border-radius:11px;background:#020812;color:#fff;outline:none;font-family:Tajawal,Arial,sans-serif}.hub-input:focus{border-color:#19aaff;box-shadow:0 0 0 3px #19aaff10}.hub-primary{border:0;border-radius:11px;padding:10px 15px;background:linear-gradient(135deg,#087bd8,#19aaff);color:#fff;font-family:Tajawal,Arial,sans-serif;font-weight:900;cursor:pointer}.hub-list{display:grid;gap:8px;margin-top:12px}.hub-row{padding:11px;border:1px solid var(--border-color);border-radius:12px;background:#ffffff03;display:flex;align-items:center;justify-content:space-between;gap:10px}.hub-row-main{min-width:0}.hub-row-title{font-weight:900;font-size:11px}.hub-row-text{font-size:9px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap}.hub-row-actions{display:flex;gap:5px;flex-shrink:0}.hub-danger{border:1px solid #ff3344;background:#ff334410;color:#ff7080;border-radius:8px;padding:6px 9px;cursor:pointer;font-family:Tajawal,Arial,sans-serif;font-size:9px}.hub-muted{color:var(--text-muted);font-size:11px;text-align:center;padding:25px}@media(max-width:650px){.admin-hub{padding:6px}.admin-hub-box{height:96vh;border-radius:18px}.admin-mini-grid{grid-template-columns:repeat(2,1fr)}.hub-form{grid-template-columns:1fr}.hub-form .full{grid-column:auto}.admin-launch-btn{padding:6px 8px;font-size:9px}}
 </style>
-<link rel="manifest" href="./manifest.json"><meta name="theme-color" content="#020812"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SAYODA"><link rel="apple-touch-icon" href="./icon-192.png"></head>
+<link rel="manifest" href="./manifest.json"><meta name="theme-color" content="#020812"><link rel="apple-touch-icon" href="./icon-192.png"></head>
 <body>
 
     <!-- ===== GUEST BANNER ===== -->
@@ -465,7 +461,6 @@
     <!-- ===== APP ===== -->
     <div id="app" class="hidden">
         <header>
-            <button class="notification-bell" id="notificationBell" onclick="toggleNotifications()" title="الإشعارات">🔔<span id="notificationCount" class="notification-count">0</span></button>
             <a class="brand" href="#home">
                 <span class="brand-icon">🛡️</span>
                 <span class="brand-name">SAYODA <span>|</span> CYBER FORCE</span>
@@ -473,6 +468,7 @@
             <div class="header-actions">
                 <span id="guestBadge" style="display:none;" class="guest-badge">👤 ضيف</span>
                 <span id="adminBadge" style="display:none;" class="admin-badge">👑 Admin</span>
+                <button id="adminLaunchButton" class="admin-launch-btn" onclick="openAdminHub()">⚙️ لوحة التحكم</button>
                 <button class="header-theme-btn" onclick="toggleTheme()" title="تغيير الثيم">🌙</button>
                 <button class="menu-btn" onclick="toggleSidebar()">☰</button>
             </div>
@@ -534,41 +530,23 @@
             </div>
         </section>
 
-        <!-- ===== ADMIN PANEL ===== -->
-        <section id="adminPanel" class="section" style="display:none;">
-            <div class="container">
-                <div class="section-title">
-                    <h2>🛡️ <span>لوحة تحكم المشرف</span></h2>
-                    <p>إحصائيات وبيانات جميع المستخدمين</p>
-                </div>
-                <div class="admin-panel">
+        <!-- ===== ADMIN HUB (ADMIN ONLY) ===== -->
+        <div id="adminPanel" class="admin-hub" aria-hidden="true">
+          <div class="admin-hub-box" onclick="event.stopPropagation()">
+            <div class="admin-hub-head"><div class="admin-hub-brand"><div class="admin-hub-icon">🛡️</div><div><div class="admin-hub-title">SAYODA Control Center</div><div class="admin-hub-sub">إدارة المنصة • الحسابات • الفيديوهات • الإشعارات</div></div></div><button class="admin-hub-close" onclick="closeAdminHub()">✕</button></div>
+            <div class="admin-tabs">
+              <button class="admin-tab active" onclick="switchAdminTab('accounts',this)">👥 الحسابات</button>
+              <button class="admin-tab" onclick="switchAdminTab('videos',this)">🎬 الفيديوهات</button>
+              <button class="admin-tab" onclick="switchAdminTab('notifications',this)">📢 الإشعارات</button>
+            </div>
+            <div class="admin-hub-body">
+              <div id="adminViewAccounts" class="admin-view active">
+                
                     <div class="admin-stats-grid" id="adminStats">
                         <div class="admin-stat-box"><div class="num" id="adminTotalUsers">0</div><div class="label">👥 إجمالي المستخدمين</div></div>
                         <div class="admin-stat-box"><div class="num" id="adminTotalXP">0</div><div class="label">⭐ إجمالي النقاط</div></div>
                         <div class="admin-stat-box"><div class="num" id="adminTotalBadges">0</div><div class="label">🏅 إجمالي الشارات</div></div>
                         <div class="admin-stat-box"><div class="num" id="adminTotalVideos">0</div><div class="label">🎬 إجمالي المشاهدات</div></div>
-                    </div>
-                    
-                    <div class="admin-feature-box">
-                        <h3>🎬 إضافة فيديو جديد</h3>
-                        <div class="admin-form-grid">
-                            <input class="admin-input" id="adminVideoTitle" placeholder="عنوان الفيديو">
-                            <input class="admin-input" id="adminVideoUrl" placeholder="رابط YouTube أو Video ID">
-                            <input class="admin-input" id="adminVideoCategory" value="Cybersecurity" placeholder="التصنيف">
-                            <input class="admin-input" id="adminVideoThumbnail" value="sayed.png" placeholder="اسم صورة الغلاف">
-                            <textarea class="admin-input full" id="adminVideoDescription" rows="2" placeholder="وصف الفيديو"></textarea>
-                        </div>
-                        <br><button class="admin-primary-btn" onclick="adminAddVideo()">➕ إضافة ونشر الفيديو</button>
-                        <div id="adminVideosList" class="admin-item-list"></div>
-                    </div>
-                    <div class="admin-feature-box">
-                        <h3>📢 إرسال إشعار للمستخدمين</h3>
-                        <div class="admin-form-grid">
-                            <input class="admin-input" id="adminNotificationTitle" placeholder="عنوان الإشعار">
-                            <textarea class="admin-input full" id="adminNotificationBody" rows="3" placeholder="اكتب محتوى الإشعار..."></textarea>
-                        </div>
-                        <br><button class="admin-primary-btn" onclick="adminSendNotification()">📢 إرسال الإشعار الآن</button>
-                        <div id="adminNotificationsList" class="admin-item-list"></div>
                     </div>
                     
                     <!-- Admin Controls -->
@@ -585,10 +563,21 @@
                     
                     <input class="admin-search" id="adminSearch" type="text" placeholder="🔍 بحث عن مستخدم..." oninput="filterAdminUsers()">
                     <div id="adminUsersList"></div>
-                </div>
+                
+              </div>
+              <div id="adminViewVideos" class="admin-view">
+                <div class="admin-mini-grid"><div class="admin-mini"><b id="hubVideoCount">0</b><span>فيديوهات</span></div><div class="admin-mini"><b id="hubPublishedCount">0</b><span>منشور</span></div></div>
+                <div class="admin-feature-box"><h3>🎬 إضافة فيديو جديد</h3><div class="hub-form"><input class="hub-input" id="hubVideoTitle" placeholder="عنوان الفيديو"><input class="hub-input" id="hubVideoUrl" placeholder="رابط YouTube أو Video ID"><input class="hub-input" id="hubVideoCategory" value="Cybersecurity" placeholder="التصنيف"><input class="hub-input" id="hubVideoThumbnail" value="sayed.png" placeholder="صورة الغلاف"><textarea class="hub-input full" id="hubVideoDescription" rows="3" placeholder="وصف الفيديو"></textarea></div><br><button class="hub-primary" onclick="hubAddVideo()">➕ إضافة ونشر الفيديو</button></div>
+                <div id="hubVideosList" class="hub-list"></div>
+              </div>
+              <div id="adminViewNotifications" class="admin-view">
+                <div class="admin-mini-grid"><div class="admin-mini"><b id="hubNotificationCount">0</b><span>إشعارات مرسلة</span></div></div>
+                <div class="admin-feature-box"><h3>📢 إرسال إشعار جديد</h3><div class="hub-form"><input class="hub-input full" id="hubNotificationTitle" placeholder="عنوان الإشعار"><textarea class="hub-input full" id="hubNotificationBody" rows="4" placeholder="محتوى الإشعار"></textarea></div><br><button class="hub-primary" onclick="hubSendNotification()">📢 إرسال الإشعار</button></div>
+                <div id="hubNotificationsList" class="hub-list"></div>
+              </div>
             </div>
-        </section>
-
+          </div>
+        </div>
         <!-- ===== VIDEOS ===== -->
         <section id="videos" class="section">
             <div class="container">
@@ -633,8 +622,6 @@
             </div>
         </footer>
     </div>
-
-    <div id="notificationsPanel" class="notifications-panel"><div class="notifications-head"><b>🔔 إشعارات SAYODA</b><button onclick="toggleNotifications()" style="background:none;border:0;color:#fff;font-size:20px;cursor:pointer">×</button></div><div id="notificationsList" style="padding:12px;text-align:center;color:var(--text-muted);font-size:11px">جاري التحميل...</div></div>
 
     <!-- ===== VIDEO MODAL ===== -->
     <div id="videoModal" class="modal">
@@ -1244,6 +1231,15 @@
         /* ============================================
            🛠️ ADMIN PANEL
            ============================================ */
+        function openAdminHub(){if(!currentUser||currentUser.role!=='admin'){showToast('⚠️ الأدمن فقط.','⚠️');return}const p=document.getElementById('adminPanel');p.style.display='flex';p.classList.add('open');p.setAttribute('aria-hidden','false');loadAdminHub();}
+        function closeAdminHub(){const p=document.getElementById('adminPanel');p.classList.remove('open');p.style.display='none';p.setAttribute('aria-hidden','true')}
+        function switchAdminTab(name,btn){document.querySelectorAll('.admin-tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.admin-view').forEach(x=>x.classList.remove('active'));document.getElementById('adminView'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active');loadAdminHub();}
+        async function hubAddVideo(){if(!currentUser||currentUser.role!=='admin')return;const title=hubVideoTitle.value.trim(),url=hubVideoUrl.value.trim();if(!title||!url){showToast('⚠️ اكتب عنوان الفيديو والرابط.','⚠️');return}const {error}=await sb.rpc('admin_add_video',{p_username:currentUser.username,p_password:currentUser.password,p_title:title,p_description:hubVideoDescription.value.trim(),p_youtube_url:url,p_category:hubVideoCategory.value.trim()||'Cybersecurity',p_thumbnail:hubVideoThumbnail.value.trim()||'sayed.png'});if(error){showToast('❌ '+error.message,'❌');return}hubVideoTitle.value='';hubVideoUrl.value='';hubVideoDescription.value='';showToast('✅ تم نشر الفيديو.');await loadAdminHub();renderVideos();}
+        async function hubDeleteVideo(id){if(!confirm('حذف هذا الفيديو؟'))return;const {error}=await sb.rpc('admin_delete_video',{p_username:currentUser.username,p_password:currentUser.password,p_video_id:id});if(error){showToast('❌ '+error.message,'❌');return}showToast('🗑️ تم حذف الفيديو.');loadAdminHub();renderVideos();}
+        async function hubSendNotification(){if(!currentUser||currentUser.role!=='admin')return;const title=hubNotificationTitle.value.trim(),body=hubNotificationBody.value.trim();if(!title||!body){showToast('⚠️ اكتب عنوان ومحتوى الإشعار.','⚠️');return}const {error}=await sb.rpc('admin_send_notification',{p_username:currentUser.username,p_password:currentUser.password,p_title:title,p_body:body,p_target:'all'});if(error){showToast('❌ '+error.message,'❌');return}hubNotificationTitle.value='';hubNotificationBody.value='';showToast('📢 تم إرسال الإشعار بنجاح.');loadAdminHub();}
+        async function loadAdminHub(){if(!currentUser||currentUser.role!=='admin')return;try{const v=await sb.from('videos').select('*').order('created_at',{ascending:false}).limit(100);if(!v.error){const a=v.data||[];hubVideoCount.textContent=a.length;hubPublishedCount.textContent=a.filter(x=>x.published!==false).length;hubVideosList.innerHTML=a.map(x=>`<div class="hub-row"><div class="hub-row-main"><div class="hub-row-title">🎬 ${sanitizeHTML(x.title||'بدون عنوان')}</div><div class="hub-row-text">${sanitizeHTML(x.description||'')}<br>${sanitizeHTML(x.category||'Cybersecurity')}</div></div><div class="hub-row-actions"><button class="hub-danger" onclick="hubDeleteVideo('${x.id}')">🗑️ حذف</button></div></div>`).join('')||'<div class="hub-muted">لا توجد فيديوهات مضافة من لوحة التحكم.</div>'}else{hubVideosList.innerHTML='<div class="hub-muted">تعذر تحميل الفيديوهات: '+sanitizeHTML(v.error.message)+'</div>'}const n=await sb.from('notifications').select('*').eq('target','all').order('created_at',{ascending:false}).limit(100);if(!n.error){const a=n.data||[];hubNotificationCount.textContent=a.length;hubNotificationsList.innerHTML=a.map(x=>`<div class="hub-row"><div class="hub-row-main"><div class="hub-row-title">📢 ${sanitizeHTML(x.title||'')}</div><div class="hub-row-text">${sanitizeHTML(x.body||'')}<br>${new Date(x.created_at).toLocaleString('ar-EG')}</div></div></div>`).join('')||'<div class="hub-muted">لا توجد إشعارات مرسلة.</div>'}else{hubNotificationsList.innerHTML='<div class="hub-muted">تعذر تحميل الإشعارات. تأكد من تشغيل SQL الخاص بالإشعارات.</div>'}const cloud=await fetchCloudData();renderAdminPanel(cloud)}catch(e){console.error(e)}}
+        document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAdminHub()});
+
         function renderAdminPanel(cloud) {
             const container = document.getElementById('adminUsersList');
             if (!container) return;
@@ -1681,9 +1677,9 @@
                     sendTelegramMessage(`🔐 <b>تسجيل دخول</b>\n👤 ${sanitizeHTML(u)}\n🌐 ${ip}\n📱 ${dev.device}\n⭐ ${d2.xp} XP`);
                     showToast('✅ تم تسجيل الدخول بنجاح!');
                     if (userData.role === 'admin') {
-                        document.getElementById('adminPanelLink').style.display = 'flex';
+                        document.getElementById('adminPanelLink').style.display = 'none';
                         document.getElementById('adminBadge').style.display = 'inline';
-                        document.getElementById('adminPanel').style.display = 'block';
+                        document.getElementById('adminLaunchButton').style.display = 'inline-flex';
                         setTimeout(async () => {
                             const cloud2 = await fetchCloudData();
                             renderAdminPanel(cloud2);
@@ -1718,9 +1714,9 @@
             renderVideos();
             updateProfile();
             if (currentUser && currentUser.role === 'admin') {
-                document.getElementById('adminPanelLink').style.display = 'flex';
+                document.getElementById('adminPanelLink').style.display = 'none';
                 document.getElementById('adminBadge').style.display = 'inline';
-                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminLaunchButton').style.display = 'inline-flex';
                 setTimeout(async () => {
                     const cloud = await fetchCloudData();
                     renderAdminPanel(cloud);
@@ -1943,62 +1939,6 @@
         }
 
         /* ============================================
-           📢 NOTIFICATIONS + 🎬 ADMIN VIDEO MANAGEMENT
-           ============================================ */
-        function isAdmin(){return !!(currentUser && currentUser.role==='admin')}
-        async function adminAddVideo(){
-            if(!isAdmin()){showToast('⚠️ الأدمن فقط.','⚠️');return;}
-            const title=document.getElementById('adminVideoTitle').value.trim(), url=document.getElementById('adminVideoUrl').value.trim(), desc=document.getElementById('adminVideoDescription').value.trim(), cat=document.getElementById('adminVideoCategory').value.trim()||'Cybersecurity', thumb=document.getElementById('adminVideoThumbnail').value.trim()||'sayed.png';
-            if(!title||!url){showToast('⚠️ اكتب عنوان الفيديو والرابط.','⚠️');return;}
-            const {data,error}=await sb.rpc('admin_add_video',{p_username:currentUser.username,p_password:currentUser.password,p_title:title,p_description:desc,p_youtube_url:url,p_category:cat,p_thumbnail:thumb});
-            if(error){showToast('❌ '+error.message,'❌');return;}
-            document.getElementById('adminVideoTitle').value='';document.getElementById('adminVideoUrl').value='';document.getElementById('adminVideoDescription').value='';
-            showToast('✅ تم إضافة الفيديو ونشره.'); await loadAdminContent(); await renderVideos();
-        }
-        async function deleteAdminVideo(id){
-            if(!isAdmin()||!confirm('هل تريد حذف الفيديو؟'))return;
-            const {error}=await sb.rpc('admin_delete_video',{p_username:currentUser.username,p_password:currentUser.password,p_video_id:id});
-            if(error){showToast('❌ '+error.message,'❌');return} showToast('🗑️ تم حذف الفيديو.'); await loadAdminContent(); await renderVideos();
-        }
-        async function adminSendNotification(){
-            if(!isAdmin()){showToast('⚠️ الأدمن فقط.','⚠️');return;}
-            const title=document.getElementById('adminNotificationTitle').value.trim(), body=document.getElementById('adminNotificationBody').value.trim();
-            if(!title||!body){showToast('⚠️ اكتب عنوان ومحتوى الإشعار.','⚠️');return}
-            const {error}=await sb.rpc('admin_send_notification',{p_username:currentUser.username,p_password:currentUser.password,p_title:title,p_body:body,p_target:'all'});
-            if(error){showToast('❌ '+error.message,'❌');return} document.getElementById('adminNotificationTitle').value='';document.getElementById('adminNotificationBody').value='';showToast('📢 تم إرسال الإشعار بنجاح.');await loadAdminContent();
-        }
-        async function loadAdminContent(){
-            if(!isAdmin())return;
-            const v=await sb.from('videos').select('*').order('created_at',{ascending:false}).limit(30);
-            const vl=document.getElementById('adminVideosList');
-            if(vl)vl.innerHTML=(v.data||[]).map(x=>`<div class="admin-item"><div><div class="admin-item-title">🎬 ${sanitizeHTML(x.title)}</div><div class="admin-item-meta">${sanitizeHTML(x.category||'')} • ${x.published===false?'مخفي':'منشور'}</div></div><button class="admin-danger-btn" onclick="deleteAdminVideo('${x.id}')">🗑️ حذف</button></div>`).join('')||'<div style="color:var(--text-muted);font-size:10px">لا توجد فيديوهات في قاعدة البيانات.</div>';
-            const n=await sb.from('notifications').select('*').order('created_at',{ascending:false}).limit(20);
-            const nl=document.getElementById('adminNotificationsList');
-            if(nl)nl.innerHTML=(n.data||[]).map(x=>`<div class="admin-item"><div><div class="admin-item-title">📢 ${sanitizeHTML(x.title)}</div><div class="admin-item-meta">${sanitizeHTML(x.body)}</div></div></div>`).join('')||'<div style="color:var(--text-muted);font-size:10px">لا توجد إشعارات مرسلة.</div>';
-        }
-        async function loadNotifications(){
-            if(!currentUser||currentUser.role==='guest')return;
-            const {data,error}=await sb.from('notifications').select('*').eq('target','all').order('created_at',{ascending:false}).limit(50);
-            const list=document.getElementById('notificationsList'), count=document.getElementById('notificationCount'); if(!list)return;
-            if(error||!data?.length){list.innerHTML='🔕 لا توجد إشعارات.';if(count)count.style.display='none';return}
-            const seen=JSON.parse(localStorage.getItem('sayoda_seen_notifications')||'[]');
-            list.innerHTML=data.map(n=>`<div class="notification-item ${seen.includes(n.id)?'':'unread'}"><div class="ntitle">📢 ${sanitizeHTML(n.title)}</div><div class="ntext">${sanitizeHTML(n.body)}</div><div class="ntime">${new Date(n.created_at).toLocaleString('ar-EG')}</div></div>`).join('');
-            const unread=data.filter(n=>!seen.includes(n.id)).length;if(count){count.textContent=unread;count.style.display=unread?'flex':'none'}
-        }
-        function toggleNotifications(){const p=document.getElementById('notificationsPanel');if(!p)return;p.classList.toggle('show');if(p.classList.contains('show')){loadNotifications();setTimeout(async()=>{const {data}=await sb.from('notifications').select('id').eq('target','all').order('created_at',{ascending:false}).limit(50);if(data){localStorage.setItem('sayoda_seen_notifications',JSON.stringify(data.map(x=>x.id)));}const c=document.getElementById('notificationCount');if(c)c.style.display='none'},250)}}
-
-        /* ============================================
-           📲 PWA INSTALL
-           ============================================ */
-        let deferredInstallPrompt=null;
-        function isSayodaStandalone(){return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true}
-        function installApp(){if(isSayodaStandalone()||localStorage.getItem('sayoda_pwa_installed')==='1')return;if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(c=>{deferredInstallPrompt=null;if(c.outcome==='accepted')localStorage.setItem('sayoda_pwa_installed','1')})}else showToast(/iPhone|iPad|iPod/i.test(navigator.userAgent)?'🍎 اضغط مشاركة ثم إضافة إلى الشاشة الرئيسية.':'📱 افتح قائمة المتصفح واختر تثبيت التطبيق.','📲')}
-        addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e});addEventListener('appinstalled',()=>{localStorage.setItem('sayoda_pwa_installed','1');deferredInstallPrompt=null});
-        function showPwaNotice(){if(isSayodaStandalone()||localStorage.getItem('sayoda_pwa_installed')==='1'||document.getElementById('pwaInstallNotice'))return;const d=document.createElement('div');d.id='pwaInstallNotice';d.className='pwa-install-notice';d.innerHTML='<b>📲 ثبّت SAYODA كتطبيق</b><div style="font-size:11px;color:#9aaabd;margin:7px 0 11px">افتح المنصة من شاشة الموبايل كتطبيق مستقل.</div><button class="pwa-install-now" onclick="installApp();this.parentElement.remove()">تثبيت الآن</button> <button class="pwa-install-later" onclick="this.parentElement.remove()">لاحقًا</button>';document.body.appendChild(d)}
-        document.addEventListener('DOMContentLoaded',()=>setTimeout(showPwaNotice,900));
-        if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
-
-        /* ============================================
            AUTO LOGIN
            ============================================ */
         (async function() {
@@ -2035,9 +1975,9 @@
                         loadProgress(); showPlatform(); updateStreak(); await syncUserData();
                         showToast('✅ مرحباً بعودتك!', '👋');
                         if (userData.role === 'admin') {
-                            document.getElementById('adminPanelLink').style.display = 'flex';
+                            document.getElementById('adminPanelLink').style.display = 'none';
                             document.getElementById('adminBadge').style.display = 'inline';
-                            document.getElementById('adminPanel').style.display = 'block';
+                            document.getElementById('adminLaunchButton').style.display = 'inline-flex';
                             setTimeout(async () => {
                                 const cloud2 = await fetchCloudData();
                                 renderAdminPanel(cloud2);
