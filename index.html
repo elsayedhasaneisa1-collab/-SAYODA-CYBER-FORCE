@@ -1660,10 +1660,9 @@ document.addEventListener('keydown', e => {
     try {
         const user = JSON.parse(savedUser);
 
-        if (user.role === 'admin') {
-            window.location.href = './admin.html';
-            return;
-        }
+        // ✅ الأدمن يفضل في index.html ويشوف كل حاجة زي المستخدم العادي
+        // (اتشال التحويل التلقائي لـ admin.html)
+        // زر لوحة التحكم هيظهر تلقائياً في الهيدر والسايدبار لو role === 'admin'
 
         if (user.role === 'guest' || user.isGuest) {
             currentUser = { username: 'ضيف', role: 'guest', active: true, videos_locked: false, isGuest: true };
