@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SAYODA | CYBER FORCE</title>
 
+    <!-- PWA / Install as Mobile App -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#020812">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SAYODA">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+
     <!-- Open Graph: Link Preview -->
     <meta property="og:title" content="SAYODA | CYBER FORCE">
     <meta property="og:description" content="منصة SAYODA | CYBER FORCE التعليمية للأمن السيبراني والـ Ethical Hacking">
@@ -30,6 +39,18 @@
         body{background:var(--bg-primary);color:var(--text-primary);font-family:'Tajawal',Arial,sans-serif;min-height:100vh;-webkit-user-select:none;user-select:none;overflow-x:hidden}
         body.light-mode{--bg-primary:#f0f4f8;--bg-secondary:rgba(255,255,255,.9);--text-primary:#1a1a2e;--text-secondary:#444;--text-muted:#888;--card-bg:rgba(255,255,255,.9);--border-color:rgba(0,0,0,.1)}
         .hidden{display:none!important}
+
+        /* ===== PWA INSTALL ===== */
+        .install-app-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 13px;margin:8px 0;border:1px solid rgba(25,170,255,.45);border-radius:12px;background:linear-gradient(135deg,rgba(8,124,255,.18),rgba(25,170,255,.06));color:var(--text-primary);font-family:'Tajawal',Arial,sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all var(--transition);box-shadow:0 0 20px rgba(25,170,255,.06)}
+        .install-app-btn:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 30px rgba(25,170,255,.14);color:var(--accent)}
+        .install-app-btn .install-icon{font-size:19px}
+        .install-app-btn.installed{border-color:rgba(37,211,102,.45);background:rgba(37,211,102,.08);color:var(--success);cursor:default}
+        .pwa-home-card{margin:18px auto 0;width:min(700px,94%);padding:16px;border:1px solid rgba(25,170,255,.28);border-radius:18px;background:linear-gradient(135deg,rgba(25,170,255,.10),rgba(2,8,18,.55));box-shadow:0 12px 45px rgba(0,0,0,.25);backdrop-filter:blur(12px);text-align:center}
+        .pwa-home-card h3{font-size:15px;color:var(--text-primary);margin-bottom:5px}
+        .pwa-home-card p{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.7}
+        .pwa-home-card button{border:0;border-radius:50px;padding:9px 18px;background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#fff;font-family:'Tajawal',Arial,sans-serif;font-weight:800;cursor:pointer;box-shadow:0 8px 25px rgba(25,170,255,.15)}
+        .pwa-home-card button:hover{transform:translateY(-2px)}
+        #pwaInstallHint{display:none;margin-top:9px;color:var(--text-muted);font-size:11px;line-height:1.7}
         ::-webkit-scrollbar{width:4px}
         ::-webkit-scrollbar-track{background:var(--bg-primary)}
         ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
@@ -446,6 +467,7 @@
             <a href="#leaderboard" onclick="closeSidebar()"><span class="icon">🏆</span> المتصدرين</a>
             <a href="#profile" onclick="closeSidebar()"><span class="icon">👤</span> ملفي</a>
             <a href="#adminPanel" onclick="closeSidebar()" id="adminPanelLink" style="display:none;"><span class="icon">🛡️</span> لوحة التحكم <span class="badge">Admin</span></a>
+            <button class="install-app-btn" id="installAppBtn" onclick="installApp()"><span class="install-icon">📲</span><span id="installAppText">تحميل المنصة كتطبيق</span></button>
             <a href="#about" onclick="closeSidebar()"><span class="icon">ℹ️</span> عن المنصة</a>
         </nav>
         <div class="sidebar-footer">
@@ -468,6 +490,12 @@
                 <button class="menu-btn" onclick="toggleSidebar()">☰</button>
             </div>
         </header>
+        <section class="pwa-home-card" id="pwaInstallCard">
+            <h3>📲 خليك مع SAYODA في كل وقت</h3>
+            <p>ثبّت منصة SAYODA | CYBER FORCE على موبايلك وافتحها كتطبيق من الشاشة الرئيسية.</p>
+            <button onclick="installApp()" id="pwaHomeInstallBtn">⚡ تثبيت SAYODA كتطبيق</button>
+            <div id="pwaInstallHint"></div>
+        </section>
 
         <section id="home" class="hero">
             <div>
@@ -1908,6 +1936,83 @@
             else if (/Edge/i.test(ua)) b = 'Edge';
             return { device: d, browser: b };
         }
+
+        /* ============================================
+           📲 PWA INSTALL / MOBILE APP
+           ============================================ */
+        let deferredInstallPrompt = null;
+
+        function setInstallButtonState(installed) {
+            const btn = document.getElementById('installAppBtn');
+            const text = document.getElementById('installAppText');
+            const homeBtn = document.getElementById('pwaHomeInstallBtn');
+            const card = document.getElementById('pwaInstallCard');
+            if (installed) {
+                if (btn) { btn.classList.add('installed'); btn.disabled = true; }
+                if (text) text.textContent = '✅ المنصة مثبتة كتطبيق';
+                if (homeBtn) { homeBtn.textContent = '✅ SAYODA مثبتة بالفعل'; homeBtn.disabled = true; }
+                if (card) card.style.opacity = '0.85';
+            } else {
+                if (btn) { btn.classList.remove('installed'); btn.disabled = false; }
+                if (text) text.textContent = 'تحميل المنصة كتطبيق';
+            }
+        }
+
+        function isStandalone() {
+            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        }
+
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            setInstallButtonState(false);
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            setInstallButtonState(true);
+            showToast('🎉 تم تثبيت SAYODA كتطبيق بنجاح!');
+        });
+
+        async function installApp() {
+            if (isStandalone()) {
+                setInstallButtonState(true);
+                showToast('✅ SAYODA تعمل بالفعل كتطبيق.');
+                return;
+            }
+
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                const result = await deferredInstallPrompt.userChoice;
+                deferredInstallPrompt = null;
+                if (result && result.outcome === 'accepted') {
+                    showToast('📲 جاري تثبيت SAYODA...');
+                } else {
+                    showToast('ℹ️ يمكنك تثبيتها في أي وقت من زر التحميل.');
+                }
+                return;
+            }
+
+            const hint = document.getElementById('pwaInstallHint');
+            if (hint) {
+                hint.style.display = 'block';
+                hint.textContent = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+                    ? '🍎 على iPhone/iPad: اضغط مشاركة ↗ ثم "إضافة إلى الشاشة الرئيسية".'
+                    : '📱 إذا لم يظهر التثبيت: افتح قائمة المتصفح ⋮ ثم اختر "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية".';
+            }
+            showToast('📲 افتح قائمة المتصفح واختر تثبيت التطبيق.');
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js', { scope: './' })
+                    .then(() => console.log('✅ SAYODA PWA Service Worker جاهز'))
+                    .catch(err => console.warn('⚠️ PWA Service Worker:', err));
+            });
+        }
+
+        if (isStandalone()) setInstallButtonState(true);
 
         /* ============================================
            AUTO LOGIN
