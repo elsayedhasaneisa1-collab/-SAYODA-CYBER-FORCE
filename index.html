@@ -843,7 +843,7 @@ function launchConfetti() {
 }
 
 /* ============================================
-   🔄 SYNC — الإصلاح الجديد ✨
+   🔄 SYNC — الإصلاح النهائي ✨
    ============================================ */
 async function syncUserData() {
     try {
@@ -852,8 +852,21 @@ async function syncUserData() {
         
         const d = getUserData();
         
+        // ✅ ناخد البيانات الفعلية من المتغيرات العامة (المصدر الحقيقي)
+        const realVideoProgress = (videoProgress && Object.keys(videoProgress).length > 0) 
+            ? {...videoProgress} 
+            : (currentUser.video_progress || currentUser.videoProgress || {});
+        
+        const realViews = (views && Object.keys(views).length > 0) 
+            ? {...views} 
+            : (currentUser.views || {});
+        
+        const realRatings = (ratings && Object.keys(ratings).length > 0) 
+            ? {...ratings} 
+            : (currentUser.ratings || {});
+        
         const payload = {
-            // ✅ بيانات التقدم الكاملة
+            // ✅ بيانات التقدم
             xp: d.xp,
             level: d.level,
             level_emoji: d.levelEmoji,
@@ -862,13 +875,14 @@ async function syncUserData() {
             videos_watched: d.videosWatched,
             total_rating: d.totalRating,
             rating_count: d.ratingCount,
-            // ✅ بيانات المشاهدة
-            views: currentUser.views || {},
-            ratings: currentUser.ratings || {},
-            video_progress: currentUser.videoProgress || {}
+            // ✅ بيانات المشاهدة (المصححة)
+            views: realViews,
+            ratings: realRatings,
+            video_progress: realVideoProgress
         };
         
-        console.log('💾 Syncing to Supabase:', payload);
+        console.log('💾 Syncing payload:');
+        console.log('📊 video_progress being synced:', realVideoProgress);
         
         const { error } = await sb.from('users').update(payload).eq('username', u);
         if (error) {
@@ -1129,15 +1143,60 @@ if (localStorage.getItem('sayoda-theme') === 'light') {
     document.body.classList.add('light-mode');
 }
 
+/* ============================================
+   📂 LOAD PROGRESS — الإصلاح النهائي
+   ============================================ */
 function loadProgress() {
-    videoProgress = currentUser?.videoProgress ? {...currentUser.videoProgress} : {};
-    views = currentUser?.views ? {...currentUser.views} : {};
-    ratings = currentUser?.ratings ? {...currentUser.ratings} : {};
+    // ✅ ناخد من كل المصادر الممكنة
+    const cached = JSON.parse(sessionStorage.getItem('sayoda_user') || '{}');
+    
+    // video_progress: من currentUser (snake_case) أو cached
+    const vp1 = currentUser?.video_progress;
+    const vp2 = currentUser?.videoProgress;
+    const vp3 = cached?.video_progress;
+    const vp4 = cached?.videoProgress;
+    
+    if (vp1 && typeof vp1 === 'object' && Object.keys(vp1).length > 0) {
+        videoProgress = {...vp1};
+    } else if (vp2 && typeof vp2 === 'object' && Object.keys(vp2).length > 0) {
+        videoProgress = {...vp2};
+    } else if (vp3 && typeof vp3 === 'object' && Object.keys(vp3).length > 0) {
+        videoProgress = {...vp3};
+    } else if (vp4 && typeof vp4 === 'object' && Object.keys(vp4).length > 0) {
+        videoProgress = {...vp4};
+    } else {
+        videoProgress = {};
+    }
+    
+    // views
+    const v = currentUser?.views || cached?.views || {};
+    views = (v && typeof v === 'object') ? {...v} : {};
+    
+    // ratings
+    const r = currentUser?.ratings || cached?.ratings || {};
+    ratings = (r && typeof r === 'object') ? {...r} : {};
+    
+    console.log('📂 loadProgress:', {
+        videoProgress,
+        views,
+        ratings,
+        sources: { vp1, vp2, vp3, vp4 }
+    });
 }
 
+/* ============================================
+   💾 SAVE PROGRESS — الإصلاح النهائي
+   ============================================ */
 function saveProgress() {
     if (!currentUser || currentUser.isGuest) return;
+    // ✅ نحفظ في currentUser بالاسمين
+    currentUser.video_progress = {...videoProgress};
     currentUser.videoProgress = {...videoProgress};
+    currentUser.views = {...views};
+    currentUser.ratings = {...ratings};
+    
+    console.log('💾 saveProgress called. videoProgress:', videoProgress);
+    
     syncUserData();
 }
 
@@ -1334,6 +1393,8 @@ function closeVideo() {
     document.getElementById('videoModal').style.display = 'none';
     document.body.style.overflow = '';
     currentVideoId = null;
+    
+    console.log('💾 Saving progress before close. videoProgress:', videoProgress);
     saveProgress();
     renderVideos();
 }
@@ -1725,9 +1786,9 @@ document.addEventListener('keydown', e => {
                 rating_count: (userData.rating_count !== null && userData.rating_count !== undefined) ? Number(userData.rating_count) : Number(cached.rating_count || 0),
                 videos_locked: (userData.videos_locked !== null && userData.videos_locked !== undefined) ? userData.videos_locked : (cached.videos_locked !== undefined ? cached.videos_locked : true),
                 banned_features: userData.banned_features || cached.banned_features || [],
-                views: userData.views || cached.views || {},
-                ratings: userData.ratings || cached.ratings || {},
-                video_progress: userData.video_progress || cached.video_progress || {}
+                views: (userData.views && Object.keys(userData.views).length > 0) ? userData.views : (cached.views || {}),
+                ratings: (userData.ratings && Object.keys(userData.ratings).length > 0) ? userData.ratings : (cached.ratings || {}),
+                video_progress: (userData.video_progress && Object.keys(userData.video_progress).length > 0) ? userData.video_progress : (cached.video_progress || {})
             };
 
             isGuest = false;
@@ -1770,6 +1831,12 @@ document.addEventListener('keydown', e => {
             } catch(e) {
                 console.error('sessionStorage update failed:', e);
             }
+
+            console.log('🔍 currentUser loaded:', {
+                video_progress: currentUser.video_progress,
+                xp: currentUser.xp,
+                badges: currentUser.badges
+            });
 
             document.getElementById('app').classList.remove('hidden');
             document.getElementById('guestBadge').style.display = 'none';
