@@ -1648,9 +1648,10 @@ function showPlatform() {
 }
 
 function logout() {
+    sessionStorage.removeItem('sayoda_user');
     currentUser = null;
     isGuest = false;
-    location.reload();
+    window.location.href = './login.html';
 }
 
 function extractID(input) {
@@ -2835,10 +2836,84 @@ function getDevice() {
     else if (/Edge/i.test(ua)) b = 'Edge';
     return { device: d, browser: b };
 }
-
 /* ============================================
-   🎉 END OF SCRIPT
+   🔐 CHECK SESSION (Restore Login)
    ============================================ */
+(async function checkSession() {
+    const savedUser = sessionStorage.getItem('sayoda_user');
+    if (!savedUser) {
+        // مفيش جلسة → حول لصفحة تسجيل الدخول
+        window.location.href = './login.html';
+        return;
+    }
+    try {
+        const user = JSON.parse(savedUser);
+        if (user.role === 'guest' || user.isGuest) {
+            // ضيف
+            currentUser = { username: 'ضيف', role: 'guest', active: true, videos_locked: false, isGuest: true };
+            isGuest = true;
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            document.getElementById('guestBanner').style.display = 'flex';
+            document.getElementById('guestBadge').style.display = 'inline';
+            loadProgress();
+            showPlatform();
+        } else {
+            // مستخدم عادي — جيب بياناته من Supabase
+            const { data: userData, error } = await sb
+                .from('users')
+                .select('*')
+                .eq('username', user.username)
+                .maybeSingle();
+
+            if (error || !userData) {
+                sessionStorage.removeItem('sayoda_user');
+                window.location.href = './login.html';
+                return;
+            }
+            if (userData.active === false) {
+                sessionStorage.removeItem('sayoda_user');
+                window.location.href = './login.html';
+                return;
+            }
+
+            currentUser = { username: user.username, ...userData };
+            isGuest = false;
+            currentUser.userData = {
+                xp: Number(userData.xp || 0),
+                level: userData.level || 'مبتدئ',
+                levelEmoji: userData.level_emoji || '🟢',
+                streak: Number(userData.streak || 0),
+                lastVisit: userData.last_visit || null,
+                videosWatched: Array.isArray(userData.videos_watched) ? userData.videos_watched : [],
+                badges: Array.isArray(userData.badges) ? userData.badges : [],
+                totalRating: Number(userData.total_rating || 0),
+                ratingCount: Number(userData.rating_count || 0)
+            };
+            currentUser.views = userData.views || {};
+            currentUser.ratings = userData.ratings || {};
+            currentUser.videoProgress = userData.video_progress || {};
+
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            document.getElementById('guestBadge').style.display = 'none';
+            loadProgress();
+            showPlatform();
+            updateStreak();
+            logActivity('login');
+
+            if (userData.role === 'admin') {
+                document.getElementById('adminBadge').style.display = 'inline';
+                document.getElementById('adminLaunchButton').style.display = 'inline-flex';
+            }
+        }
+    } catch (e) {
+        console.warn('Session restore failed:', e);
+        sessionStorage.removeItem('sayoda_user');
+        window.location.href = './login.html';
+    }
+})();
+
 console.log('🛡️ SAYODA | CYBER FORCE - All parts loaded ✅');
 </script>
 

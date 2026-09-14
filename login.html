@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تسجيل الدخول | SAYODA | CYBER FORCE</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- خط عربي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%;overflow:hidden;font-family:'Cairo',Arial,sans-serif}
+        body{
+            background:linear-gradient(135deg,#0a1a2e 0%,#087cff 50%,#19aaff 100%);
+            display:flex;align-items:center;justify-content:center;
+            min-height:100vh;position:relative;
+        }
+
+        /* خلفية متحركة */
+        .bg-animation{
+            position:fixed;inset:0;overflow:hidden;z-index:0;
+            opacity:.15;
+        }
+        .bg-animation span{
+            position:absolute;
+            color:#fff;
+            font-size:20px;
+            font-family:monospace;
+            animation:fall linear infinite;
+            text-shadow:0 0 10px #19aaff;
+        }
+        @keyframes fall{
+            0%{transform:translateY(-100vh) rotate(0deg);opacity:0}
+            10%{opacity:1}
+            90%{opacity:1}
+            100%{transform:translateY(100vh) rotate(360deg);opacity:0}
+        }
+
+        /* الكارت الرئيسي */
+        .login-container{
+            position:relative;z-index:1;
+            width:min(420px,94%);
+            background:#fff;
+            border-radius:32px;
+            box-shadow:0 30px 80px rgba(0,0,0,.4);
+            overflow:hidden;
+            max-height:96vh;
+            display:flex;flex-direction:column;
+            animation:slideUp .6s ease-out;
+        }
+        @keyframes slideUp{
+            from{opacity:0;transform:translateY(40px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+
+        /* الجزء العلوي */
+        .login-header{
+            background:linear-gradient(135deg,#0a1a2e 0%,#087cff 50%,#19aaff 100%);
+            padding:32px 24px 28px;
+            text-align:center;
+            position:relative;
+            overflow:hidden;
+        }
+        .login-header::before{
+            content:'';position:absolute;top:-50%;left:-50%;
+            width:200%;height:200%;
+            background:radial-gradient(circle,#19aaff33,transparent 70%);
+            animation:pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:.8}}
+
+        .login-logo{
+            width:80px;height:80px;
+            border-radius:50%;
+            border:3px solid rgba(255,255,255,.3);
+            background:rgba(255,255,255,.1);
+            margin:0 auto 14px;
+            object-fit:cover;
+            box-shadow:0 0 40px #19aaff88;
+            position:relative;z-index:1;
+            animation:float 3s ease-in-out infinite;
+        }
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+        .login-title{
+            color:#fff;
+            font-size:28px;
+            font-weight:900;
+            letter-spacing:1px;
+            margin-bottom:6px;
+            position:relative;z-index:1;
+            text-shadow:0 2px 10px rgba(0,0,0,.3);
+        }
+        .login-subtitle{
+            color:rgba(255,255,255,.9);
+            font-size:13px;
+            font-weight:400;
+            position:relative;z-index:1;
+        }
+        .login-brand{
+            color:#fff;
+            font-size:14px;
+            font-weight:700;
+            letter-spacing:2px;
+            margin-bottom:14px;
+            position:relative;z-index:1;
+            opacity:.9;
+        }
+        .login-brand span{color:#00e0ff}
+
+        /* الجزء السفلي (الفورم) */
+        .login-body{
+            padding:28px 24px 24px;
+            background:#fff;
+            border-radius:32px 32px 0 0;
+            margin-top:-20px;
+            position:relative;z-index:2;
+            flex:1;
+            overflow-y:auto;
+        }
+
+        .input-group{
+            margin-bottom:16px;
+            position:relative;
+        }
+        .input-group input{
+            width:100%;
+            padding:14px 18px;
+            border:2px solid #e0e7ef;
+            border-radius:50px;
+            background:#f8fafc;
+            color:#1a1a2e;
+            font-size:15px;
+            font-family:'Cairo',Arial,sans-serif;
+            outline:none;
+            transition:all .3s;
+        }
+        .input-group input::placeholder{
+            color:#94a3b8;
+            font-weight:400;
+        }
+        .input-group input:focus{
+            border-color:#087cff;
+            background:#fff;
+            box-shadow:0 0 0 4px rgba(8,124,255,.1);
+        }
+
+        .login-btn{
+            width:100%;
+            padding:15px;
+            border:0;
+            border-radius:50px;
+            background:linear-gradient(135deg,#0a1a2e 0%,#087cff 100%);
+            color:#fff;
+            font-size:17px;
+            font-weight:700;
+            font-family:'Cairo',Arial,sans-serif;
+            cursor:pointer;
+            transition:all .3s;
+            box-shadow:0 10px 30px rgba(8,124,255,.3);
+            margin-top:6px;
+            letter-spacing:.5px;
+        }
+        .login-btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 15px 40px rgba(8,124,255,.4);
+        }
+        .login-btn:active{transform:translateY(0)}
+        .login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+        .error-msg{
+            color:#ff3344;
+            font-size:13px;
+            text-align:center;
+            min-height:20px;
+            margin-top:8px;
+            font-weight:600;
+        }
+
+        /* زر إنشاء حساب */
+        .register-link{
+            display:block;
+            text-align:center;
+            margin-top:14px;
+            color:#087cff;
+            font-size:14px;
+            font-weight:700;
+            text-decoration:none;
+            cursor:pointer;
+            transition:all .3s;
+        }
+        .register-link:hover{
+            color:#0a1a2e;
+            transform:scale(1.03);
+        }
+
+        /* زر دخول كضيف */
+        .guest-btn{
+            width:100%;
+            padding:13px;
+            border:2px solid #e0e7ef;
+            border-radius:50px;
+            background:transparent;
+            color:#64748b;
+            font-size:15px;
+            font-weight:600;
+            font-family:'Cairo',Arial,sans-serif;
+            cursor:pointer;
+            transition:all .3s;
+            margin-top:10px;
+        }
+        .guest-btn:hover{
+            border-color:#087cff;
+            color:#087cff;
+            background:rgba(8,124,255,.05);
+        }
+
+        /* Follow Us */
+        .follow-section{
+            margin-top:24px;
+            text-align:center;
+        }
+        .follow-title{
+            color:#64748b;
+            font-size:13px;
+            font-weight:600;
+            margin-bottom:14px;
+            letter-spacing:.5px;
+        }
+        .social-icons{
+            display:flex;
+            justify-content:center;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+        .social-icon{
+            width:46px;height:46px;
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            text-decoration:none;
+            font-size:20px;
+            transition:all .3s;
+            color:#fff;
+            box-shadow:0 6px 20px rgba(0,0,0,.15);
+        }
+        .social-icon:hover{
+            transform:translateY(-4px) scale(1.1);
+            box-shadow:0 10px 30px rgba(0,0,0,.25);
+        }
+        .social-icon.facebook{background:linear-gradient(135deg,#1877f2,#0c5dc7)}
+        .social-icon.instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+        .social-icon.tiktok{background:linear-gradient(135deg,#000,#25f4ee,#fe2c55)}
+        .social-icon.telegram{background:linear-gradient(135deg,#0088cc,#006699)}
+
+        /* Footer */
+        .footer{
+            text-align:center;
+            margin-top:16px;
+            padding-top:14px;
+            border-top:1px solid #e0e7ef;
+            color:#94a3b8;
+            font-size:11px;
+        }
+
+        /* Responsive */
+        @media (max-width:400px){
+            .login-title{font-size:24px}
+            .login-logo{width:65px;height:65px}
+            .login-header{padding:24px 18px 22px}
+            .login-body{padding:22px 18px 18px}
+            .social-icon{width:42px;height:42px;font-size:18px}
+        }
+
+        /* Scrollbar */
+        .login-body::-webkit-scrollbar{width:4px}
+        .login-body::-webkit-scrollbar-track{background:transparent}
+        .login-body::-webkit-scrollbar-thumb{background:#087cff;border-radius:10px}
+    </style>
+</head>
+<body>
+
+<!-- خلفية متحركة (Matrix) -->
+<div class="bg-animation" id="bgAnimation"></div>
+
+<!-- كارت تسجيل الدخول -->
+<div class="login-container">
+
+    <!-- الجزء العلوي -->
+    <div class="login-header">
+        <img src="logo.png" alt="SAYODA Logo" class="login-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>'">
+        <div class="login-brand">SAYODA <span>|</span> CYBER FORCE</div>
+        <div class="login-title">تسجيل الدخول</div>
+        <div class="login-subtitle">أهلاً بيك تاني، اشتقنالك 👋</div>
+    </div>
+
+    <!-- الجزء السفلي (الفورم) -->
+    <div class="login-body">
+
+        <div class="input-group">
+            <input type="text" id="username" placeholder="اسم المستخدم" autocomplete="username">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="كلمة المرور" autocomplete="current-password">
+        </div>
+
+        <button class="login-btn" id="loginBtn" onclick="login()">🚪 دخول</button>
+        <div class="error-msg" id="errorMsg"></div>
+
+        <a class="register-link" id="registerLink">📝 إنشاء حساب جديد</a>
+
+        <button class="guest-btn" onclick="guestLogin()">👤 دخول كضيف</button>
+
+        <!-- Follow Us -->
+        <div class="follow-section">
+            <div class="follow-title">Follow Us</div>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/share/1EYFi5Aqrk/" target="_blank" class="social-icon facebook" title="Facebook">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/sayedhassan.2009" target="_blank" class="social-icon instagram" title="Instagram">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="https://www.tiktok.com/@sayedhasaneisa" target="_blank" class="social-icon tiktok" title="TikTok">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.61 20.1a6.34 6.34 0 0011.02-4.28v-6.96a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.81-.29z"/></svg>
+                </a>
+                <a href="https://t.me/sayedhasan_R" target="_blank" class="social-icon telegram" title="Telegram">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2026 SAYODA | CYBER FORCE<br>
+            <a href="https://t.me/sayoda_elgadar" target="_blank" style="color:#087cff;text-decoration:none;font-weight:700;">EL-SAYED HASAN</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    /* ============================================
+       ☁️ SUPABASE
+       ============================================ */
+    const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    /* ============================================
+       🌌 MATRIX BACKGROUND
+       ============================================ */
+    (function createMatrix() {
+        const container = document.getElementById('bgAnimation');
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+        const columns = Math.floor(window.innerWidth / 20);
+        for (let i = 0; i < columns; i++) {
+            const span = document.createElement('span');
+            span.textContent = chars[Math.floor(Math.random() * chars.length)];
+            span.style.left = (i * 20) + 'px';
+            span.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            span.style.animationDelay = (Math.random() * 5) + 's';
+            container.appendChild(span);
+        }
+    })();
+
+    /* ============================================
+       🛡️ XSS SANITIZE
+       ============================================ */
+    function sanitizeHTML(text) {
+        if (!text) return '';
+        const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'};
+        return String(text).replace(/[&<>"'/`=]/g, s => map[s]);
+    }
+
+    /* ============================================
+       🚪 LOGIN
+       ============================================ */
+    async function login() {
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value;
+        const err = document.getElementById('errorMsg');
+        const btn = document.getElementById('loginBtn');
+        err.textContent = '';
+
+        if (!u || !p) {
+            err.textContent = '⚠️ اكتب اسم المستخدم وكلمة المرور.';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '⏳ جاري تسجيل الدخول...';
+
+        try {
+            const { data: userData, error } = await sb
+                .from('users')
+                .select('*')
+                .eq('username', u)
+                .eq('password', p)
+                .maybeSingle();
+
+            if (error) {
+                err.textContent = '❌ خطأ في الاتصال بقاعدة البيانات.';
+                return;
+            }
+            if (!userData) {
+                err.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة.';
+                return;
+            }
+            if (userData.active === false) {
+                err.textContent = '❌ هذا الحساب معطل.';
+                return;
+            }
+
+            // حفظ بيانات المستخدم مؤقتاً
+            sessionStorage.setItem('sayoda_user', JSON.stringify({
+                username: u,
+                role: userData.role,
+                active: userData.active,
+                phone: userData.phone
+            }));
+
+            // تحديث آخر دخول
+            try {
+                await sb.rpc('update_last_login', { p_username: u });
+            } catch (e) {}
+
+            // تحويل للصفحة الرئيسية
+            window.location.href = './index.html';
+
+        } catch (e) {
+            err.textContent = '❌ حدث خطأ غير متوقع.';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '🚪 دخول';
+        }
+    }
+
+    /* ============================================
+       👤 GUEST LOGIN
+       ============================================ */
+    function guestLogin() {
+        sessionStorage.setItem('sayoda_user', JSON.stringify({
+            username: 'ضيف',
+            role: 'guest',
+            isGuest: true
+        }));
+        window.location.href = './index.html';
+    }
+
+    /* ============================================
+       📝 REGISTER LINK
+       ============================================ */
+    document.getElementById('registerLink').addEventListener('click', () => {
+        // التحويل لصفحة التسجيل أو الصفحة الرئيسية
+        window.location.href = './index.html#register';
+    });
+
+    /* ============================================
+       ⌨️ ENTER KEY
+       ============================================ */
+    document.getElementById('password').addEventListener('keydown', e => {
+        if (e.key === 'Enter') login();
+    });
+    document.getElementById('username').addEventListener('keydown', e => {
+        if (e.key === 'Enter') document.getElementById('password').focus();
+    });
+</script>
+
+</body>
+</html>
