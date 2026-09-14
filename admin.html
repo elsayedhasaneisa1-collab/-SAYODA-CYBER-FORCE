@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SAYODA Admin | Control Center</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg-primary:#0a0608;
+            --bg-secondary:rgba(20,12,8,.92);
+            --bg-card:rgba(20,12,8,.85);
+            --text-primary:#fff;
+            --text-secondary:#e0d0c0;
+            --text-muted:#8a7060;
+            --accent:#ffd700;
+            --accent-dark:#cc9900;
+            --danger:#ff3344;
+            --success:#25D366;
+            --border-color:#ffd70033;
+            --transition:0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+        }
+        html{font-size:16px;scroll-behavior:smooth}
+        body{
+            background:radial-gradient(circle at 20% 20%,#ffd70008,transparent 50%),radial-gradient(circle at 80% 80%,#ff334408,transparent 50%),var(--bg-primary);
+            color:var(--text-primary);font-family:'Cairo',Arial,sans-serif;min-height:100vh;
+            overflow-x:hidden;
+        }
+        ::-webkit-scrollbar{width:8px;height:8px}
+        ::-webkit-scrollbar-track{background:var(--bg-primary)}
+        ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--accent-dark)}
+
+        .container{width:min(1300px,96%);margin:auto;padding:0 10px}
+
+        /* Header */
+        header{
+            height:70px;position:sticky;top:0;z-index:100;
+            display:flex;align-items:center;justify-content:space-between;
+            padding:0 24px;
+            background:linear-gradient(135deg,rgba(20,12,8,.98),rgba(10,6,8,.98));
+            border-bottom:2px solid var(--accent);
+            box-shadow:0 4px 30px rgba(255,215,0,.15);
+        }
+        .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .brand-icon{font-size:32px;filter:drop-shadow(0 0 15px #ffd70088)}
+        .brand-text{color:var(--accent);font-size:20px;font-weight:900;letter-spacing:1px}
+        .brand-text span{color:#fff}
+        .brand-sub{color:var(--text-muted);font-size:10px;letter-spacing:3px;display:block}
+        .header-actions{display:flex;align-items:center;gap:10px}
+        .admin-tag{
+            background:linear-gradient(135deg,#ffd700,#ff9900);color:#1a1008;
+            padding:6px 14px;border-radius:30px;font-size:12px;font-weight:900;
+            letter-spacing:1px;box-shadow:0 0 20px #ffd70055;
+        }
+        .back-btn{
+            background:rgba(255,215,0,.1);border:1px solid var(--accent);
+            color:var(--accent);padding:8px 16px;border-radius:30px;
+            font-family:'Cairo',Arial,sans-serif;font-weight:700;font-size:13px;
+            cursor:pointer;text-decoration:none;transition:all var(--transition);
+            display:inline-flex;align-items:center;gap:6px;
+        }
+        .back-btn:hover{background:rgba(255,215,0,.2);transform:translateY(-2px)}
+
+        /* Tabs */
+        .tabs-bar{
+            background:rgba(20,12,8,.6);border-bottom:1px solid var(--border-color);
+            padding:10px 24px;display:flex;gap:8px;overflow-x:auto;
+            position:sticky;top:70px;z-index:99;backdrop-filter:blur(10px);
+        }
+        .tabs-bar::-webkit-scrollbar{height:4px}
+        .admin-tab{
+            white-space:nowrap;padding:10px 18px;border-radius:12px;
+            background:rgba(255,215,0,.05);border:1px solid var(--border-color);
+            color:var(--text-secondary);font-family:'Cairo',Arial,sans-serif;
+            font-size:13px;font-weight:700;cursor:pointer;
+            transition:all var(--transition);display:flex;align-items:center;gap:6px;
+        }
+        .admin-tab:hover{background:rgba(255,215,0,.1);color:var(--accent);border-color:var(--accent)}
+        .admin-tab.active{
+            background:linear-gradient(135deg,var(--accent-dark),var(--accent));
+            color:#1a1008;border-color:var(--accent);
+            box-shadow:0 5px 20px rgba(255,215,0,.3);
+        }
+
+        /* Views */
+        .view{display:none;padding:20px 0;animation:fadeIn .4s}
+        .view.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+        .view-header{margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .view-header h2{color:var(--accent);font-size:22px;font-weight:900;display:flex;align-items:center;gap:10px}
+        .view-header h2 .icon{font-size:26px;filter:drop-shadow(0 0 10px #ffd70088)}
+
+        /* Stats Grid */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+        .stat-box{
+            background:linear-gradient(135deg,rgba(20,12,8,.85),rgba(10,6,8,.85));
+            border:1px solid var(--border-color);border-radius:16px;padding:16px;
+            text-align:center;transition:all var(--transition);
+        }
+        .stat-box:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 10px 30px rgba(255,215,0,.15)}
+        .stat-box .num{font-size:28px;font-weight:900;color:var(--accent);filter:drop-shadow(0 0 10px #ffd70055)}
+        .stat-box .label{font-size:11px;color:var(--text-muted);margin-top:4px;font-weight:600}
+
+        /* Card */
+        .card{
+            background:linear-gradient(135deg,rgba(20,12,8,.85),rgba(10,6,8,.85));
+            border:1px solid var(--border-color);border-radius:16px;padding:16px;margin-bottom:16px;
+        }
+        .card h3{color:var(--accent);font-size:16px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+
+        /* Inputs */
+        .input, .select{
+            width:100%;padding:12px 14px;border:1px solid var(--border-color);
+            border-radius:10px;background:rgba(0,0,0,.4);color:#fff;outline:none;
+            font-family:'Cairo',Arial,sans-serif;font-size:13px;transition:all var(--transition);
+        }
+        .input:focus, .select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,215,0,.1);background:rgba(0,0,0,.6)}
+        .input::placeholder{color:var(--text-muted)}
+        .select option{background:#1a1008;color:#fff}
+
+        .btn{
+            padding:10px 20px;border:0;border-radius:10px;
+            font-family:'Cairo',Arial,sans-serif;font-weight:900;font-size:13px;
+            cursor:pointer;transition:all var(--transition);
+            display:inline-flex;align-items:center;gap:6px;
+        }
+        .btn-primary{background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#1a1008;box-shadow:0 5px 20px rgba(255,215,0,.2)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,.4)}
+        .btn-danger{background:linear-gradient(135deg,#cc2233,#ff3344);color:#fff}
+        .btn-danger:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,51,68,.4)}
+        .btn-success{background:linear-gradient(135deg,#128C7E,#25D366);color:#fff}
+        .btn-success:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,211,102,.4)}
+        .btn-warning{background:linear-gradient(135deg,#ff9900,#ffd700);color:#1a1008}
+        .btn-sm{padding:5px 10px;font-size:11px;border-radius:8px}
+
+        /* User Cards */
+        .user-card{
+            background:rgba(20,12,8,.6);border:1px solid var(--border-color);
+            border-radius:12px;padding:12px;margin-bottom:8px;
+            display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+            transition:all var(--transition);
+        }
+        .user-card:hover{background:rgba(20,12,8,.9);border-color:var(--accent)}
+        .user-card .uname{font-weight:900;color:var(--accent);font-size:15px;min-width:100px}
+        .user-card .detail{color:var(--text-secondary);font-size:12px;display:flex;align-items:center;gap:4px}
+        .user-card .detail .lbl{color:var(--text-muted);font-size:10px}
+        .user-card .detail .val{font-weight:700}
+        .user-card .actions{display:flex;gap:5px;margin-right:auto;flex-wrap:wrap}
+        .user-card .badges-wrap{display:flex;gap:3px;flex-wrap:wrap;width:100%}
+        .user-card .badge-item{background:rgba(255,215,0,.15);color:var(--accent);padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700}
+
+        /* Hub Rows */
+        .hub-row{
+            padding:12px;background:rgba(20,12,8,.6);border:1px solid var(--border-color);
+            border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;
+            align-items:center;gap:10px;flex-wrap:wrap;
+        }
+        .hub-row .info{flex:1;min-width:0}
+        .hub-row .info .title{font-weight:900;font-size:13px;color:#fff}
+        .hub-row .info .sub{font-size:11px;color:var(--text-muted);margin-top:4px;word-break:break-word}
+
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .form-grid .full{grid-column:1/-1}
+        @media (max-width:700px){.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+
+        /* Toast */
+        #toast{
+            position:fixed;bottom:60px;left:50%;transform:translateX(-50%) translateY(20px);
+            padding:12px 24px;background:rgba(20,12,8,.98);
+            border:1px solid var(--accent);border-radius:12px;
+            color:#fff;z-index:99999;transition:all .4s;opacity:0;pointer-events:none;
+            font-size:13px;font-weight:700;box-shadow:0 10px 40px rgba(255,215,0,.3);
+            max-width:90%;text-align:center;
+        }
+        #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+
+        /* Modal */
+        .modal{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;background:#000c;backdrop-filter:blur(12px);padding:16px}
+        .modal.show{display:flex}
+        .modal-box{
+            background:linear-gradient(135deg,rgba(20,12,8,.98),rgba(10,6,8,.98));
+            border:2px solid var(--accent);border-radius:20px;
+            padding:24px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;
+            box-shadow:0 30px 100px rgba(255,215,0,.2);
+        }
+        .modal-box h3{color:var(--accent);font-size:20px;font-weight:900;margin-bottom:16px}
+
+        /* Chart */
+        .chart-wrapper{position:relative;height:200px;margin-top:10px}
+
+        /* Empty */
+        .empty{text-align:center;color:var(--text-muted);padding:30px;font-size:14px}
+
+        @media (max-width:650px){
+            header{padding:0 12px}
+            .brand-text{font-size:14px}
+            .brand-sub{font-size:8px}
+            .tabs-bar{padding:8px 12px}
+            .admin-tab{padding:8px 12px;font-size:11px}
+            .stat-box .num{font-size:22px}
+            .user-card{flex-direction:column;align-items:flex-start}
+            .user-card .actions{width:100%;margin-right:0}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="brand">
+        <span class="brand-icon">👑</span>
+        <div>
+            <div class="brand-text">SAYODA <span>|</span> Admin</div>
+            <div class="brand-sub">CONTROL CENTER</div>
+        </div>
+    </div>
+    <div class="header-actions">
+        <span class="admin-tag" id="adminNameTag">👑 ADMIN</span>
+        <a href="index.html" class="back-btn">🏠 العودة للمنصة</a>
+    </div>
+</header>
+
+<!-- Tabs -->
+<div class="tabs-bar">
+    <button class="admin-tab active" onclick="switchTab('accounts',this)">👥 <span>الحسابات</span></button>
+    <button class="admin-tab" onclick="switchTab('videos',this)">🎬 <span>الفيديوهات</span></button>
+    <button class="admin-tab" onclick="switchTab('notifications',this)">📢 <span>الإشعارات</span></button>
+    <button class="admin-tab" onclick="switchTab('forum',this)">💬 <span>المنتدي</span></button>
+    <button class="admin-tab" onclick="switchTab('stats',this)">📊 <span>الإحصائيات</span></button>
+    <button class="admin-tab" onclick="switchTab('locks',this)">🔓 <span>التحكم</span></button>
+    <button class="admin-tab" onclick="switchTab('bans',this)">🚫 <span>الحظر</span></button>
+</div>
+
+<div class="container">
+
+    <!-- ========== ACCOUNTS ========== -->
+    <div id="view-accounts" class="view active">
+        <div class="view-header">
+            <h2><span class="icon">👥</span> إدارة الحسابات</h2>
+            <input type="text" class="input" id="searchUser" placeholder="🔍 بحث..." oninput="filterUsers()" style="max-width:250px">
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="num" id="s-users">0</div><div class="label">👥 مستخدم</div></div>
+            <div class="stat-box"><div class="num" id="s-xp">0</div><div class="label">⭐ إجمالي XP</div></div>
+            <div class="stat-box"><div class="num" id="s-badges">0</div><div class="label">🏅 شارات</div></div>
+            <div class="stat-box"><div class="num" id="s-videos">0</div><div class="label">🎬 مشاهدات</div></div>
+        </div>
+        <div id="usersList"></div>
+    </div>
+
+    <!-- ========== VIDEOS ========== -->
+    <div id="view-videos" class="view">
+        <div class="view-header">
+            <h2><span class="icon">🎬</span> إدارة الفيديوهات</h2>
+        </div>
+        <div class="card">
+            <h3>➕ إضافة فيديو جديد</h3>
+            <div class="form-grid">
+                <input class="input" id="vTitle" placeholder="عنوان الفيديو">
+                <input class="input" id="vUrl" placeholder="رابط YouTube أو ID">
+                <input class="input" id="vCategory" value="Cybersecurity" placeholder="التصنيف">
+                <input class="input" id="vThumb" value="sayed.png" placeholder="صورة الغلاف">
+                <textarea class="input full" id="vDesc" rows="3" placeholder="وصف الفيديو"></textarea>
+            </div>
+            <br>
+            <button class="btn btn-primary" onclick="addVideo()">➕ إضافة ونشر</button>
+        </div>
+        <div class="card">
+            <h3>📋 الفيديوهات المضافة (<span id="videosCount">0</span>)</h3>
+            <div id="videosList"></div>
+        </div>
+    </div>
+
+    <!-- ========== NOTIFICATIONS ========== -->
+    <div id="view-notifications" class="view">
+        <div class="view-header">
+            <h2><span class="icon">📢</span> الإشعارات</h2>
+        </div>
+        <div class="card">
+            <h3>📢 إرسال إشعار جديد</h3>
+            <input class="input" id="nTitle" placeholder="عنوان الإشعار" style="margin-bottom:10px">
+            <textarea class="input" id="nBody" rows="4" placeholder="محتوى الإشعار" style="margin-bottom:10px"></textarea>
+            <button class="btn btn-primary" onclick="sendNotification()">📢 إرسال</button>
+        </div>
+        <div class="card">
+            <h3>📜 الإشعارات المرسلة (<span id="notifCount">0</span>)</h3>
+            <div id="notificationsList"></div>
+        </div>
+    </div>
+
+    <!-- ========== FORUM ========== -->
+    <div id="view-forum" class="view">
+        <div class="view-header">
+            <h2><span class="icon">💬</span> إدارة المنتدي</h2>
+        </div>
+        <div id="forumAdminList"></div>
+    </div>
+
+    <!-- ========== STATS ========== -->
+    <div id="view-stats" class="view">
+        <div class="view-header">
+            <h2><span class="icon">📊</span> الإحصائيات الشاملة</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="num" id="st-users">0</div><div class="label">👥 مستخدم</div></div>
+            <div class="stat-box"><div class="num" id="st-active">0</div><div class="label">✅ نشط</div></div>
+            <div class="stat-box"><div class="num" id="st-banned">0</div><div class="label">🚫 محظور</div></div>
+            <div class="stat-box"><div class="num" id="st-xp">0</div><div class="label">⭐ XP</div></div>
+            <div class="stat-box"><div class="num" id="st-badges">0</div><div class="label">🏅 شارات</div></div>
+            <div class="stat-box"><div class="num" id="st-videos">0</div><div class="label">🎬 مشاهدات</div></div>
+            <div class="stat-box"><div class="num" id="st-topics">0</div><div class="label">💬 مواضيع</div></div>
+            <div class="stat-box"><div class="num" id="st-replies">0</div><div class="label">↩️ ردود</div></div>
+        </div>
+    </div>
+
+    <!-- ========== LOCKS ========== -->
+    <div id="view-locks" class="view">
+        <div class="view-header">
+            <h2><span class="icon">🔓</span> التحكم بالفيديوهات</h2>
+        </div>
+        <div class="card">
+            <h3>🎯 تحكم سريع على حسابك</h3>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+                <button class="btn btn-success" onclick="unlockMyVideos()">🔓 فتح فيديوهاتي</button>
+                <button class="btn btn-danger" onclick="lockMyVideos()">🔒 قفل فيديوهاتي</button>
+                <span style="color:var(--text-muted);font-size:13px">الحالة: <strong id="myLockStatus" style="color:var(--accent)">-</strong></span>
+            </div>
+        </div>
+        <div class="card">
+            <h3>👥 التحكم بالفيديوهات لكل مستخدم</h3>
+            <div id="locksList"></div>
+        </div>
+    </div>
+
+    <!-- ========== BANS ========== -->
+    <div id="view-bans" class="view">
+        <div class="view-header">
+            <h2><span class="icon">🚫</span> نظام الحظر</h2>
+        </div>
+        <div class="card">
+            <h3>📖 أنواع الحظر</h3>
+            <div style="color:var(--text-secondary);font-size:13px;line-height:2">
+                🚫 <strong>all</strong> — حظر كامل (يمنع كل حاجة)<br>
+                💬 <strong>comment</strong> — منع التعليق<br>
+                📝 <strong>forum</strong> — منع المنتدي<br>
+                ⭐ <strong>rating</strong> — منع التقييم<br>
+                🔒 <strong>view</strong> — منع المشاهدة (يستعرض فقط)
+            </div>
+        </div>
+        <div class="card">
+            <h3>👥 حظر / إلغاء حظر المستخدمين</h3>
+            <div id="bansList"></div>
+        </div>
+    </div>
+
+</div>
+
+<div id="toast"><span id="toastIcon">✅</span> <span id="toastMessage"></span></div>
+
+<!-- User Details Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-box" id="userModalBox"></div>
+</div>
+
+<script>
+/* ============================================
+   ☁️ SUPABASE
+   ============================================ */
+const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentAdmin = null;
+let allUsers = {};
+let allTopics = [];
+
+/* ============================================
+   🛡️ XSS
+   ============================================ */
+function sanitizeHTML(text) {
+    if (!text) return '';
+    const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'};
+    return String(text).replace(/[&<>"'/`=]/g, s => map[s]);
+}
+
+/* ============================================
+   🎯 TOAST
+   ============================================ */
+function showToast(msg, icon = '✅') {
+    const t = document.getElementById('toast');
+    document.getElementById('toastIcon').textContent = icon;
+    document.getElementById('toastMessage').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ============================================
+   🔐 CHECK ADMIN SESSION
+   ============================================ */
+(async function init() {
+    const savedUser = sessionStorage.getItem('sayoda_user');
+    if (!savedUser) {
+        window.location.href = './login.html';
+        return;
+    }
+    try {
+        const user = JSON.parse(savedUser);
+        if (user.role !== 'admin') {
+            window.location.href = './index.html';
+            return;
+        }
+
+        const { data: adminData, error } = await sb
+            .from('users')
+            .select('*')
+            .eq('username', user.username)
+            .maybeSingle();
+
+        if (error || !adminData || adminData.role !== 'admin' || adminData.active === false) {
+            sessionStorage.removeItem('sayoda_user');
+            window.location.href = './login.html';
+            return;
+        }
+
+        currentAdmin = adminData;
+        document.getElementById('adminNameTag').textContent = '👑 ' + currentAdmin.username;
+
+        // تحميل البيانات الأولية
+        await loadAllData();
+    } catch (e) {
+        sessionStorage.removeItem('sayoda_user');
+        window.location.href = './login.html';
+    }
+})();
+
+/* ============================================
+   📦 LOAD ALL DATA
+   ============================================ */
+async function loadAllData() {
+    await loadUsers();
+    await loadVideos();
+    await loadNotifications();
+    await loadForumTopics();
+    await updateStats();
+    await updateLockStatus();
+}
+
+/* ============================================
+   📥 LOAD USERS
+   ============================================ */
+async function loadUsers() {
+    try {
+        const { data, error } = await sb.from('users').select('*');
+        if (error) throw error;
+        allUsers = {};
+        (data || []).forEach(u => { allUsers[u.username] = u; });
+        renderUsers();
+    } catch (e) {
+        showToast('❌ فشل تحميل المستخدمين', '❌');
+    }
+}
+
+function renderUsers() {
+    const container = document.getElementById('usersList');
+    const search = document.getElementById('searchUser')?.value?.toLowerCase() || '';
+
+    const users = Object.values(allUsers)
+        .filter(u => u.username.toLowerCase().includes(search))
+        .sort((a, b) => (b.xp || 0) - (a.xp || 0));
+
+    // الإحصائيات
+    document.getElementById('s-users').textContent = users.length;
+    document.getElementById('s-xp').textContent = users.reduce((s, u) => s + (u.xp || 0), 0);
+    document.getElementById('s-badges').textContent = users.reduce((s, u) => s + (u.badges?.length || 0), 0);
+    document.getElementById('s-videos').textContent = users.reduce((s, u) => s + (u.videos_watched?.length || 0), 0);
+
+    if (!users.length) {
+        container.innerHTML = '<div class="empty">لا يوجد مستخدمين</div>';
+        return;
+    }
+
+    container.innerHTML = users.map(u => {
+        const badges = (u.badges || []).map(b => `<span class="badge-item">${sanitizeHTML(b)}</span>`).join('');
+        const banned = u.banned_features || [];
+        const bannedStr = banned.length ? banned.join(', ') : 'لا يوجد';
+        const lastLogin = u.last_login ? new Date(u.last_login).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'لم يدخل';
+
+        return `
+        <div class="user-card">
+            <span class="uname">${sanitizeHTML(u.username)} ${u.username === currentAdmin.username ? '👈' : ''}</span>
+            <span class="detail"><span class="lbl">⭐</span> <span class="val">${u.xp || 0}</span></span>
+            <span class="detail"><span class="lbl">📊</span> <span class="val">${u.level_emoji || '🟢'} ${sanitizeHTML(u.level || 'مبتدئ')}</span></span>
+            <span class="detail"><span class="lbl">🎬</span> <span class="val">${(u.videos_watched || []).length}</span></span>
+            <span class="detail"><span class="lbl">🏅</span> <span class="val">${(u.badges || []).length}</span></span>
+            <span class="detail"><span class="lbl">📱</span> <span class="val">${sanitizeHTML(u.phone || '-')}</span></span>
+            <span class="detail"><span class="lbl">📅</span> <span class="val">${lastLogin}</span></span>
+            <span class="detail"><span class="lbl">🚫</span> <span class="val" style="color:#ff6678">${sanitizeHTML(bannedStr)}</span></span>
+            ${u.role === 'admin' ? '<span class="badge-item" style="background:#ffd700;color:#1a1008">👑 Admin</span>' : ''}
+            <div class="badges-wrap">${badges}</div>
+            <div class="actions">
+                <button class="btn btn-primary btn-sm" onclick="showUserDetails('${sanitizeHTML(u.username)}')">📊 تفاصيل</button>
+                <button class="btn ${u.active !== false ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleUserStatus('${sanitizeHTML(u.username)}')">
+                    ${u.active !== false ? '⛔ تعطيل' : '✅ تفعيل'}
+                </button>
+                <button class="btn ${u.videos_locked ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleUserVideos('${sanitizeHTML(u.username)}')">
+                    ${u.videos_locked ? '🔓 فتح' : '🔒 قفل'}
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="deleteUser('${sanitizeHTML(u.username)}')">🗑️ حذف</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterUsers() {
+    renderUsers();
+}
+
+/* ============================================
+   👤 USER DETAILS MODAL
+   ============================================ */
+async function showUserDetails(username) {
+    const u = allUsers[username];
+    if (!u) { showToast('❌ المستخدم غير موجود', '❌'); return; }
+
+    const avgRating = u.rating_count > 0 ? (u.total_rating / u.rating_count).toFixed(1) : '0';
+    const banned = u.banned_features || [];
+    const allFeatures = ['all', 'comment', 'forum', 'rating', 'view'];
+    const featuresLabels = { all:'🚫 حظر كامل', comment:'💬 التعليق', forum:'📝 المنتدي', rating:'⭐ التقييم', view:'👁️ المشاهدة' };
+
+    let bansHTML = allFeatures.map(f => {
+        const isBanned = banned.includes(f);
+        return `<button class="btn ${isBanned ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleBan('${sanitizeHTML(username)}','${f}')" style="margin:3px">
+            ${featuresLabels[f]} ${isBanned ? '🚫' : '✅'}
+        </button>`;
+    }).join('');
+
+    const modal = document.getElementById('userModal');
+    document.getElementById('userModalBox').innerHTML = `
+        <h3>📊 تفاصيل: ${sanitizeHTML(username)}</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:16px">
+            <div class="stat-box"><div class="num">${u.xp || 0}</div><div class="label">⭐ XP</div></div>
+            <div class="stat-box"><div class="num">${(u.videos_watched || []).length}</div><div class="label">🎬 فيديو</div></div>
+            <div class="stat-box"><div class="num">${(u.badges || []).length}</div><div class="label">🏅 شارة</div></div>
+            <div class="stat-box"><div class="num">${u.streak || 0}</div><div class="label">🔥 Streak</div></div>
+            <div class="stat-box"><div class="num">${avgRating}</div><div class="label">⭐ التقييم</div></div>
+        </div>
+        <div style="margin-bottom:16px">
+            <div style="color:var(--accent);font-weight:900;font-size:14px;margin-bottom:8px">ℹ️ معلومات</div>
+            <div style="color:var(--text-secondary);font-size:13px;line-height:2">
+                <div>📱 الهاتف: <strong style="color:var(--accent)">${sanitizeHTML(u.phone || '-')}</strong></div>
+                <div>📅 آخر دخول: <strong style="color:var(--accent)">${u.last_login ? new Date(u.last_login).toLocaleString('ar-EG') : 'لم يسجل'}</strong></div>
+                <div>📊 المستوى: <strong style="color:var(--accent)">${u.level_emoji || '🟢'} ${sanitizeHTML(u.level || 'مبتدئ')}</strong></div>
+                <div>🔒 الفيديوهات: <strong style="color:var(--accent)">${u.videos_locked ? 'مقفلة' : 'مفتوحة'}</strong></div>
+            </div>
+        </div>
+        <div style="margin-bottom:16px">
+            <div style="color:var(--accent);font-weight:900;font-size:14px;margin-bottom:8px">🚫 الحظر</div>
+            <div>${bansHTML}</div>
+        </div>
+        <div style="margin-bottom:16px">
+            <div style="color:var(--accent);font-weight:900;font-size:14px;margin-bottom:8px">📊 النشاط آخر 7 أيام</div>
+            <div class="chart-wrapper"><canvas id="adminChart"></canvas></div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-danger" onclick="closeUserModal()">إغلاق</button>
+        </div>
+    `;
+
+    modal.classList.add('show');
+
+    // Chart
+    try {
+        const activityData = await getUserActivity(username, 7);
+        const labels = [];
+        const dataMap = {};
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const key = d.toISOString().split('T')[0];
+            labels.push(d.toLocaleDateString('ar-EG', { weekday: 'short' }));
+            dataMap[key] = 0;
+        }
+        activityData.forEach(a => {
+            if (dataMap[a.activity_date] !== undefined) dataMap[a.activity_date] += a.count;
+        });
+        const data = Object.values(dataMap);
+
+        setTimeout(() => {
+            const ctx = document.getElementById('adminChart');
+            if (!ctx) return;
+            if (window._adminChart) window._adminChart.destroy();
+            window._adminChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'الأنشطة',
+                        data,
+                        backgroundColor: 'rgba(255,215,0,0.6)',
+                        borderColor: '#ffd700',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { color: '#8a7060', stepSize: 1 }, grid: { color: 'rgba(255,215,0,0.08)' } },
+                        x: { ticks: { color: '#8a7060' }, grid: { display: false } }
+                    }
+                }
+            });
+        }, 100);
+    } catch (e) {}
+}
+
+function closeUserModal() {
+    document.getElementById('userModal').classList.remove('show');
+    if (window._adminChart) { window._adminChart.destroy(); window._adminChart = null; }
+}
+
+async function getUserActivity(username, days = 7) {
+    try {
+        const fromDate = new Date();
+        fromDate.setDate(fromDate.getDate() - days);
+        const { data, error } = await sb
+            .from('user_activity')
+            .select('*')
+            .eq('username', username)
+            .gte('activity_date', fromDate.toISOString().split('T')[0])
+            .order('activity_date', { ascending: true });
+        if (error) throw error;
+        return data || [];
+    } catch (e) { return []; }
+}
+
+/* ============================================
+   🎯 ACTIONS
+   ============================================ */
+async function toggleUserStatus(username) {
+    try {
+        const current = allUsers[username]?.active !== false;
+        const { error } = await sb.from('users').update({ active: !current }).eq('username', username);
+        if (error) throw error;
+        showToast(`✅ تم ${!current ? 'تفعيل' : 'تعطيل'} ${username}`);
+        await loadUsers();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function toggleUserVideos(username) {
+    try {
+        const current = allUsers[username]?.videos_locked !== false;
+        const { error } = await sb.from('users').update({ videos_locked: !current }).eq('username', username);
+        if (error) throw error;
+        showToast(`✅ تم ${!current ? 'فتح' : 'قفل'} فيديوهات ${username}`);
+        await loadUsers();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function deleteUser(username) {
+    if (username === currentAdmin.username) { showToast('⚠️ لا يمكنك حذف حسابك', '⚠️'); return; }
+    if (!confirm(`⚠️ حذف المستخدم "${username}"؟`)) return;
+    try {
+        const { error } = await sb.from('users').delete().eq('username', username);
+        if (error) throw error;
+        showToast(`✅ تم حذف ${username}`);
+        await loadUsers();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function unlockMyVideos() {
+    try {
+        const { error } = await sb.from('users').update({ videos_locked: false }).eq('username', currentAdmin.username);
+        if (error) throw error;
+        showToast('✅ تم فتح فيديوهاتك');
+        await loadUsers();
+        await updateLockStatus();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function lockMyVideos() {
+    try {
+        const { error } = await sb.from('users').update({ videos_locked: true }).eq('username', currentAdmin.username);
+        if (error) throw error;
+        showToast('🔒 تم قفل فيديوهاتك');
+        await loadUsers();
+        await updateLockStatus();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function updateLockStatus() {
+    try {
+        const { data } = await sb.from('users').select('videos_locked').eq('username', currentAdmin.username).maybeSingle();
+        const el = document.getElementById('myLockStatus');
+        if (el && data) {
+            el.textContent = data.videos_locked ? '🔒 مقفلة' : '🔓 مفتوحة';
+            el.style.color = data.videos_locked ? '#ff6678' : '#25D366';
+        }
+        renderLocks();
+    } catch (e) {}
+}
+
+/* ============================================
+   🎬 VIDEOS
+   ============================================ */
+async function loadVideos() {
+    try {
+        const { data, error } = await sb.from('videos').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        const videos = data || [];
+        document.getElementById('videosCount').textContent = videos.length;
+
+        const container = document.getElementById('videosList');
+        if (!videos.length) {
+            container.innerHTML = '<div class="empty">لا توجد فيديوهات مضافة</div>';
+            return;
+        }
+        container.innerHTML = videos.map(v => `
+            <div class="hub-row">
+                <div class="info">
+                    <div class="title">🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</div>
+                    <div class="sub">${sanitizeHTML(v.description || '')} • ${sanitizeHTML(v.category || '')}</div>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}')">🗑️ حذف</button>
+            </div>
+        `).join('');
+    } catch (e) {}
+}
+
+async function addVideo() {
+    const title = document.getElementById('vTitle').value.trim();
+    const url = document.getElementById('vUrl').value.trim();
+    const desc = document.getElementById('vDesc').value.trim();
+    const cat = document.getElementById('vCategory').value.trim() || 'Cybersecurity';
+    const thumb = document.getElementById('vThumb').value.trim() || 'sayed.png';
+
+    if (!title || !url) { showToast('⚠️ اكتب العنوان والرابط', '⚠️'); return; }
+
+    try {
+        const { error } = await sb.rpc('admin_add_video', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_title: title,
+            p_description: desc,
+            p_youtube_url: url,
+            p_category: cat,
+            p_thumbnail: thumb
+        });
+        if (error) throw error;
+        showToast('✅ تم نشر الفيديو');
+        document.getElementById('vTitle').value = '';
+        document.getElementById('vUrl').value = '';
+        document.getElementById('vDesc').value = '';
+        await loadVideos();
+    } catch (e) { showToast('❌ ' + (e.message || 'حدث خطأ'), '❌'); }
+}
+
+async function deleteVideo(id) {
+    if (!confirm('حذف هذا الفيديو؟')) return;
+    try {
+        const { error } = await sb.rpc('admin_delete_video', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_video_id: id
+        });
+        if (error) throw error;
+        showToast('🗑️ تم حذف الفيديو');
+        await loadVideos();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+/* ============================================
+   📢 NOTIFICATIONS
+   ============================================ */
+async function loadNotifications() {
+    try {
+        const { data, error } = await sb.from('notifications').select('*').order('created_at', { ascending: false }).limit(50);
+        if (error) throw error;
+        const notifs = data || [];
+        document.getElementById('notifCount').textContent = notifs.length;
+
+        const container = document.getElementById('notificationsList');
+        if (!notifs.length) {
+            container.innerHTML = '<div class="empty">لا توجد إشعارات</div>';
+            return;
+        }
+        container.innerHTML = notifs.map(n => `
+            <div class="hub-row">
+                <div class="info">
+                    <div class="title">📢 ${sanitizeHTML(n.title)}</div>
+                    <div class="sub">${sanitizeHTML(n.body)}<br>${new Date(n.created_at).toLocaleString('ar-EG')}</div>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {}
+}
+
+async function sendNotification() {
+    const title = document.getElementById('nTitle').value.trim();
+    const body = document.getElementById('nBody').value.trim();
+    if (!title || !body) { showToast('⚠️ اكتب العنوان والمحتوى', '⚠️'); return; }
+
+    try {
+        const { error } = await sb.rpc('admin_send_notification', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_title: title,
+            p_body: body,
+            p_target: 'all'
+        });
+        if (error) throw error;
+        showToast('📢 تم إرسال الإشعار');
+        document.getElementById('nTitle').value = '';
+        document.getElementById('nBody').value = '';
+        await loadNotifications();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+/* ============================================
+   💬 FORUM
+   ============================================ */
+async function loadForumTopics() {
+    try {
+        const { data, error } = await sb.from('forum_topics').select('*').order('created_at', { ascending: false }).limit(100);
+        if (error) throw error;
+        allTopics = data || [];
+        renderForum();
+    } catch (e) {}
+}
+
+function renderForum() {
+    const container = document.getElementById('forumAdminList');
+    if (!allTopics.length) {
+        container.innerHTML = '<div class="empty">لا توجد مواضيع</div>';
+        return;
+    }
+    container.innerHTML = allTopics.map(t => `
+        <div class="hub-row">
+            <div class="info">
+                <div class="title">
+                    ${t.pinned ? '📌 ' : ''}${t.closed ? '🔒 ' : ''}${sanitizeHTML(t.title)}
+                </div>
+                <div class="sub">
+                    ✍️ ${sanitizeHTML(t.author)} • ${new Date(t.created_at).toLocaleString('ar-EG')}<br>
+                    ❤️ ${t.likes || 0} • 💬 ${t.replies_count || 0} رد
+                </div>
+            </div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+                <button class="btn ${t.pinned ? 'btn-warning' : 'btn-primary'} btn-sm" onclick="togglePin('${t.id}')">
+                    ${t.pinned ? '📌 إلغاء تثبيت' : '📌 تثبيت'}
+                </button>
+                <button class="btn ${t.closed ? 'btn-success' : 'btn-warning'} btn-sm" onclick="toggleClose('${t.id}')">
+                    ${t.closed ? '🔓 فتح' : '🔒 إغلاق'}
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="deleteTopic('${t.id}')">🗑️ حذف</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function togglePin(id) {
+    try {
+        const { error } = await sb.rpc('admin_toggle_pin_topic', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_topic_id: id
+        });
+        if (error) throw error;
+        showToast('✅ تم التعديل');
+        await loadForumTopics();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function toggleClose(id) {
+    try {
+        const { error } = await sb.rpc('admin_toggle_close_topic', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_topic_id: id
+        });
+        if (error) throw error;
+        showToast('✅ تم التعديل');
+        await loadForumTopics();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+async function deleteTopic(id) {
+    if (!confirm('حذف هذا الموضوع؟')) return;
+    try {
+        const { error } = await sb.rpc('admin_delete_topic', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_topic_id: id
+        });
+        if (error) throw error;
+        showToast('🗑️ تم حذف الموضوع');
+        await loadForumTopics();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+/* ============================================
+   📊 STATS
+   ============================================ */
+async function updateStats() {
+    try {
+        const users = Object.values(allUsers);
+        document.getElementById('st-users').textContent = users.length;
+        document.getElementById('st-active').textContent = users.filter(u => u.active !== false).length;
+        document.getElementById('st-banned').textContent = users.filter(u => (u.banned_features || []).length > 0).length;
+        document.getElementById('st-xp').textContent = users.reduce((s, u) => s + (u.xp || 0), 0);
+        document.getElementById('st-badges').textContent = users.reduce((s, u) => s + (u.badges?.length || 0), 0);
+        document.getElementById('st-videos').textContent = users.reduce((s, u) => s + (u.videos_watched?.length || 0), 0);
+        document.getElementById('st-topics').textContent = allTopics.length;
+        const { count } = await sb.from('forum_replies').select('*', { count: 'exact', head: true });
+        document.getElementById('st-replies').textContent = count || 0;
+    } catch (e) {}
+}
+
+/* ============================================
+   🔓 LOCKS
+   ============================================ */
+function renderLocks() {
+    const container = document.getElementById('locksList');
+    const users = Object.values(allUsers).filter(u => u.role !== 'admin');
+    if (!users.length) { container.innerHTML = '<div class="empty">لا يوجد مستخدمين</div>'; return; }
+    container.innerHTML = users.map(u => `
+        <div class="hub-row">
+            <div class="info">
+                <div class="title">👤 ${sanitizeHTML(u.username)}</div>
+                <div class="sub">${u.videos_locked ? '🔒 مقفلة' : '🔓 مفتوحة'}</div>
+            </div>
+            <button class="btn ${u.videos_locked ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleUserVideos('${sanitizeHTML(u.username)}')">
+                ${u.videos_locked ? '🔓 فتح' : '🔒 قفل'}
+            </button>
+        </div>
+    `).join('');
+}
+
+/* ============================================
+   🚫 BANS
+   ============================================ */
+function renderBans() {
+    const container = document.getElementById('bansList');
+    const users = Object.values(allUsers).filter(u => u.role !== 'admin');
+    if (!users.length) { container.innerHTML = '<div class="empty">لا يوجد مستخدمين</div>'; return; }
+
+    const features = ['all', 'comment', 'forum', 'rating', 'view'];
+    const labels = { all:'🚫 كامل', comment:'💬 التعليق', forum:'📝 المنتدي', rating:'⭐ التقييم', view:'👁️ المشاهدة' };
+
+    container.innerHTML = users.map(u => {
+        const banned = u.banned_features || [];
+        const btns = features.map(f => {
+            const isBanned = banned.includes(f);
+            return `<button class="btn ${isBanned ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleBan('${sanitizeHTML(u.username)}','${f}')" style="margin:2px">
+                ${labels[f]} ${isBanned ? '🚫' : '✅'}
+            </button>`;
+        }).join('');
+        return `
+        <div class="hub-row" style="flex-direction:column;align-items:flex-start">
+            <div class="info" style="margin-bottom:8px">
+                <div class="title">👤 ${sanitizeHTML(u.username)}</div>
+                <div class="sub">${banned.length ? 'محظور من: ' + banned.map(b => labels[b] || b).join(', ') : 'لا يوجد حظر'}</div>
+            </div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;width:100%">${btns}</div>
+        </div>
+    `;
+    }).join('');
+}
+
+async function toggleBan(username, feature) {
+    try {
+        const { error } = await sb.rpc('admin_toggle_ban', {
+            p_username: currentAdmin.username,
+            p_password: currentAdmin.password,
+            p_target_user: username,
+            p_feature: feature
+        });
+        if (error) throw error;
+        showToast('✅ تم التعديل');
+        await loadUsers();
+        renderBans();
+    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+}
+
+/* ============================================
+   🔄 TABS
+   ============================================ */
+function switchTab(name, btn) {
+    document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const view = document.getElementById('view-' + name);
+    if (view) view.classList.add('active');
+
+    if (name === 'bans') renderBans();
+    if (name === 'locks') renderLocks();
+    if (name === 'stats') updateStats();
+}
+
+/* ============================================
+   🚪 LOGOUT
+   ============================================ */
+function adminLogout() {
+    sessionStorage.removeItem('sayoda_user');
+    window.location.href = './login.html';
+}
+
+/* Close modal on backdrop */
+document.getElementById('userModal')?.addEventListener('click', e => {
+    if (e.target.id === 'userModal') closeUserModal();
+});
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeUserModal();
+});
+
+console.log('👑 SAYODA Admin - loaded ✅');
+</script>
+
+</body>
+</html>
