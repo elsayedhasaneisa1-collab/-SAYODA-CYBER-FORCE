@@ -13,7 +13,7 @@
         /* ============================================
            🎨 RESET & BASE
            ============================================ */
-        *{margin:0;padding:0;box-sizing:border-box}
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         html,body{height:100%;font-family:'Cairo',Arial,sans-serif;overflow-x:hidden}
 
         :root{
@@ -21,11 +21,10 @@
             --accent-dark:#087cff;
             --accent-glow:#19aaff88;
             --bg-dark:#020812;
-            --bg-card:rgba(7,19,33,.85);
             --text-primary:#fff;
             --text-secondary:#c0d0e0;
-            --text-muted:#60788c;
-            --border-color:#19aaff33;
+            --text-muted:#8ba0b8;
+            --border-color:#19aaff44;
             --danger:#ff3344;
             --success:#25D366;
             --gold:#ffd700;
@@ -41,6 +40,10 @@
             justify-content:center;
             position:relative;
             overflow:hidden;
+            -webkit-user-select:none;
+            -moz-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
         }
 
         /* ============================================
@@ -51,18 +54,15 @@
             background:
                 radial-gradient(circle at 20% 20%, #19aaff11, transparent 50%),
                 radial-gradient(circle at 80% 80%, #087cff11, transparent 50%),
-                radial-gradient(circle at 50% 50%, #19aaff08, transparent 70%),
                 var(--bg-dark);
         }
 
-        /* Matrix rain */
         #matrixCanvas{
             position:fixed;inset:0;z-index:1;
-            opacity:.18;
+            opacity:.15;
             pointer-events:none;
         }
 
-        /* Floating particles */
         .particles{
             position:fixed;inset:0;z-index:1;
             pointer-events:none;overflow:hidden;
@@ -84,119 +84,106 @@
         }
 
         /* ============================================
-           🖼️ MAIN LAYOUT
-           ============================================ */
-        .login-wrapper{
-            position:relative;z-index:10;
-            width:min(1100px,95%);
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:40px;
-            align-items:center;
-            padding:20px;
-        }
-
-        /* ============================================
-           🖼️ IMAGE SIDE (Desktop only)
-           ============================================ */
-        .image-side{
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            position:relative;
-            animation:floatIn .8s ease-out;
-        }
-        .image-side::before{
-            content:'';
-            position:absolute;
-            width:80%;height:80%;
-            background:radial-gradient(circle, #19aaff44, transparent 70%);
-            filter:blur(60px);
-            z-index:-1;
-            animation:pulseGlow 4s ease-in-out infinite;
-        }
-        @keyframes pulseGlow{
-            0%,100%{opacity:.5;transform:scale(1)}
-            50%{opacity:.9;transform:scale(1.1)}
-        }
-        .image-side img{
-            width:100%;
-            max-width:480px;
-            height:auto;
-            filter:drop-shadow(0 20px 60px #19aaff55);
-            animation:imageFloat 5s ease-in-out infinite;
-        }
-        @keyframes imageFloat{
-            0%,100%{transform:translateY(0) rotate(0deg)}
-            50%{transform:translateY(-15px) rotate(1deg)}
-        }
-        @keyframes floatIn{
-            from{opacity:0;transform:translateX(-40px)}
-            to{opacity:1;transform:translateX(0)}
-        }
-
-        /* ============================================
-           🎴 LOGIN CARD
+           🎴 MAIN LOGIN CARD — IMAGE AS BACKGROUND
            ============================================ */
         .login-card{
-            background:var(--bg-card);
-            backdrop-filter:blur(20px);
-            -webkit-backdrop-filter:blur(20px);
-            border:1px solid var(--border-color);
-            border-radius:24px;
-            padding:32px 28px;
-            box-shadow:
-                0 30px 80px rgba(0,0,0,.5),
-                0 0 60px #19aaff22,
-                inset 0 1px 0 #ffffff11;
             position:relative;
+            z-index:10;
+            width:min(460px,94%);
+            border-radius:28px;
             overflow:hidden;
-            animation:floatIn .8s ease-out;
-            max-height:92vh;
-            overflow-y:auto;
+            box-shadow:
+                0 30px 100px rgba(0,0,0,.6),
+                0 0 80px #19aaff33,
+                0 0 1px #19aaff88;
+            animation:cardIn .8s cubic-bezier(0.175,0.885,0.32,1.275);
+            border:1px solid #19aaff44;
+            max-height:96vh;
+        }
+        @keyframes cardIn{
+            from{opacity:0;transform:translateY(40px) scale(.95)}
+            to{opacity:1;transform:translateY(0) scale(1)}
         }
 
-        /* top glow line */
-        .login-card::before{
+        /* الصورة كخلفية للكارت */
+        .card-bg{
+            position:absolute;
+            inset:0;
+            background-image:url('bg.png');
+            background-size:cover;
+            background-position:center;
+            background-repeat:no-repeat;
+            z-index:0;
+            transform:scale(1.05);
+            transition:transform 8s ease-in-out;
+        }
+        .login-card:hover .card-bg{
+            transform:scale(1.12);
+        }
+
+        /* Overlay داكن فوق الصورة */
+        .card-overlay{
+            position:absolute;
+            inset:0;
+            background:linear-gradient(
+                135deg,
+                rgba(2,8,18,.88) 0%,
+                rgba(2,8,18,.75) 50%,
+                rgba(2,8,18,.92) 100%
+            );
+            z-index:1;
+            backdrop-filter:blur(2px);
+            -webkit-backdrop-filter:blur(2px);
+        }
+
+        /* طبقة إضافية للأمان البصري */
+        .card-overlay::after{
             content:'';
             position:absolute;
-            top:0;left:0;right:0;
-            height:2px;
-            background:linear-gradient(90deg, transparent, var(--accent), transparent);
-            animation:scanLine 3s linear infinite;
-        }
-        @keyframes scanLine{
-            0%{transform:translateX(-100%)}
-            100%{transform:translateX(100%)}
+            inset:0;
+            background:
+                radial-gradient(circle at 30% 20%, #19aaff15, transparent 60%),
+                radial-gradient(circle at 70% 80%, #087cff15, transparent 60%);
         }
 
-        .login-card::-webkit-scrollbar{width:4px}
-        .login-card::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
-        .login-card::-webkit-scrollbar-track{background:transparent}
+        /* ============================================
+           📦 CONTENT
+           ============================================ */
+        .card-content{
+            position:relative;
+            z-index:2;
+            padding:36px 30px 28px;
+            max-height:96vh;
+            overflow-y:auto;
+        }
+        .card-content::-webkit-scrollbar{width:4px}
+        .card-content::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+        .card-content::-webkit-scrollbar-track{background:transparent}
 
         /* ============================================
            🛡️ HEADER
            ============================================ */
-        .login-header{text-align:center;margin-bottom:24px}
+        .login-header{text-align:center;margin-bottom:26px}
         .login-logo{
-            width:72px;height:72px;
+            width:76px;height:76px;
             border-radius:50%;
             border:2px solid var(--accent);
-            background:rgba(25,170,255,.1);
-            margin:0 auto 12px;
+            background:rgba(25,170,255,.15);
+            backdrop-filter:blur(10px);
+            margin:0 auto 14px;
             display:flex;align-items:center;justify-content:center;
-            font-size:36px;
-            box-shadow:0 0 30px var(--accent-glow);
+            font-size:38px;
+            box-shadow:0 0 40px var(--accent-glow), inset 0 0 20px #19aaff33;
             animation:float 3s ease-in-out infinite;
             position:relative;
         }
         .login-logo::after{
             content:'';
-            position:absolute;inset:-6px;
+            position:absolute;inset:-8px;
             border-radius:50%;
             border:1px dashed var(--accent);
             opacity:.4;
-            animation:spin 12s linear infinite;
+            animation:spin 14s linear infinite;
         }
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
@@ -205,15 +192,16 @@
             color:var(--accent);
             font-size:13px;font-weight:900;
             letter-spacing:3px;
-            margin-bottom:6px;
-            text-shadow:0 0 10px var(--accent-glow);
+            margin-bottom:8px;
+            text-shadow:0 0 15px var(--accent-glow);
         }
         .login-brand span{color:#fff}
 
         .login-title{
             color:var(--text-primary);
-            font-size:24px;font-weight:900;
+            font-size:26px;font-weight:900;
             margin-bottom:4px;
+            text-shadow:0 2px 15px rgba(0,0,0,.5);
         }
         .login-subtitle{
             color:var(--text-muted);
@@ -221,7 +209,7 @@
         }
 
         /* ============================================
-           📝 INPUTS
+           📝 INPUTS — GLASSMORPHISM
            ============================================ */
         .input-group{
             position:relative;
@@ -229,10 +217,12 @@
         }
         .input-group input{
             width:100%;
-            padding:14px 46px 14px 18px;
-            border:1.5px solid var(--border-color);
+            padding:15px 48px 15px 18px;
+            border:1.5px solid rgba(25,170,255,.35);
             border-radius:14px;
-            background:rgba(2,8,18,.6);
+            background:rgba(2,8,18,.55);
+            backdrop-filter:blur(10px);
+            -webkit-backdrop-filter:blur(10px);
             color:var(--text-primary);
             font-size:14px;
             font-family:'Cairo',Arial,sans-serif;
@@ -245,15 +235,16 @@
         }
         .input-group input:focus{
             border-color:var(--accent);
-            background:rgba(2,8,18,.9);
+            background:rgba(2,8,18,.75);
             box-shadow:
-                0 0 0 4px #19aaff22,
-                0 0 25px #19aaff44;
+                0 0 0 4px #19aaff25,
+                0 0 30px #19aaff55,
+                inset 0 0 20px #19aaff11;
             transform:translateY(-1px);
         }
         .input-group .input-icon{
             position:absolute;
-            left:14px;top:50%;
+            left:16px;top:50%;
             transform:translateY(-50%);
             font-size:18px;
             color:var(--text-muted);
@@ -262,7 +253,8 @@
         }
         .input-group input:focus ~ .input-icon{
             color:var(--accent);
-            text-shadow:0 0 10px var(--accent-glow);
+            text-shadow:0 0 12px var(--accent-glow);
+            transform:translateY(-50%) scale(1.1);
         }
         .input-group .toggle-pw{
             position:absolute;
@@ -272,19 +264,18 @@
             color:var(--text-muted);
             font-size:16px;
             cursor:pointer;
-            padding:4px;
+            padding:6px;
+            border-radius:8px;
             transition:all var(--transition);
         }
-        .input-group .toggle-pw:hover{color:var(--accent)}
-        .input-group input[type="password"] ~ .toggle-pw{display:block}
-        .input-group input[type="text"] ~ .toggle-pw{display:block}
+        .input-group .toggle-pw:hover{color:var(--accent);background:rgba(25,170,255,.1)}
 
         /* ============================================
            🔘 BUTTONS
            ============================================ */
         .btn{
             width:100%;
-            padding:14px 20px;
+            padding:15px 20px;
             border:0;
             border-radius:14px;
             font-family:'Cairo',Arial,sans-serif;
@@ -302,16 +293,15 @@
         .btn-primary{
             background:linear-gradient(135deg,var(--accent-dark),var(--accent));
             color:#fff;
-            box-shadow:0 8px 30px #087cff55;
+            box-shadow:0 8px 30px #087cff66, 0 0 20px #19aaff33;
             margin-top:6px;
         }
         .btn-primary:hover:not(:disabled){
             transform:translateY(-2px);
-            box-shadow:0 15px 45px #087cff88, 0 0 30px #19aaff66;
+            box-shadow:0 15px 50px #087cff99, 0 0 40px #19aaff66;
         }
         .btn-primary:active:not(:disabled){transform:translateY(0)}
 
-        /* Ripple */
         .btn .ripple{
             position:absolute;
             border-radius:50%;
@@ -320,32 +310,31 @@
             animation:rippleAnim .6s linear;
             pointer-events:none;
         }
-        @keyframes rippleAnim{
-            to{transform:scale(4);opacity:0}
-        }
+        @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
         .btn-success{
             background:linear-gradient(135deg,#128C7E,#25D366);
             color:#fff;
-            box-shadow:0 8px 30px #25d36655;
+            box-shadow:0 8px 30px #25d36666;
             margin-top:8px;
         }
         .btn-success:hover:not(:disabled){
             transform:translateY(-2px);
-            box-shadow:0 15px 45px #25d36688;
+            box-shadow:0 15px 45px #25d36699;
         }
 
         .btn-ghost{
-            background:transparent;
+            background:rgba(25,170,255,.08);
+            backdrop-filter:blur(10px);
             color:var(--text-secondary);
-            border:1.5px solid var(--border-color);
+            border:1.5px solid rgba(25,170,255,.3);
             margin-top:10px;
         }
         .btn-ghost:hover{
             border-color:var(--accent);
             color:var(--accent);
-            background:rgba(25,170,255,.08);
-            box-shadow:0 0 25px #19aaff33;
+            background:rgba(25,170,255,.15);
+            box-shadow:0 0 30px #19aaff44;
         }
 
         /* ============================================
@@ -363,12 +352,12 @@
         }
         .msg.error{
             color:var(--danger);
-            text-shadow:0 0 10px #ff334466;
+            text-shadow:0 0 10px #ff334488;
             animation:shake .4s;
         }
         .msg.success{
             color:var(--success);
-            text-shadow:0 0 10px #25d36666;
+            text-shadow:0 0 10px #25d36688;
         }
         @keyframes shake{
             0%,100%{transform:translateX(0)}
@@ -405,7 +394,7 @@
             transition:width var(--transition);
         }
         .link-row a:hover::after{width:100%}
-        .link-row a:hover{text-shadow:0 0 10px var(--accent-glow)}
+        .link-row a:hover{text-shadow:0 0 12px var(--accent-glow)}
 
         /* ============================================
            📋 REGISTER FORM
@@ -414,7 +403,7 @@
             display:none;
             margin-top:18px;
             padding-top:18px;
-            border-top:1px dashed var(--border-color);
+            border-top:1px dashed rgba(25,170,255,.3);
             animation:slideDown .4s ease-out;
         }
         .register-form.show{display:block}
@@ -427,23 +416,23 @@
             font-size:15px;
             text-align:center;
             margin-bottom:14px;
-            text-shadow:0 0 10px var(--accent-glow);
+            text-shadow:0 0 12px var(--accent-glow);
         }
 
         /* ============================================
-           🌐 SOCIAL
+           🌐 SOCIAL — SVG ICONS
            ============================================ */
         .social-section{
             margin-top:20px;
             padding-top:18px;
-            border-top:1px solid var(--border-color);
+            border-top:1px solid rgba(25,170,255,.2);
             text-align:center;
         }
         .social-title{
             color:var(--text-muted);
-            font-size:11px;
-            letter-spacing:2px;
-            margin-bottom:12px;
+            font-size:10px;
+            letter-spacing:3px;
+            margin-bottom:14px;
             font-weight:700;
         }
         .social-icons{
@@ -453,37 +442,42 @@
             flex-wrap:wrap;
         }
         .social-icon{
-            width:40px;height:40px;
+            width:42px;height:42px;
             border-radius:50%;
             display:flex;align-items:center;justify-content:center;
             color:#fff;
             text-decoration:none;
-            font-size:18px;
             transition:all var(--transition);
             position:relative;
             overflow:hidden;
+            box-shadow:0 4px 15px rgba(0,0,0,.3);
+        }
+        .social-icon svg{
+            width:20px;height:20px;
+            fill:currentColor;
+            position:relative;
+            z-index:2;
         }
         .social-icon::before{
             content:'';
             position:absolute;inset:0;
-            border-radius:50%;
-            padding:2px;
-            background:linear-gradient(135deg, var(--accent), transparent);
-            -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite:xor;
-            mask-composite:exclude;
+            background:linear-gradient(135deg, rgba(255,255,255,.2), transparent);
             opacity:0;
             transition:opacity var(--transition);
         }
         .social-icon:hover{
-            transform:translateY(-4px) scale(1.1);
-            box-shadow:0 10px 25px #19aaff55;
+            transform:translateY(-5px) scale(1.12);
         }
         .social-icon:hover::before{opacity:1}
-        .social-icon.facebook{background:linear-gradient(135deg,#1877f2,#0c5dc7)}
-        .social-icon.instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
-        .social-icon.tiktok{background:linear-gradient(135deg,#000,#25f4ee,#fe2c55)}
-        .social-icon.telegram{background:linear-gradient(135deg,#0088cc,#006699)}
+
+        .social-icon.facebook{background:linear-gradient(135deg,#1877f2,#0c5dc7);box-shadow:0 4px 15px #1877f266}
+        .social-icon.facebook:hover{box-shadow:0 10px 30px #1877f299}
+        .social-icon.instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);box-shadow:0 4px 15px #dc274366}
+        .social-icon.instagram:hover{box-shadow:0 10px 30px #dc274399}
+        .social-icon.tiktok{background:linear-gradient(135deg,#000,#25f4ee,#fe2c55);box-shadow:0 4px 15px #25f4ee66}
+        .social-icon.tiktok:hover{box-shadow:0 10px 30px #fe2c5599}
+        .social-icon.telegram{background:linear-gradient(135deg,#0088cc,#006699);box-shadow:0 4px 15px #0088cc66}
+        .social-icon.telegram:hover{box-shadow:0 10px 30px #0088cc99}
 
         /* ============================================
            🦶 FOOTER
@@ -491,24 +485,26 @@
         .footer{
             text-align:center;
             margin-top:16px;
-            padding-top:12px;
-            border-top:1px solid var(--border-color);
+            padding-top:14px;
+            border-top:1px solid rgba(25,170,255,.15);
             color:var(--text-muted);
             font-size:10px;
-            line-height:1.8;
+            line-height:1.9;
         }
         .footer a{
             color:var(--accent);
             text-decoration:none;
             font-weight:700;
+            transition:all var(--transition);
         }
+        .footer a:hover{text-shadow:0 0 12px var(--accent-glow)}
 
         /* ============================================
-           ⏳ LOADING SPINNER
+           ⏳ SPINNER
            ============================================ */
         .spinner{
             width:16px;height:16px;
-            border:2px solid #ffffff44;
+            border:2px solid rgba(255,255,255,.3);
             border-top-color:#fff;
             border-radius:50%;
             animation:spinAnim .8s linear infinite;
@@ -517,81 +513,46 @@
         @keyframes spinAnim{to{transform:rotate(360deg)}}
 
         /* ============================================
-           📱 RESPONSIVE — TABLET
+           📱 RESPONSIVE
            ============================================ */
-        @media (max-width:900px){
-            .login-wrapper{
-                grid-template-columns:1fr;
-                max-width:480px;
-                gap:20px;
-            }
-            .image-side{
-                order:-1;
-                margin-bottom:-30px;
-            }
-            .image-side img{max-width:280px}
-            .image-side::before{width:100%;height:100%}
-        }
-
-        /* ============================================
-           📱 RESPONSIVE — MOBILE
-           ============================================ */
-        @media (max-width:600px){
-            body{align-items:flex-start;padding-top:0}
-            .login-wrapper{
-                width:100%;
-                padding:0;
-                gap:0;
-                max-width:100%;
-            }
-            .image-side{
-                padding:24px 20px 0;
-                margin-bottom:-40px;
-                position:relative;
-                z-index:5;
-            }
-            .image-side img{
-                max-width:200px;
-                filter:drop-shadow(0 10px 30px #19aaff88);
-            }
-            .image-side::before{
-                width:200px;height:200px;
-                filter:blur(40px);
-            }
+        @media (max-width:500px){
             .login-card{
-                border-radius:28px 28px 0 0;
-                padding:28px 20px 24px;
-                margin-top:0;
-                border-bottom:0;
-                max-height:none;
-                box-shadow:0 -20px 60px #19aaff22, 0 30px 80px rgba(0,0,0,.5);
+                width:94%;
+                border-radius:24px;
+                max-height:94vh;
             }
-            .login-logo{width:60px;height:60px;font-size:30px}
-            .login-title{font-size:20px}
+            .card-content{padding:28px 22px 22px}
+            .login-logo{width:64px;height:64px;font-size:32px}
+            .login-title{font-size:22px}
             .login-brand{font-size:11px;letter-spacing:2px}
-            .input-group input{padding:13px 42px 13px 16px;font-size:14px}
-            .btn{padding:13px 18px;font-size:14px}
-            .social-icon{width:38px;height:38px;font-size:16px}
+            .input-group input{padding:14px 44px 14px 16px;font-size:14px}
+            .btn{padding:14px 18px;font-size:14px}
+            .social-icon{width:38px;height:38px}
+            .social-icon svg{width:18px;height:18px}
         }
 
-        @media (max-width:380px){
-            .login-card{padding:24px 16px 20px}
-            .image-side img{max-width:160px}
-            .login-title{font-size:18px}
+        @media (max-width:360px){
+            .card-content{padding:22px 16px 18px}
+            .login-title{font-size:20px}
         }
 
         /* ============================================
-           🌞 LIGHT MODE (Bonus)
+           🚫 CONTENT PROTECTION
            ============================================ */
-        body.light{
-            --bg-dark:#f0f4f8;
-            --bg-card:rgba(255,255,255,.9);
-            --text-primary:#1a1a2e;
-            --text-secondary:#444;
-            --text-muted:#888;
-            --border-color:#087cff33;
+        img{
+            -webkit-user-drag:none;
+            user-drag:none;
+            -webkit-touch-callout:none;
+            pointer-events:none;
         }
-        body.light .input-group input{background:#fff;color:#1a1a2e}
+        .card-bg{
+            pointer-events:none;
+        }
+
+        /* ============================================
+           🌞 LIGHT MODE
+           ============================================ */
+        body.light{--text-muted:#444}
     </style>
 </head>
 <body>
@@ -601,16 +562,15 @@
 <canvas id="matrixCanvas"></canvas>
 <div class="particles" id="particles"></div>
 
-<!-- Main wrapper -->
-<div class="login-wrapper">
+<!-- Login Card -->
+<div class="login-card">
 
-    <!-- Image side -->
-    <div class="image-side">
-        <img src="bg.png" alt="SAYODA Security" onerror="this.style.display='none'">
-    </div>
+    <!-- الصورة كخلفية -->
+    <div class="card-bg"></div>
+    <div class="card-overlay"></div>
 
-    <!-- Login card -->
-    <div class="login-card" id="loginCard">
+    <!-- المحتوى -->
+    <div class="card-content">
 
         <div class="login-header">
             <div class="login-logo">🛡️</div>
@@ -681,10 +641,35 @@
         <div class="social-section">
             <div class="social-title">FOLLOW US</div>
             <div class="social-icons">
-                <a href="https://www.facebook.com/share/1EYFi5Aqrk/" target="_blank" rel="noopener" class="social-icon facebook" title="Facebook">f</a>
-                <a href="https://www.instagram.com/sayedhassan.2009" target="_blank" rel="noopener" class="social-icon instagram" title="Instagram">📷</a>
-                <a href="https://www.tiktok.com/@sayedhasaneisa" target="_blank" rel="noopener" class="social-icon tiktok" title="TikTok">🎵</a>
-                <a href="https://t.me/sayedhasan_R" target="_blank" rel="noopener" class="social-icon telegram" title="Telegram">✈️</a>
+
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/share/1EYFi5Aqrk/" target="_blank" rel="noopener" class="social-icon facebook" title="Facebook">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/sayedhassan.2009" target="_blank" rel="noopener" class="social-icon instagram" title="Instagram">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                </a>
+
+                <!-- TikTok -->
+                <a href="https://www.tiktok.com/@sayedhasaneisa" target="_blank" rel="noopener" class="social-icon tiktok" title="TikTok">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.61 20.1a6.34 6.34 0 0011.02-4.28v-6.96a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.81-.29z"/>
+                    </svg>
+                </a>
+
+                <!-- Telegram -->
+                <a href="https://t.me/sayedhasan_R" target="_blank" rel="noopener" class="social-icon telegram" title="Telegram">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </a>
+
             </div>
         </div>
 
@@ -705,17 +690,82 @@ const SUPABASE_KEY = 'sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* ============================================
+   🚫 CONTENT PROTECTION — منع تنزيل المحتوى
+   ============================================ */
+// منع Right Click
+document.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    return false;
+});
+
+// منع Keyboard shortcuts
+document.addEventListener('keydown', e => {
+    // F12 — Developer Tools
+    if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C — DevTools
+    if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+U — View Source
+    if (e.ctrlKey && ['U','u'].includes(e.key)) {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+S — Save Page
+    if (e.ctrlKey && ['S','s'].includes(e.key)) {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+P — Print
+    if (e.ctrlKey && ['P','p'].includes(e.key)) {
+        e.preventDefault();
+        return false;
+    }
+    // Ctrl+C / Ctrl+X / Ctrl+A — Copy/Cut/Select All
+    if (e.ctrlKey && ['C','c','X','x','A','a'].includes(e.key)) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// منع سحب الصور
+document.addEventListener('dragstart', e => {
+    if (e.target.tagName === 'IMG' || e.target.classList.contains('card-bg')) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// منع تحديد النص
+document.addEventListener('selectstart', e => {
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// منع PrintScreen (احتياطي)
+window.addEventListener('keyup', e => {
+    if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText('');
+    }
+});
+
+/* ============================================
    🛡️ SECURITY: SANITIZE
    ============================================ */
 function sanitize(input) {
     if (input === null || input === undefined) return '';
     return String(input)
-        .replace(/[<>]/g, '')           // منع HTML tags
-        .replace(/[\u0000-\u001F]/g, '') // منع control chars
+        .replace(/[<>]/g, '')
+        .replace(/[\u0000-\u001F]/g, '')
         .trim();
 }
 
-// منع SQL Injection patterns (احتياطي — Supabase محمي أصلاً)
 function hasSQLInjection(str) {
     const patterns = [
         /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/i,
@@ -731,7 +781,7 @@ function hasSQLInjection(str) {
    ============================================ */
 const RATE_LIMIT = {
     maxAttempts: 5,
-    windowMs: 60 * 1000,  // 60 ثانية
+    windowMs: 60 * 1000,
     key: 'sayoda_login_attempts'
 };
 
@@ -740,7 +790,6 @@ function checkRateLimit() {
         const data = JSON.parse(localStorage.getItem(RATE_LIMIT.key) || '{"count":0,"first":0}');
         const now = Date.now();
         if (now - data.first > RATE_LIMIT.windowMs) {
-            // reset window
             localStorage.setItem(RATE_LIMIT.key, JSON.stringify({count:0, first:now}));
             return {ok:true, remaining: RATE_LIMIT.maxAttempts};
         }
@@ -802,7 +851,7 @@ function togglePassword(fieldId = 'password') {
 }
 
 /* ============================================
-   💫 RIPPLE EFFECT
+   💫 RIPPLE
    ============================================ */
 function createRipple(e) {
     const btn = e.currentTarget;
@@ -833,41 +882,35 @@ async function login(e) {
     const btnText = document.getElementById('loginBtnText');
     clearMsg('loginMsg');
 
-    // Validation
     if (!uRaw || !pRaw) {
         showMsg('loginMsg', '⚠️ اكتب اسم المستخدم وكلمة المرور.', 'error');
         return;
     }
 
-    // Sanitize
     const u = sanitize(uRaw);
-    const p = pRaw; // الباسورد مش بنظّفه (ممكن يحتوي رموز)
+    const p = pRaw;
 
     if (u.length < 3) {
         showMsg('loginMsg', '⚠️ اسم المستخدم قصير جداً.', 'error');
         return;
     }
 
-    // SQL Injection Check
     if (hasSQLInjection(u)) {
         showMsg('loginMsg', '🚫 محاولة غير مصرح بها.', 'error');
         recordAttempt();
         return;
     }
 
-    // Rate Limit
     const rl = checkRateLimit();
     if (!rl.ok) {
         showMsg('loginMsg', `⏳ محاولات كثيرة. انتظر ${rl.waitSec} ثانية.`, 'error');
         return;
     }
 
-    // UI Loading
     btn.disabled = true;
     btnText.innerHTML = '<span class="spinner"></span> جاري التحقق...';
 
     try {
-        // Supabase Query (Parameterized — آمن من SQL Injection)
         const { data: userData, error } = await sb
             .from('users')
             .select('username, password, role, active, phone')
@@ -876,14 +919,12 @@ async function login(e) {
             .maybeSingle();
 
         if (error) {
-            // رسالة عامة (مش بنكشف تفاصيل)
             showMsg('loginMsg', '❌ خطأ في الاتصال. حاول تاني.', 'error');
             recordAttempt();
             return;
         }
 
         if (!userData) {
-            // رسالة عامة (مش بنقول "الباسورد غلط" أو "اليوزر غلط")
             showMsg('loginMsg', '❌ بيانات الدخول غير صحيحة.', 'error');
             recordAttempt();
             return;
@@ -894,10 +935,8 @@ async function login(e) {
             return;
         }
 
-        // Success — reset rate limit
         resetRateLimit();
 
-        // Save session (بتنظيف)
         const session = {
             username: sanitize(userData.username),
             role: sanitize(userData.role || 'user'),
@@ -907,14 +946,12 @@ async function login(e) {
         };
         sessionStorage.setItem('sayoda_user', JSON.stringify(session));
 
-        // Update last login (اختياري)
         try {
             await sb.rpc('update_last_login', { p_username: u });
         } catch(e) {}
 
         showMsg('loginMsg', '✅ تم تسجيل الدخول! جاري التحويل...', 'success');
 
-        // Redirect
         setTimeout(() => {
             if (session.role === 'admin') {
                 window.location.href = './admin.html';
@@ -981,7 +1018,6 @@ async function submitRegistration(e) {
     const p = pRaw;
     const ph = sanitize(phRaw).replace(/\s/g, '');
 
-    // Validation
     if (u.length < 3) {
         showMsg('registerMsg', '⚠️ اسم المستخدم 3 أحرف على الأقل.', 'error');
         return;
@@ -1003,7 +1039,6 @@ async function submitRegistration(e) {
     btnText.innerHTML = '<span class="spinner"></span> جاري الإنشاء...';
 
     try {
-        // Check if exists
         const { data: existing } = await sb
             .from('users')
             .select('username')
@@ -1017,7 +1052,6 @@ async function submitRegistration(e) {
             return;
         }
 
-        // Insert
         const { error: insertError } = await sb.from('users').insert({
             username: u,
             password: p,
@@ -1038,7 +1072,6 @@ async function submitRegistration(e) {
 
         if (insertError) throw insertError;
 
-        // Telegram notify
         try {
             fetch('https://api.telegram.org/bot8655357261:AAFPVQZEi1F4eqeKRDBDGK-kM9rGXciVqVU/sendMessage', {
                 method: 'POST',
@@ -1091,7 +1124,7 @@ document.getElementById('regPhone')?.addEventListener('keydown', e => {
 });
 
 /* ============================================
-   🌐 MATRIX BACKGROUND
+   🌐 MATRIX RAIN
    ============================================ */
 (function matrixRain() {
     const canvas = document.getElementById('matrixCanvas');
