@@ -273,7 +273,8 @@
         .close-btn:hover{background:#102b42;transform:rotate(90deg);border-color:var(--danger);color:var(--danger)}
         
         .player-wrapper{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#000;flex-shrink:0}
-        .player-wrapper iframe,.player-wrapper #ytPlayerDiv{position:absolute;inset:0;width:100%;height:100%;border:0}
+        .player-wrapper iframe,.player-wrapper #ytPlayerDiv{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none} 
+        .player-wrapper::after{content:'';position:absolute;inset:0;z-index:20;cursor:default;background:transparent} 
         
         /* Phone number on video */
         .video-phone{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);color:#fff;padding:4px 12px;border-radius:30px;font-size:11px;font-weight:bold;z-index:10;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.15);pointer-events:none;letter-spacing:.5px}
@@ -1398,9 +1399,11 @@ async function markAllNotificationsAsRead() {
    🛡️ CONTENT PROTECTION
    ============================================ */
 document.addEventListener('contextmenu', e => {
-    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || e.target.closest('.video-card')) {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || 
+        e.target.closest('.video-card') || e.target.closest('.player-wrapper') ||
+        e.target.closest('#videoModal')) {
         e.preventDefault();
-        showToast('🚫 غير مسموح بتحميل المحتوى', '🚫');
+        showToast('🚫 غير مسموح بتحميل أو نسخ المحتوى', '🚫');
         return false;
     }
 });
@@ -2297,6 +2300,15 @@ document.addEventListener('keydown', e => {
     if (e.code === 'Space' && document.getElementById('videoModal').style.display === 'flex') {
         e.preventDefault();
         togglePlayPause();
+    }
+    // منع نسخ المحتوى لما الفيديو مفتوح
+    const modalOpen = document.getElementById('videoModal')?.style.display === 'flex';
+    if (modalOpen) {
+        if (e.ctrlKey && ['c','C','u','U','s','S','a','A'].includes(e.key)) {
+            e.preventDefault();
+            showToast('🚫 غير مسموح بنسخ المحتوى', '🚫');
+            return false;
+        }
     }
 });
 
