@@ -314,9 +314,32 @@
         <button class="login-btn" id="loginBtn" onclick="login()">🚪 دخول</button>
         <div class="error-msg" id="errorMsg"></div>
 
-        <a class="register-link" id="registerLink">📝 إنشاء حساب جديد</a>
+        <a class="register-link" id="registerLink" onclick="showRegisterForm()">📝 إنشاء حساب جديد</a>
 
         <button class="guest-btn" onclick="guestLogin()">👤 دخول كضيف</button>
+
+        <!-- ===== REGISTER FORM (مخفي افتراضياً) ===== -->
+        <div id="registerFormContainer" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid #e0e7ef;">
+            <h3 style="color:#087cff;font-size:16px;text-align:center;margin-bottom:12px;">📝 إنشاء حساب جديد</h3>
+
+            <div class="input-group">
+                <input type="text" id="regUsername" placeholder="اسم المستخدم" maxlength="30">
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="regPassword" placeholder="كلمة المرور" maxlength="50">
+            </div>
+
+            <div class="input-group">
+                <input type="tel" id="regPhone" placeholder="رقم الجوال (مثال: 01128351702)" maxlength="11">
+            </div>
+
+            <button class="login-btn" id="registerSubmitBtn" onclick="submitRegistration()" style="background:linear-gradient(135deg,#25D366,#128C7E);">✅ إنشاء حساب</button>
+
+            <div id="registerError" class="error-msg" style="color:#ff3344;font-size:13px;text-align:center;min-height:20px;margin-top:8px;"></div>
+
+            <a onclick="hideRegisterForm()" style="display:block;text-align:center;margin-top:10px;color:#64748b;font-size:13px;cursor:pointer;text-decoration:underline;">← رجوع لتسجيل الدخول</a>
+        </div>
 
         <!-- Follow Us -->
         <div class="follow-section">
@@ -456,12 +479,103 @@
     }
 
     /* ============================================
-       📝 REGISTER LINK
+       📝 REGISTER FORM
        ============================================ */
-    document.getElementById('registerLink').addEventListener('click', () => {
-        // التحويل لصفحة التسجيل أو الصفحة الرئيسية
-        window.location.href = './index.html#register';
-    });
+    function showRegisterForm() {
+        document.getElementById('registerFormContainer').style.display = 'block';
+        document.getElementById('registerError').textContent = '';
+    }
+
+    function hideRegisterForm() {
+        document.getElementById('registerFormContainer').style.display = 'none';
+        document.getElementById('registerError').textContent = '';
+    }
+
+    async function submitRegistration() {
+        const u = document.getElementById('regUsername').value.trim();
+        const p = document.getElementById('regPassword').value.trim();
+        const ph = document.getElementById('regPhone').value.trim();
+        const err = document.getElementById('registerError');
+        err.style.color = '#ff3344';
+        err.textContent = '';
+
+        // التحقق من المدخلات
+        if (!u || !p || !ph) { err.textContent = '⚠️ املأ جميع الحقول.'; return; }
+        if (u.length < 3) { err.textContent = '⚠️ اسم المستخدم 3 أحرف على الأقل.'; return; }
+        if (p.length < 4) { err.textContent = '⚠️ كلمة المرور 4 أحرف على الأقل.'; return; }
+        if (!/^[\d]{10,11}$/.test(ph.replace(/\s/g, ''))) { err.textContent = '⚠️ رقم الهاتف غير صحيح (10-11 رقم).'; return; }
+
+        const btn = document.getElementById('registerSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = '⏳ جاري الإنشاء...';
+
+        try {
+            // التحقق من وجود المستخدم
+            const { data: existingUser } = await sb.from('users').select('username').eq('username', u).maybeSingle();
+            if (existingUser) {
+                err.textContent = '⚠️ اسم المستخدم موجود بالفعل!';
+                btn.disabled = false;
+                btn.textContent = '✅ إنشاء حساب';
+                return;
+            }
+
+            // إضافة المستخدم الجديد
+            const { error: insertError } = await sb.from('users').insert({
+                username: u,
+                password: p,
+                role: 'user',
+                active: true,
+                phone: ph,
+                xp: 0,
+                level: 'مبتدئ',
+                level_emoji: '🟢',
+                streak: 0,
+                badges: [],
+                videos_watched: [],
+                total_rating: 0,
+                rating_count: 0,
+                videos_locked: true
+            });
+
+            if (insertError) throw insertError;
+
+            // إشعار تلجرام
+            try {
+                await fetch(`https://api.telegram.org/bot8655357261:AAFPVQZEi1F4eqeKRDBDGK-kM9rGXciVqVU/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: '7114350905',
+                        text: `🔐 <b>حساب جديد</b>\n👤 ${sanitizeHTML(u)}\n📱 ${sanitizeHTML(ph)}`,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (e) {}
+
+            // نجاح
+            err.style.color = '#25D366';
+            err.textContent = '✅ تم إنشاء حسابك بنجاح! جاري تسجيل الدخول...';
+
+            // تسجيل الدخول تلقائياً
+            sessionStorage.setItem('sayoda_user', JSON.stringify({
+                username: u,
+                role: 'user',
+                active: true,
+                phone: ph
+            }));
+
+            setTimeout(() => {
+                window.location.href = './index.html';
+            }, 1200);
+
+        } catch (e) {
+            console.error(e);
+            err.style.color = '#ff3344';
+            err.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
+            btn.disabled = false;
+            btn.textContent = '✅ إنشاء حساب';
+        }
+    }
 
     /* ============================================
        ⌨️ ENTER KEY
@@ -471,6 +585,9 @@
     });
     document.getElementById('username').addEventListener('keydown', e => {
         if (e.key === 'Enter') document.getElementById('password').focus();
+    });
+    document.getElementById('regPhone').addEventListener('keydown', e => {
+        if (e.key === 'Enter') submitRegistration();
     });
 </script>
 
