@@ -14,6 +14,7 @@
         *{margin:0;padding:0;box-sizing:border-box}
         :root{
             --bg-primary:#0a0608;
+            --bg-secondary:rgba(20,12,8,.92);
             --bg-card:rgba(20,12,8,.85);
             --text-primary:#fff;
             --text-secondary:#e0d0c0;
@@ -22,12 +23,10 @@
             --accent-dark:#cc9900;
             --danger:#ff3344;
             --success:#25D366;
-            --info:#19aaff;
-            --purple:#9d4edd;
             --border-color:#ffd70033;
             --transition:0.3s cubic-bezier(0.175,0.885,0.32,1.275);
         }
-        html{font-size:16px}
+        html{font-size:16px;scroll-behavior:smooth}
         body{
             background:radial-gradient(circle at 20% 20%,#ffd70008,transparent 50%),radial-gradient(circle at 80% 80%,#ff334408,transparent 50%),var(--bg-primary);
             color:var(--text-primary);font-family:'Cairo',Arial,sans-serif;min-height:100vh;
@@ -36,6 +35,7 @@
         ::-webkit-scrollbar{width:8px;height:8px}
         ::-webkit-scrollbar-track{background:var(--bg-primary)}
         ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--accent-dark)}
 
         .container{width:min(1300px,96%);margin:auto;padding:0 10px}
 
@@ -48,16 +48,16 @@
             border-bottom:2px solid var(--accent);
             box-shadow:0 4px 30px rgba(255,215,0,.15);
         }
-        .brand{display:flex;align-items:center;gap:10px}
+        .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
         .brand-icon{font-size:32px;filter:drop-shadow(0 0 15px #ffd70088)}
-        .brand-text{color:var(--accent);font-size:20px;font-weight:900}
+        .brand-text{color:var(--accent);font-size:20px;font-weight:900;letter-spacing:1px}
         .brand-text span{color:#fff}
         .brand-sub{color:var(--text-muted);font-size:10px;letter-spacing:3px;display:block}
         .header-actions{display:flex;align-items:center;gap:10px}
         .admin-tag{
             background:linear-gradient(135deg,#ffd700,#ff9900);color:#1a1008;
             padding:6px 14px;border-radius:30px;font-size:12px;font-weight:900;
-            box-shadow:0 0 20px #ffd70055;
+            letter-spacing:1px;box-shadow:0 0 20px #ffd70055;
         }
         .back-btn{
             background:rgba(255,215,0,.1);border:1px solid var(--accent);
@@ -98,7 +98,7 @@
         .view-header h2{color:var(--accent);font-size:22px;font-weight:900;display:flex;align-items:center;gap:10px}
         .view-header h2 .icon{font-size:26px;filter:drop-shadow(0 0 10px #ffd70088)}
 
-        /* Stats */
+        /* Stats Grid */
         .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
         .stat-box{
             background:linear-gradient(135deg,rgba(20,12,8,.85),rgba(10,6,8,.85));
@@ -117,13 +117,14 @@
         .card h3{color:var(--accent);font-size:16px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
         /* Inputs */
-        .input{
+        .input, .select{
             width:100%;padding:12px 14px;border:1px solid var(--border-color);
             border-radius:10px;background:rgba(0,0,0,.4);color:#fff;outline:none;
             font-family:'Cairo',Arial,sans-serif;font-size:13px;transition:all var(--transition);
         }
-        .input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,215,0,.1);background:rgba(0,0,0,.6)}
+        .input:focus, .select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,215,0,.1);background:rgba(0,0,0,.6)}
         .input::placeholder{color:var(--text-muted)}
+        .select option{background:#1a1008;color:#fff}
 
         .btn{
             padding:10px 20px;border:0;border-radius:10px;
@@ -131,107 +132,21 @@
             cursor:pointer;transition:all var(--transition);
             display:inline-flex;align-items:center;gap:6px;
         }
-        .btn-primary{background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#1a1008}
+        .btn-primary{background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#1a1008;box-shadow:0 5px 20px rgba(255,215,0,.2)}
         .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,.4)}
         .btn-danger{background:linear-gradient(135deg,#cc2233,#ff3344);color:#fff}
         .btn-danger:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,51,68,.4)}
         .btn-success{background:linear-gradient(135deg,#128C7E,#25D366);color:#fff}
         .btn-success:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,211,102,.4)}
         .btn-warning{background:linear-gradient(135deg,#ff9900,#ffd700);color:#1a1008}
-        .btn-info{background:linear-gradient(135deg,#087cff,#19aaff);color:#fff}
-        .btn-info:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(25,170,255,.4)}
-        .btn-purple{background:linear-gradient(135deg,#6a4c93,#9d4edd);color:#fff}
-        .btn-purple:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(157,78,221,.4)}
         .btn-sm{padding:5px 10px;font-size:11px;border-radius:8px}
-
-        /* Code Cards */
-        .code-card{
-            background:linear-gradient(135deg,rgba(20,12,8,.9),rgba(10,6,8,.9));
-            border:1px solid var(--border-color);border-radius:14px;
-            padding:16px;margin-bottom:12px;transition:all var(--transition);
-            position:relative;overflow:hidden;
-        }
-        .code-card::before{
-            content:'';position:absolute;top:0;right:0;width:4px;height:100%;
-            background:linear-gradient(180deg,var(--accent),var(--accent-dark));
-        }
-        .code-card.inactive::before{background:linear-gradient(180deg,#666,#333)}
-        .code-card.expired::before{background:linear-gradient(180deg,#ff3344,#cc2233)}
-        .code-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,215,0,.1)}
-        
-        .code-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-        .code-value{
-            background:linear-gradient(135deg,#1b2638,#0b1220);
-            border:1px dashed var(--accent);
-            padding:8px 16px;border-radius:10px;
-            font-family:monospace;font-size:16px;font-weight:900;
-            color:var(--accent);letter-spacing:2px;
-            display:inline-flex;align-items:center;gap:8px;
-        }
-        .code-status{
-            padding:4px 12px;border-radius:30px;font-size:11px;font-weight:900;
-        }
-        .status-active{background:rgba(37,211,102,.15);color:#25D366;border:1px solid #25D366}
-        .status-inactive{background:rgba(255,255,255,.1);color:#999;border:1px solid #666}
-        .status-expired{background:rgba(255,51,68,.15);color:#ff6678;border:1px solid #ff3344}
-        
-        .code-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:12px}
-        .code-info-item{background:rgba(0,0,0,.3);padding:8px 12px;border-radius:8px}
-        .code-info-item .lbl{color:var(--text-muted);font-size:10px;display:block;margin-bottom:2px}
-        .code-info-item .val{color:#fff;font-size:13px;font-weight:700}
-        
-        .code-actions{display:flex;gap:6px;flex-wrap:wrap}
-        
-        .code-videos{margin-top:10px;padding-top:10px;border-top:1px solid var(--border-color)}
-        .code-videos-title{color:var(--text-muted);font-size:11px;margin-bottom:6px}
-        .code-videos-list{display:flex;gap:4px;flex-wrap:wrap}
-        .video-chip{
-            background:rgba(25,170,255,.15);color:var(--info);
-            padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;
-            border:1px solid rgba(25,170,255,.3);
-        }
-
-        /* Filter Bar */
-        .filter-bar{
-            display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;
-            padding:12px;background:rgba(20,12,8,.6);
-            border:1px solid var(--border-color);border-radius:12px;
-        }
-        .filter-btn{
-            padding:6px 14px;border-radius:30px;font-size:12px;font-weight:700;
-            background:rgba(255,215,0,.05);border:1px solid var(--border-color);
-            color:var(--text-secondary);cursor:pointer;transition:all var(--transition);
-            font-family:'Cairo',Arial,sans-serif;
-        }
-        .filter-btn:hover{background:rgba(255,215,0,.1);color:var(--accent)}
-        .filter-btn.active{background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#1a1008}
-
-        /* Video Checkboxes */
-        .video-checkbox-list{
-            max-height:280px;overflow-y:auto;padding:10px;
-            background:rgba(0,0,0,.3);border-radius:10px;
-            border:1px solid var(--border-color);
-        }
-        .video-checkbox-item{
-            display:flex;align-items:center;gap:10px;
-            padding:8px;border-radius:8px;cursor:pointer;
-            transition:all var(--transition);margin-bottom:4px;
-        }
-        .video-checkbox-item:hover{background:rgba(255,215,0,.08)}
-        .video-checkbox-item input[type="checkbox"]{
-            width:18px;height:18px;cursor:pointer;accent-color:var(--accent);
-        }
-        .video-checkbox-item label{
-            cursor:pointer;flex:1;font-size:13px;
-            display:flex;flex-direction:column;gap:2px;
-        }
-        .video-checkbox-item .vid-id{color:var(--text-muted);font-size:10px;font-family:monospace}
 
         /* User Cards */
         .user-card{
             background:rgba(20,12,8,.6);border:1px solid var(--border-color);
             border-radius:12px;padding:12px;margin-bottom:8px;
             display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+            transition:all var(--transition);
         }
         .user-card:hover{background:rgba(20,12,8,.9);border-color:var(--accent)}
         .user-card .uname{font-weight:900;color:var(--accent);font-size:15px;min-width:100px}
@@ -256,6 +171,7 @@
         .form-grid .full{grid-column:1/-1}
         @media (max-width:700px){.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
 
+        /* Toast */
         #toast{
             position:fixed;bottom:60px;left:50%;transform:translateX(-50%) translateY(20px);
             padding:12px 24px;background:rgba(20,12,8,.98);
@@ -266,17 +182,21 @@
         }
         #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 
+        /* Modal */
         .modal{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;background:#000c;backdrop-filter:blur(12px);padding:16px}
         .modal.show{display:flex}
         .modal-box{
             background:linear-gradient(135deg,rgba(20,12,8,.98),rgba(10,6,8,.98));
             border:2px solid var(--accent);border-radius:20px;
             padding:24px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;
+            box-shadow:0 30px 100px rgba(255,215,0,.2);
         }
         .modal-box h3{color:var(--accent);font-size:20px;font-weight:900;margin-bottom:16px}
 
+        /* Chart */
         .chart-wrapper{position:relative;height:200px;margin-top:10px}
 
+        /* Empty */
         .empty{text-align:center;color:var(--text-muted);padding:30px;font-size:14px}
 
         @media (max-width:650px){
@@ -286,6 +206,8 @@
             .tabs-bar{padding:8px 12px}
             .admin-tab{padding:8px 12px;font-size:11px}
             .stat-box .num{font-size:22px}
+            .user-card{flex-direction:column;align-items:flex-start}
+            .user-card .actions{width:100%;margin-right:0}
         }
     </style>
 </head>
@@ -310,7 +232,6 @@
 <div class="tabs-bar">
     <button class="admin-tab active" onclick="switchTab('accounts',this)">👥 <span>الحسابات</span></button>
     <button class="admin-tab" onclick="switchTab('videos',this)">🎬 <span>الفيديوهات</span></button>
-    <button class="admin-tab" onclick="switchTab('codes',this)">🎟️ <span>الأكواد</span></button>
     <button class="admin-tab" onclick="switchTab('notifications',this)">📢 <span>الإشعارات</span></button>
     <button class="admin-tab" onclick="switchTab('forum',this)">💬 <span>المنتدي</span></button>
     <button class="admin-tab" onclick="switchTab('stats',this)">📊 <span>الإحصائيات</span></button>
@@ -320,7 +241,7 @@
 
 <div class="container">
 
-    <!-- ACCOUNTS -->
+    <!-- ========== ACCOUNTS ========== -->
     <div id="view-accounts" class="view active">
         <div class="view-header">
             <h2><span class="icon">👥</span> إدارة الحسابات</h2>
@@ -335,7 +256,7 @@
         <div id="usersList"></div>
     </div>
 
-    <!-- VIDEOS -->
+    <!-- ========== VIDEOS ========== -->
     <div id="view-videos" class="view">
         <div class="view-header">
             <h2><span class="icon">🎬</span> إدارة الفيديوهات</h2>
@@ -358,74 +279,7 @@
         </div>
     </div>
 
-    <!-- CODES (محدّث) -->
-    <div id="view-codes" class="view">
-        <div class="view-header">
-            <h2><span class="icon">🎟️</span> إدارة الأكواد</h2>
-        </div>
-
-        <!-- Stats for codes -->
-        <div class="stats-grid">
-            <div class="stat-box"><div class="num" id="cs-total">0</div><div class="label">📊 إجمالي الأكواد</div></div>
-            <div class="stat-box"><div class="num" id="cs-active">0</div><div class="label">🟢 نشط</div></div>
-            <div class="stat-box"><div class="num" id="cs-expired">0</div><div class="label">🔴 منتهي</div></div>
-            <div class="stat-box"><div class="num" id="cs-uses">0</div><div class="label">👥 استخدامات</div></div>
-        </div>
-
-        <!-- إنشاء كود -->
-        <div class="card">
-            <h3>🔓 إنشاء كود فتح فيديوهات</h3>
-            <div class="form-grid">
-                <input class="input" id="ucCode" placeholder="الكود (مثال: OPEN2026)" style="text-transform:uppercase">
-                <input class="input" id="ucDuration" type="number" value="7" placeholder="المدة بالأيام" min="1">
-                <input class="input" id="ucMaxUses" type="number" value="5" placeholder="عدد الاستخدامات" min="1">
-                <div style="grid-column:1/-1">
-                    <label style="color:var(--text-muted);font-size:12px;display:block;margin-bottom:8px">🎬 اختار الفيديوهات اللي هتتفتح:</label>
-                    <div class="video-checkbox-list" id="ucVideoList">
-                        <div style="text-align:center;color:var(--text-muted);padding:20px;">⏳ جاري التحميل...</div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <button class="btn btn-success" onclick="createUnlockCode()">✅ إنشاء الكود</button>
-        </div>
-
-        <!-- Filter bar -->
-        <div class="filter-bar">
-            <button class="filter-btn active" onclick="filterCodes('all', this)">📋 كل الأكواد</button>
-            <button class="filter-btn" onclick="filterCodes('active', this)">🟢 نشط</button>
-            <button class="filter-btn" onclick="filterCodes('inactive', this)">⚫ معطّل</button>
-            <button class="filter-btn" onclick="filterCodes('expired', this)">🔴 منتهي</button>
-            <input type="text" class="input" id="searchCode" placeholder="🔍 بحث بالكود..." oninput="renderUnlockCodes()" style="flex:1;min-width:150px">
-            <button class="btn btn-info btn-sm" onclick="copyAllCodes()">📋 نسخ الكل</button>
-            <button class="btn btn-purple btn-sm" onclick="exportCodesCSV()">📥 تصدير CSV</button>
-            <button class="btn btn-primary btn-sm" onclick="loadUnlockCodes()">🔄 تحديث</button>
-        </div>
-
-        <!-- عرض الأكواد -->
-        <div class="card">
-            <h3>📋 أكواد فتح الفيديوهات (<span id="unlockCodesCount">0</span>)</h3>
-            <div id="unlockCodesList"></div>
-        </div>
-
-        <!-- كود الدعوة -->
-        <div class="card">
-            <h3>🔗 كود الدعوة الخاص بك</h3>
-            <div style="text-align:center;padding:20px;">
-                <div class="code-value" id="myReferralCode" style="font-size:22px;padding:16px 32px;">⏳</div>
-                <br><br>
-                <button class="btn btn-info" onclick="copyReferralCode()">📋 نسخ الكود</button>
-                <p style="color:var(--text-muted);font-size:12px;margin-top:14px;">
-                    شارك الكود ده مع أصحابك — كل واحد يسجل بيه هتاخدوا 50 XP
-                </p>
-                <p style="color:var(--accent);font-size:13px;margin-top:8px;font-weight:700;">
-                    👥 عدد اللي سجلوا بكودك: <span id="myReferralCount">0</span>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOTIFICATIONS -->
+    <!-- ========== NOTIFICATIONS ========== -->
     <div id="view-notifications" class="view">
         <div class="view-header">
             <h2><span class="icon">📢</span> الإشعارات</h2>
@@ -442,7 +296,7 @@
         </div>
     </div>
 
-    <!-- FORUM -->
+    <!-- ========== FORUM ========== -->
     <div id="view-forum" class="view">
         <div class="view-header">
             <h2><span class="icon">💬</span> إدارة المنتدي</h2>
@@ -450,7 +304,7 @@
         <div id="forumAdminList"></div>
     </div>
 
-    <!-- STATS -->
+    <!-- ========== STATS ========== -->
     <div id="view-stats" class="view">
         <div class="view-header">
             <h2><span class="icon">📊</span> الإحصائيات الشاملة</h2>
@@ -467,7 +321,7 @@
         </div>
     </div>
 
-    <!-- LOCKS -->
+    <!-- ========== LOCKS ========== -->
     <div id="view-locks" class="view">
         <div class="view-header">
             <h2><span class="icon">🔓</span> التحكم بالفيديوهات</h2>
@@ -486,7 +340,7 @@
         </div>
     </div>
 
-    <!-- BANS -->
+    <!-- ========== BANS ========== -->
     <div id="view-bans" class="view">
         <div class="view-header">
             <h2><span class="icon">🚫</span> نظام الحظر</h2>
@@ -494,11 +348,11 @@
         <div class="card">
             <h3>📖 أنواع الحظر</h3>
             <div style="color:var(--text-secondary);font-size:13px;line-height:2">
-                🚫 <strong>all</strong> — حظر كامل<br>
+                🚫 <strong>all</strong> — حظر كامل (يمنع كل حاجة)<br>
                 💬 <strong>comment</strong> — منع التعليق<br>
                 📝 <strong>forum</strong> — منع المنتدي<br>
                 ⭐ <strong>rating</strong> — منع التقييم<br>
-                🔒 <strong>view</strong> — منع المشاهدة
+                🔒 <strong>view</strong> — منع المشاهدة (يستعرض فقط)
             </div>
         </div>
         <div class="card">
@@ -511,9 +365,11 @@
 
 <div id="toast"><span id="toastIcon">✅</span> <span id="toastMessage"></span></div>
 
+<!-- User Details Modal -->
 <div id="userModal" class="modal">
     <div class="modal-box" id="userModalBox"></div>
 </div>
+
 <script>
 /* ============================================
    ☁️ SUPABASE
@@ -525,9 +381,6 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentAdmin = null;
 let allUsers = {};
 let allTopics = [];
-let allVideos = [];
-let allUnlockCodes = [];
-let currentCodeFilter = 'all';
 
 /* ============================================
    🛡️ XSS
@@ -581,15 +434,8 @@ function showToast(msg, icon = '✅') {
         currentAdmin = adminData;
         document.getElementById('adminNameTag').textContent = '👑 ' + currentAdmin.username;
 
+        // تحميل البيانات الأولية
         await loadAllData();
-        
-        // ✅ تحديث تلقائي كل 30 ثانية
-        setInterval(() => {
-            if (document.getElementById('view-codes').classList.contains('active')) {
-                loadUnlockCodes();
-            }
-        }, 30000);
-        
     } catch (e) {
         sessionStorage.removeItem('sayoda_user');
         window.location.href = './login.html';
@@ -604,8 +450,6 @@ async function loadAllData() {
     await loadVideos();
     await loadNotifications();
     await loadForumTopics();
-    await loadUnlockCodes();
-    await loadMyReferralCode();
     await updateStats();
     await updateLockStatus();
 }
@@ -633,6 +477,7 @@ function renderUsers() {
         .filter(u => u.username.toLowerCase().includes(search))
         .sort((a, b) => (b.xp || 0) - (a.xp || 0));
 
+    // الإحصائيات
     document.getElementById('s-users').textContent = users.length;
     document.getElementById('s-xp').textContent = users.reduce((s, u) => s + (u.xp || 0), 0);
     document.getElementById('s-badges').textContent = users.reduce((s, u) => s + (u.badges?.length || 0), 0);
@@ -675,10 +520,12 @@ function renderUsers() {
     }).join('');
 }
 
-function filterUsers() { renderUsers(); }
+function filterUsers() {
+    renderUsers();
+}
 
 /* ============================================
-   👤 USER DETAILS
+   👤 USER DETAILS MODAL
    ============================================ */
 async function showUserDetails(username) {
     const u = allUsers[username];
@@ -713,8 +560,6 @@ async function showUserDetails(username) {
                 <div>📅 آخر دخول: <strong style="color:var(--accent)">${u.last_login ? new Date(u.last_login).toLocaleString('ar-EG') : 'لم يسجل'}</strong></div>
                 <div>📊 المستوى: <strong style="color:var(--accent)">${u.level_emoji || '🟢'} ${sanitizeHTML(u.level || 'مبتدئ')}</strong></div>
                 <div>🔒 الفيديوهات: <strong style="color:var(--accent)">${u.videos_locked ? 'مقفلة' : 'مفتوحة'}</strong></div>
-                <div>🔗 دعا بواسطة: <strong style="color:var(--accent)">${sanitizeHTML(u.referred_by || '-')}</strong></div>
-                <div>👥 عدد المدعوين: <strong style="color:var(--accent)">${u.referral_count || 0}</strong></div>
             </div>
         </div>
         <div style="margin-bottom:16px">
@@ -732,6 +577,7 @@ async function showUserDetails(username) {
 
     modal.classList.add('show');
 
+    // Chart
     try {
         const activityData = await getUserActivity(username, 7);
         const labels = [];
@@ -870,55 +716,26 @@ async function updateLockStatus() {
    ============================================ */
 async function loadVideos() {
     try {
-        const { data, error } = await sb.from('videos').select('*').order('id', { ascending: true });
+        const { data, error } = await sb.from('videos').select('*').order('created_at', { ascending: false });
         if (error) throw error;
-        allVideos = data || [];
-        document.getElementById('videosCount').textContent = allVideos.length;
+        const videos = data || [];
+        document.getElementById('videosCount').textContent = videos.length;
 
         const container = document.getElementById('videosList');
-        if (!allVideos.length) {
+        if (!videos.length) {
             container.innerHTML = '<div class="empty">لا توجد فيديوهات مضافة</div>';
-        } else {
-            container.innerHTML = allVideos.map(v => `
-                <div class="hub-row">
-                    <div class="info">
-                        <div class="title">🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</div>
-                        <div class="sub">
-                            ID: <strong style="color:var(--accent)">${v.id}</strong> • 
-                            ${sanitizeHTML(v.description || '')} • 
-                            ${sanitizeHTML(v.category || '')} • 
-                            <span style="color:${v.locked ? '#ff6678' : '#25D366'}">${v.locked ? '🔒 مقفول' : '🔓 مفتوح'}</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}')">🗑️ حذف</button>
-                </div>
-            `).join('');
+            return;
         }
-
-        renderVideoCheckboxList();
-    } catch (e) {
-        console.error('Load videos error:', e);
-    }
-}
-
-function renderVideoCheckboxList() {
-    const container = document.getElementById('ucVideoList');
-    if (!container) return;
-
-    if (!allVideos.length) {
-        container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">مفيش فيديوهات</div>';
-        return;
-    }
-
-    container.innerHTML = allVideos.map(v => `
-        <label class="video-checkbox-item">
-            <input type="checkbox" value="${v.id}" id="vid_${v.id}">
-            <label for="vid_${v.id}">
-                <span>🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</span>
-                <span class="vid-id">ID: ${v.id}</span>
-            </label>
-        </label>
-    `).join('');
+        container.innerHTML = videos.map(v => `
+            <div class="hub-row">
+                <div class="info">
+                    <div class="title">🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</div>
+                    <div class="sub">${sanitizeHTML(v.description || '')} • ${sanitizeHTML(v.category || '')}</div>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}')">🗑️ حذف</button>
+            </div>
+        `).join('');
+    } catch (e) {}
 }
 
 async function addVideo() {
@@ -952,312 +769,18 @@ async function addVideo() {
 async function deleteVideo(id) {
     if (!confirm('حذف هذا الفيديو؟')) return;
     try {
-        const { error } = await sb.from('videos').delete().eq('id', parseInt(id));
+        const { error } = await sb
+            .from('videos')
+            .delete()
+            .eq('id', parseInt(id));
+        
         if (error) throw error;
         showToast('🗑️ تم حذف الفيديو');
         await loadVideos();
-    } catch (e) {
+    } catch (e) { 
         console.error('Delete error:', e);
-        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌');
+        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌'); 
     }
-}
-
-/* ============================================
-   🎟️ UNLOCK CODES (محسّن)
-   ============================================ */
-async function createUnlockCode() {
-    const code = document.getElementById('ucCode').value.trim().toUpperCase();
-    const duration = parseInt(document.getElementById('ucDuration').value) || 7;
-    const maxUses = parseInt(document.getElementById('ucMaxUses').value) || 5;
-
-    if (!code) { showToast('⚠️ اكتب الكود', '⚠️'); return; }
-
-    const checkedVideos = [];
-    document.querySelectorAll('#ucVideoList input[type="checkbox"]:checked').forEach(cb => {
-        checkedVideos.push(parseInt(cb.value));
-    });
-
-    if (!checkedVideos.length) { showToast('⚠️ اختار فيديو واحد على الأقل', '⚠️'); return; }
-
-    try {
-        const { data, error } = await sb.rpc('admin_create_unlock_code', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_code: code,
-            p_videos: checkedVideos,
-            p_duration_days: duration,
-            p_max_uses: maxUses
-        });
-
-        if (error) throw error;
-
-        if (data && data.success === false) {
-            showToast('❌ ' + data.message, '❌');
-            return;
-        }
-
-        showToast('✅ تم إنشاء الكود بنجاح');
-        document.getElementById('ucCode').value = '';
-        document.querySelectorAll('#ucVideoList input[type="checkbox"]').forEach(cb => cb.checked = false);
-        await loadUnlockCodes();
-    } catch (e) {
-        console.error('Create code error:', e);
-        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌');
-    }
-}
-
-async function loadUnlockCodes() {
-    try {
-        const { data, error } = await sb.rpc('admin_get_unlock_codes', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password
-        });
-
-        if (error) throw error;
-        allUnlockCodes = data || [];
-        
-        // إحصائيات
-        const active = allUnlockCodes.filter(c => c.active).length;
-        const expired = allUnlockCodes.filter(c => !c.active).length;
-        const totalUses = allUnlockCodes.reduce((s, c) => s + (c.uses || 0), 0);
-        
-        document.getElementById('cs-total').textContent = allUnlockCodes.length;
-        document.getElementById('cs-active').textContent = active;
-        document.getElementById('cs-expired').textContent = expired;
-        document.getElementById('cs-uses').textContent = totalUses;
-        
-        renderUnlockCodes();
-    } catch (e) {
-        console.error('Load codes error:', e);
-        document.getElementById('unlockCodesList').innerHTML = '<div class="empty">⚠️ تعذر تحميل الأكواد</div>';
-    }
-}
-
-function filterCodes(filter, btn) {
-    currentCodeFilter = filter;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    renderUnlockCodes();
-}
-
-function renderUnlockCodes() {
-    const container = document.getElementById('unlockCodesList');
-    const searchTerm = document.getElementById('searchCode')?.value?.toLowerCase() || '';
-    
-    let filtered = [...allUnlockCodes];
-    
-    // فلترة حسب الحالة
-    if (currentCodeFilter === 'active') {
-        filtered = filtered.filter(c => c.active);
-    } else if (currentCodeFilter === 'inactive') {
-        filtered = filtered.filter(c => !c.active);
-    } else if (currentCodeFilter === 'expired') {
-        filtered = filtered.filter(c => !c.active);
-    }
-    
-    // فلترة حسب البحث
-    if (searchTerm) {
-        filtered = filtered.filter(c => c.code.toLowerCase().includes(searchTerm));
-    }
-    
-    document.getElementById('unlockCodesCount').textContent = filtered.length;
-
-    if (!filtered.length) {
-        container.innerHTML = '<div class="empty">لا توجد أكواد</div>';
-        return;
-    }
-
-    container.innerHTML = filtered.map(c => {
-        const videosCount = (c.videos || []).length;
-        const usageText = `${c.uses}/${c.max_uses}`;
-        const statusClass = c.active ? 'status-active' : 'status-inactive';
-        const statusText = c.active ? '🟢 مفعّل' : '⚫ معطّل';
-        const cardClass = c.active ? '' : 'inactive';
-        const usagePercent = c.max_uses > 0 ? (c.uses / c.max_uses) * 100 : 0;
-        
-        return `
-            <div class="code-card ${cardClass}">
-                <div class="code-header">
-                    <div class="code-value">
-                        ${sanitizeHTML(c.code)}
-                    </div>
-                    <span class="code-status ${statusClass}">${statusText}</span>
-                </div>
-                <div class="code-info">
-                    <div class="code-info-item">
-                        <span class="lbl">🎬 الفيديوهات</span>
-                        <span class="val">${videosCount}</span>
-                    </div>
-                    <div class="code-info-item">
-                        <span class="lbl">📅 المدة</span>
-                        <span class="val">${c.duration_days} أيام</span>
-                    </div>
-                    <div class="code-info-item">
-                        <span class="lbl">👥 الاستخدام</span>
-                        <span class="val">${usageText} (${Math.round(usagePercent)}%)</span>
-                    </div>
-                    <div class="code-info-item">
-                        <span class="lbl">🕐 الإنشاء</span>
-                        <span class="val">${new Date(c.created_at).toLocaleDateString('ar-EG')}</span>
-                    </div>
-                </div>
-                <div class="code-videos">
-                    <div class="code-videos-title">🎬 الفيديوهات المفتوحة:</div>
-                    <div class="code-videos-list">
-                        ${(c.videos || []).map(vid => {
-                            const video = allVideos.find(v => v.id == vid);
-                            return `<span class="video-chip">${video ? sanitizeHTML(video.title.substring(0, 20)) : 'فيديو #' + vid}</span>`;
-                        }).join('')}
-                    </div>
-                </div>
-                <div class="code-actions" style="margin-top:12px;">
-                    <button class="btn btn-info btn-sm" onclick="copyCode('${sanitizeHTML(c.code)}')">📋 نسخ</button>
-                    <button class="btn ${c.active ? 'btn-warning' : 'btn-success'} btn-sm" onclick="toggleUnlockCode(${c.id})">
-                        ${c.active ? '⚫ تعطيل' : '🟢 تفعيل'}
-                    </button>
-                    <button class="btn btn-purple btn-sm" onclick="viewCodeUsers(${c.id})">👥 المستخدمين</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteUnlockCode(${c.id})">🗑️ حذف</button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-async function toggleUnlockCode(id) {
-    try {
-        const { data, error } = await sb.rpc('admin_toggle_unlock_code', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_code_id: id
-        });
-        if (error) throw error;
-        showToast('✅ تم التعديل');
-        await loadUnlockCodes();
-    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
-}
-
-async function deleteUnlockCode(id) {
-    if (!confirm('حذف هذا الكود؟')) return;
-    try {
-        const { data, error } = await sb.rpc('admin_delete_unlock_code', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_code_id: id
-        });
-        if (error) throw error;
-        showToast('🗑️ تم حذف الكود');
-        await loadUnlockCodes();
-    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
-}
-
-async function viewCodeUsers(codeId) {
-    const code = allUnlockCodes.find(c => c.id === codeId);
-    if (!code) return;
-    
-    try {
-        const { data, error } = await sb
-            .from('unlock_uses')
-            .select('*')
-            .eq('code_id', codeId)
-            .order('unlocked_at', { ascending: false });
-        
-        if (error) throw error;
-        
-        const users = data || [];
-        
-        const modal = document.getElementById('userModal');
-        document.getElementById('userModalBox').innerHTML = `
-            <h3>👥 المستخدمين اللي استخدموا الكود</h3>
-            <div style="background:rgba(255,215,0,.1);border:1px dashed var(--accent);border-radius:10px;padding:12px;text-align:center;margin-bottom:16px;">
-                <div style="font-family:monospace;font-size:20px;font-weight:900;color:var(--accent);letter-spacing:2px;">${sanitizeHTML(code.code)}</div>
-            </div>
-            ${users.length === 0 
-                ? '<div class="empty">مفيش مستخدمين استخدموا الكود ده</div>'
-                : users.map(u => `
-                    <div class="hub-row">
-                        <div class="info">
-                            <div class="title">👤 ${sanitizeHTML(u.username)}</div>
-                            <div class="sub">
-                                🕐 ${new Date(u.unlocked_at).toLocaleString('ar-EG')}<br>
-                                ⏰ ينتهي: ${new Date(u.expires_at).toLocaleString('ar-EG')}
-                            </div>
-                        </div>
-                    </div>
-                `).join('')
-            }
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
-                <button class="btn btn-danger" onclick="closeUserModal()">إغلاق</button>
-            </div>
-        `;
-        modal.classList.add('show');
-    } catch (e) {
-        showToast('❌ حدث خطأ', '❌');
-    }
-}
-
-function copyCode(code) {
-    navigator.clipboard.writeText(code).then(() => {
-        showToast('📋 تم نسخ الكود');
-    }).catch(() => {
-        showToast('⚠️ مش قادر أنسخ', '⚠️');
-    });
-}
-
-function copyAllCodes() {
-    const codes = allUnlockCodes.map(c => c.code).join('\n');
-    if (!codes) { showToast('⚠️ مفيش أكواد', '⚠️'); return; }
-    navigator.clipboard.writeText(codes).then(() => {
-        showToast('📋 تم نسخ كل الأكواد');
-    }).catch(() => {
-        showToast('⚠️ مش قادر أنسخ', '⚠️');
-    });
-}
-
-function exportCodesCSV() {
-    if (!allUnlockCodes.length) { showToast('⚠️ مفيش أكواد', '⚠️'); return; }
-    
-    let csv = 'الكود,الحالة,المدة (أيام),الاستخدامات,الفيديوهات,تاريخ الإنشاء\n';
-    allUnlockCodes.forEach(c => {
-        csv += `${c.code},${c.active ? 'نشط' : 'معطل'},${c.duration_days},${c.uses}/${c.max_uses},${(c.videos || []).length},${new Date(c.created_at).toLocaleDateString('ar-EG')}\n`;
-    });
-    
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `sayoda-codes-${Date.now()}.csv`;
-    link.click();
-    showToast('📥 تم تصدير CSV');
-}
-
-/* ============================================
-   🔗 MY REFERRAL CODE
-   ============================================ */
-async function loadMyReferralCode() {
-    try {
-        const { data, error } = await sb.rpc('get_my_referral_code', {
-            p_username: currentAdmin.username
-        });
-        if (error) throw error;
-
-        if (data && data.success) {
-            document.getElementById('myReferralCode').textContent = data.code;
-            document.getElementById('myReferralCount').textContent = data.uses || 0;
-        } else {
-            document.getElementById('myReferralCode').textContent = 'مفيش كود';
-        }
-    } catch (e) {
-        document.getElementById('myReferralCode').textContent = '⚠️ خطأ';
-    }
-}
-
-function copyReferralCode() {
-    const code = document.getElementById('myReferralCode').textContent;
-    if (!code || code === 'مفيش كود') { showToast('⚠️ مفيش كود', '⚠️'); return; }
-    navigator.clipboard.writeText(code).then(() => {
-        showToast('📋 تم نسخ كود الدعوة');
-    }).catch(() => {
-        showToast('⚠️ مش قادر أنسخ', '⚠️');
-    });
 }
 
 /* ============================================
@@ -1486,20 +1009,14 @@ function switchTab(name, btn) {
     if (name === 'bans') renderBans();
     if (name === 'locks') renderLocks();
     if (name === 'stats') updateStats();
-    if (name === 'codes') {
-        loadUnlockCodes();
-        renderVideoCheckboxList();
-        loadMyReferralCode();
-    }
-    if (name === 'videos') {
-        renderVideoCheckboxList();
-    }
 }
 
 /* ============================================
    🏠 BACK TO PLATFORM
    ============================================ */
 function backToPlatform() {
+    // ✅ نرجع مباشرة لـ index.html من غير ما نلمس sessionStorage
+    // الأدمن هيفضل مسجل وهيشوف المنصة + زر لوحة التحكم
     window.location.href = './index.html';
 }
 
