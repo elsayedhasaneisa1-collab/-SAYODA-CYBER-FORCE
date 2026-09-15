@@ -1,265 +1,35 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#020812" />
-<title>تسجيل الدخول | SAYODA CYBER FORCE</title>
-<link rel="manifest" href="/manifest.json" />
-<link rel="icon" href="/logo.png" />
-<link rel="apple-touch-icon" href="/logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="0; url=https://elsayedhasaneisa1-collab.github.io/SAYODA-CYBER-FORCE/login.html">
+<title>جاري التحويل... | SAYODA CYBER FORCE</title>
+<link rel="canonical" href="https://elsayedhasaneisa1-collab.github.io/SAYODA-CYBER-FORCE/login.html">
 <style>
-:root{
-  --blue:#19aaff; --blue-2:#0b7fd4; --bg:#020812; --bg-2:#061024;
-  --card:rgba(12,22,44,.72); --border:rgba(25,170,255,.22);
-  --txt:#eaf4ff; --muted:#9fb3cc; --danger:#ff4d6d; --ok:#28d17c;
-}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
-html,body{height:100%}
-body{
-  background:var(--bg); color:var(--txt); min-height:100vh;
-  display:flex; align-items:center; justify-content:center; padding:20px;
-  position:relative; overflow-x:hidden;
-}
-.bg-layer{position:fixed;inset:0;z-index:0;
-  background:url('/bg.png') center/cover no-repeat;
-  filter:brightness(.42) saturate(1.1);}
-.bg-overlay{position:fixed;inset:0;z-index:1;
-  background:radial-gradient(circle at 50% 20%,rgba(25,170,255,.18),transparent 55%),
-             linear-gradient(180deg,rgba(2,8,18,.55),rgba(2,8,18,.92));}
-.grid-fx{position:fixed;inset:0;z-index:1;opacity:.25;
-  background-image:linear-gradient(rgba(25,170,255,.12) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(25,170,255,.12) 1px,transparent 1px);
-  background-size:44px 44px;
-  mask-image:radial-gradient(circle at 50% 30%,#000 20%,transparent 75%);}
-
-.card{position:relative;z-index:2;width:100%;max-width:420px;
-  background:var(--card);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-  border:1px solid var(--border);border-radius:26px;padding:38px 30px;
-  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.03) inset;
-  animation:pop .6s cubic-bezier(.2,.9,.3,1.4);}
-@keyframes pop{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
-
-.logo-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:24px}
-.logo-wrap img{width:92px;height:92px;object-fit:contain;
-  filter:drop-shadow(0 0 22px rgba(25,170,255,.6));animation:float 4s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.brand{font-size:22px;font-weight:900;letter-spacing:1px;text-align:center}
-.brand span{color:var(--blue)}
-.sub{color:var(--muted);font-size:13px;text-align:center;margin-top:2px}
-
-.field{margin-bottom:16px}
-.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#cfe3fb}
-.input-box{position:relative}
-.input-box svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--blue);opacity:.8}
-.field input{width:100%;padding:14px 44px 14px 44px;border-radius:14px;
-  background:rgba(3,10,22,.7);border:1px solid var(--border);color:var(--txt);
-  font-size:15px;transition:.25s;outline:none}
-.field input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,170,255,.15)}
-.toggle-eye{position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex}
-
-.btn{width:100%;padding:15px;border:none;border-radius:14px;cursor:pointer;
-  background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#021226;
-  font-size:16px;font-weight:900;letter-spacing:.5px;position:relative;overflow:hidden;
-  transition:transform .15s,box-shadow .25s;box-shadow:0 10px 30px rgba(25,170,255,.35)}
-.btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(25,170,255,.5)}
-.btn:active{transform:translateY(0)}
-.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.btn .spinner{width:20px;height:20px;border:3px solid rgba(2,18,38,.3);
-  border-top-color:#021226;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle}
+body{background:#020812;color:#eaf4ff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+.box{background:rgba(12,22,44,.72);border:1px solid rgba(25,170,255,.22);border-radius:24px;padding:40px 30px;max-width:400px;width:100%}
+.spin{width:60px;height:60px;border:4px solid rgba(25,170,255,.2);border-top-color:#19aaff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-.msg{margin-top:16px;padding:12px 14px;border-radius:12px;font-size:14px;font-weight:600;
-  display:none;text-align:center;animation:pop .3s}
-.msg.err{display:block;background:rgba(255,77,109,.14);border:1px solid rgba(255,77,109,.4);color:#ff9db0}
-.msg.ok{display:block;background:rgba(40,209,124,.14);border:1px solid rgba(40,209,124,.4);color:#7ff0b8}
-
-.foot{margin-top:22px;text-align:center;font-size:12px;color:var(--muted)}
-.foot b{color:var(--blue)}
-.ripple{position:absolute;border-radius:50%;background:rgba(2,18,38,.35);transform:scale(0);animation:rip .6s linear;pointer-events:none}
-@keyframes rip{to{transform:scale(4);opacity:0}}
+h1{font-size:20px;font-weight:900;margin-bottom:10px;color:#19aaff}
+p{color:#93a7c4;font-size:14px;line-height:1.7;margin-bottom:16px}
+a{display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#19aaff,#0b7fd4);color:#021226;text-decoration:none;border-radius:12px;font-weight:900;font-size:14px}
+a:hover{transform:translateY(-2px)}
 </style>
 </head>
 <body>
-<div class="bg-layer"></div>
-<div class="bg-overlay"></div>
-<div class="grid-fx"></div>
-
-<div class="card">
-  <div class="logo-wrap">
-    <img src="/logo.png" alt="logo" onerror="this.style.display='none'" />
-    <div class="brand">SAYODA <span>| CYBER FORCE</span></div>
-    <div class="sub">🔐 منصة التعلّم الأمنية الاحترافية</div>
-  </div>
-
-  <form id="loginForm" autocomplete="off">
-    <div class="field">
-      <label>اسم المستخدم</label>
-      <div class="input-box">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <input type="text" id="username" placeholder="ادخل اسم المستخدم" required autocomplete="username" />
-      </div>
-    </div>
-    <div class="field">
-      <label>كلمة المرور</label>
-      <div class="input-box">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <input type="password" id="password" placeholder="ادخل كلمة المرور" required autocomplete="current-password" />
-        <button type="button" class="toggle-eye" id="toggleEye" aria-label="show">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
-      </div>
-    </div>
-    <button type="submit" class="btn" id="submitBtn">تسجيل الدخول</button>
-  </form>
-
-  <div class="msg" id="msg"></div>
-  <div class="foot">© 2026 SAYODA <b>CYBER FORCE</b> — جميع الحقوق محفوظة</div>
+<div class="box">
+  <div class="spin"></div>
+  <h1>🔄 جاري التحويل للموقع الجديد</h1>
+  <p>الموقع اتنقل لعنوان جديد<br>هيتم تحويلك تلقائياً خلال لحظات...</p>
+  <a href="https://elsayedhasaneisa1-collab.github.io/SAYODA-CYBER-FORCE/login.html">🚀 اضغط هنا لو مفيش تحويل</a>
 </div>
-
 <script>
-/* ============ CONFIG ============ */
-const SUPABASE_URL="https://brawrhpvtnzvvrzkguic.supabase.co";
-const SUPABASE_KEY="sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN";
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const MAX_ATTEMPTS = 5;
-const LOCK_MS = 5 * 60 * 1000; // 5 دقائق
-
-const $ = id => document.getElementById(id);
-const clean = s => String(s||'').replace(/[<>]/g,'').trim();
-
-/* ============ SESSION CHECK ============ */
-try{
-  const s = JSON.parse(localStorage.getItem('sayoda_session')||'null');
-  if(s && s.username && s.token){
-    location.replace(s.role==='admin' ? '/admin.html' : '/index.html');
-  }
-}catch(e){}
-
-/* ============ HELPERS ============ */
-function showMsg(t, type){
-  const m = $('msg');
-  m.className = 'msg ' + type;
-  m.textContent = t;
-}
-function getLock(){
-  try{ return JSON.parse(localStorage.getItem('sayoda_lock')||'{"n":0,"t":0}'); }
-  catch(e){ return {n:0, t:0}; }
-}
-function setLock(o){ localStorage.setItem('sayoda_lock', JSON.stringify(o)); }
-
-/* ============ PASSWORD TOGGLE ============ */
-$('toggleEye').onclick = () => {
-  const p = $('password');
-  p.type = p.type === 'password' ? 'text' : 'password';
-};
-
-/* ============ RIPPLE EFFECT ============ */
-document.querySelectorAll('.btn').forEach(b => b.addEventListener('click', function(e){
-  const c = document.createElement('span');
-  c.className = 'ripple';
-  const r = this.getBoundingClientRect();
-  const d = Math.max(r.width, r.height);
-  c.style.width = c.style.height = d + 'px';
-  c.style.left = (e.clientX - r.left - d/2) + 'px';
-  c.style.top = (e.clientY - r.top - d/2) + 'px';
-  this.appendChild(c);
-  setTimeout(()=>c.remove(), 600);
-}));
-
-/* ============ LOGIN SUBMIT ============ */
-$('loginForm').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  /* --- rate limit check --- */
-  const lock = getLock();
-  if(lock.t && Date.now() < lock.t){
-    const left = Math.ceil((lock.t - Date.now()) / 60000);
-    return showMsg(`🚫 تم قفل الدخول مؤقتاً. حاول بعد ${left} دقيقة.`, 'err');
-  }
-
-  const username = clean($('username').value);
-  const password = $('password').value;
-
-  if(!username || !password){
-    return showMsg('⚠️ الرجاء ملء جميع الحقول', 'err');
-  }
-
-  const btn = $('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>';
-
-  try{
-    /* --- استدعاء الدالة الآمنة --- */
-    const { data, error } = await sb.rpc('secure_login', {
-      p_username: username,
-      p_password: password
-    });
-
-    if(error) throw error;
-
-    const res = Array.isArray(data) ? data[0] : data;
-
-    /* --- فشل الدخول --- */
-    if(!res || !res.ok){
-      const code = res && res.error;
-
-      if(code === 'inactive'){
-        showMsg('⛔ حسابك موقوف. تواصل مع الإدارة.', 'err');
-        throw new Error('inactive');
-      }
-
-      const nl = { n: (lock.n||0) + 1, t: 0 };
-      if(nl.n >= MAX_ATTEMPTS){
-        nl.t = Date.now() + LOCK_MS;
-        nl.n = 0;
-        showMsg('🚫 محاولات كثيرة! تم القفل لمدة 5 دقائق.', 'err');
-      } else {
-        showMsg(`❌ بيانات غير صحيحة (محاولة ${nl.n}/${MAX_ATTEMPTS})`, 'err');
-      }
-      setLock(nl);
-      throw new Error('bad');
-    }
-
-    /* --- نجاح الدخول --- */
-    setLock({ n: 0, t: 0 });
-
-    localStorage.setItem('sayoda_session', JSON.stringify({
-      username: res.username,
-      role: res.role,
-      token: res.token,
-      ts: Date.now()
-    }));
-
-    /* تحديث آخر دخول + تسجيل النشاط */
-    try{ await sb.rpc('update_last_login', { p_username: res.username }); }catch(e){}
-    try{ await sb.rpc('log_user_activity', { p_username: res.username, p_activity_type: 'login' }); }catch(e){}
-
-    showMsg('✅ تم الدخول بنجاح! جاري التحويل...', 'ok');
-    setTimeout(() => {
-      location.replace((res.role === 'admin') ? '/admin.html' : '/index.html');
-    }, 700);
-
-  }catch(err){
-    if(!['bad','inactive'].includes(err.message)){
-      showMsg('⚠️ خطأ في الاتصال بالخادم', 'err');
-    }
-  }finally{
-    btn.disabled = false;
-    btn.textContent = 'تسجيل الدخول';
-  }
-});
-
-/* ============ SERVICE WORKER ============ */
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
-}
+/* تحويل فوري */
+setTimeout(function(){
+  window.location.replace('https://elsayedhasaneisa1-collab.github.io/SAYODA-CYBER-FORCE/login.html');
+}, 500);
 </script>
 </body>
 </html>
