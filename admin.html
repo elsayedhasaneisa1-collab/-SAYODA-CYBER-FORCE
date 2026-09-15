@@ -23,7 +23,6 @@
             --accent-dark:#cc9900;
             --danger:#ff3344;
             --success:#25D366;
-            --info:#19aaff;
             --border-color:#ffd70033;
             --transition:0.3s cubic-bezier(0.175,0.885,0.32,1.275);
         }
@@ -140,10 +139,7 @@
         .btn-success{background:linear-gradient(135deg,#128C7E,#25D366);color:#fff}
         .btn-success:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,211,102,.4)}
         .btn-warning{background:linear-gradient(135deg,#ff9900,#ffd700);color:#1a1008}
-        .btn-info{background:linear-gradient(135deg,#087cff,#19aaff);color:#fff}
-        .btn-info:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(25,170,255,.4)}
         .btn-sm{padding:5px 10px;font-size:11px;border-radius:8px}
-        .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
 
         /* User Cards */
         .user-card{
@@ -174,37 +170,6 @@
         .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
         .form-grid .full{grid-column:1/-1}
         @media (max-width:700px){.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
-
-        /* Code Badge */
-        .code-badge{
-            background:linear-gradient(135deg,#1b2638,#0b1220);
-            border:1px dashed var(--accent);
-            padding:6px 12px;border-radius:10px;
-            font-family:monospace;font-size:14px;font-weight:900;
-            color:var(--accent);letter-spacing:2px;
-            display:inline-block;
-        }
-
-        /* Video Checkboxes */
-        .video-checkbox-list{
-            max-height:300px;overflow-y:auto;padding:10px;
-            background:rgba(0,0,0,.3);border-radius:10px;
-            border:1px solid var(--border-color);
-        }
-        .video-checkbox-item{
-            display:flex;align-items:center;gap:10px;
-            padding:8px;border-radius:8px;cursor:pointer;
-            transition:all var(--transition);margin-bottom:4px;
-        }
-        .video-checkbox-item:hover{background:rgba(255,215,0,.08)}
-        .video-checkbox-item input[type="checkbox"]{
-            width:18px;height:18px;cursor:pointer;accent-color:var(--accent);
-        }
-        .video-checkbox-item label{
-            cursor:pointer;flex:1;font-size:13px;
-            display:flex;flex-direction:column;gap:2px;
-        }
-        .video-checkbox-item .vid-id{color:var(--text-muted);font-size:10px;font-family:monospace}
 
         /* Toast */
         #toast{
@@ -267,7 +232,6 @@
 <div class="tabs-bar">
     <button class="admin-tab active" onclick="switchTab('accounts',this)">👥 <span>الحسابات</span></button>
     <button class="admin-tab" onclick="switchTab('videos',this)">🎬 <span>الفيديوهات</span></button>
-    <button class="admin-tab" onclick="switchTab('codes',this)">🎟️ <span>الأكواد</span></button>
     <button class="admin-tab" onclick="switchTab('notifications',this)">📢 <span>الإشعارات</span></button>
     <button class="admin-tab" onclick="switchTab('forum',this)">💬 <span>المنتدي</span></button>
     <button class="admin-tab" onclick="switchTab('stats',this)">📊 <span>الإحصائيات</span></button>
@@ -312,53 +276,6 @@
         <div class="card">
             <h3>📋 الفيديوهات المضافة (<span id="videosCount">0</span>)</h3>
             <div id="videosList"></div>
-        </div>
-    </div>
-
-    <!-- ========== CODES (جديد) ========== -->
-    <div id="view-codes" class="view">
-        <div class="view-header">
-            <h2><span class="icon">🎟️</span> إدارة الأكواد</h2>
-        </div>
-
-        <!-- إنشاء كود فتح فيديوهات -->
-        <div class="card">
-            <h3>🔓 إنشاء كود فتح فيديوهات</h3>
-            <div class="form-grid">
-                <input class="input" id="ucCode" placeholder="الكود (مثال: OPEN2026)" style="text-transform:uppercase">
-                <input class="input" id="ucDuration" type="number" value="7" placeholder="المدة بالأيام" min="1">
-                <input class="input" id="ucMaxUses" type="number" value="5" placeholder="عدد الاستخدامات" min="1">
-                <div style="grid-column:1/-1">
-                    <label style="color:var(--text-muted);font-size:12px;display:block;margin-bottom:8px">🎬 اختار الفيديوهات اللي هتتفتح:</label>
-                    <div class="video-checkbox-list" id="ucVideoList">
-                        <div style="text-align:center;color:var(--text-muted);padding:20px;">⏳ جاري التحميل...</div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <button class="btn btn-success" onclick="createUnlockCode()">✅ إنشاء الكود</button>
-        </div>
-
-        <!-- عرض الأكواد -->
-        <div class="card">
-            <h3>📋 أكواد فتح الفيديوهات (<span id="unlockCodesCount">0</span>)</h3>
-            <div id="unlockCodesList"></div>
-        </div>
-
-        <!-- كود الدعوة الخاص بك -->
-        <div class="card">
-            <h3>🔗 كود الدعوة الخاص بك</h3>
-            <div style="text-align:center;padding:20px;">
-                <div class="code-badge" id="myReferralCode" style="font-size:20px;padding:12px 24px;">⏳</div>
-                <br><br>
-                <button class="btn btn-info" onclick="copyReferralCode()">📋 نسخ الكود</button>
-                <p style="color:var(--text-muted);font-size:12px;margin-top:14px;">
-                    شارك الكود ده مع أصحابك — كل واحد يسجل بيه هتاخدوا 50 XP
-                </p>
-                <p style="color:var(--accent);font-size:13px;margin-top:8px;font-weight:700;">
-                    👥 عدد اللي سجلوا بكودك: <span id="myReferralCount">0</span>
-                </p>
-            </div>
         </div>
     </div>
 
@@ -452,6 +369,7 @@
 <div id="userModal" class="modal">
     <div class="modal-box" id="userModalBox"></div>
 </div>
+
 <script>
 /* ============================================
    ☁️ SUPABASE
@@ -463,7 +381,6 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentAdmin = null;
 let allUsers = {};
 let allTopics = [];
-let allVideos = [];
 
 /* ============================================
    🛡️ XSS
@@ -517,6 +434,7 @@ function showToast(msg, icon = '✅') {
         currentAdmin = adminData;
         document.getElementById('adminNameTag').textContent = '👑 ' + currentAdmin.username;
 
+        // تحميل البيانات الأولية
         await loadAllData();
     } catch (e) {
         sessionStorage.removeItem('sayoda_user');
@@ -532,8 +450,6 @@ async function loadAllData() {
     await loadVideos();
     await loadNotifications();
     await loadForumTopics();
-    await loadUnlockCodes();
-    await loadMyReferralCode();
     await updateStats();
     await updateLockStatus();
 }
@@ -561,6 +477,7 @@ function renderUsers() {
         .filter(u => u.username.toLowerCase().includes(search))
         .sort((a, b) => (b.xp || 0) - (a.xp || 0));
 
+    // الإحصائيات
     document.getElementById('s-users').textContent = users.length;
     document.getElementById('s-xp').textContent = users.reduce((s, u) => s + (u.xp || 0), 0);
     document.getElementById('s-badges').textContent = users.reduce((s, u) => s + (u.badges?.length || 0), 0);
@@ -603,7 +520,9 @@ function renderUsers() {
     }).join('');
 }
 
-function filterUsers() { renderUsers(); }
+function filterUsers() {
+    renderUsers();
+}
 
 /* ============================================
    👤 USER DETAILS MODAL
@@ -641,8 +560,6 @@ async function showUserDetails(username) {
                 <div>📅 آخر دخول: <strong style="color:var(--accent)">${u.last_login ? new Date(u.last_login).toLocaleString('ar-EG') : 'لم يسجل'}</strong></div>
                 <div>📊 المستوى: <strong style="color:var(--accent)">${u.level_emoji || '🟢'} ${sanitizeHTML(u.level || 'مبتدئ')}</strong></div>
                 <div>🔒 الفيديوهات: <strong style="color:var(--accent)">${u.videos_locked ? 'مقفلة' : 'مفتوحة'}</strong></div>
-                <div>🔗 دعا بواسطة: <strong style="color:var(--accent)">${sanitizeHTML(u.referred_by || '-')}</strong></div>
-                <div>👥 عدد المدعوين: <strong style="color:var(--accent)">${u.referral_count || 0}</strong></div>
             </div>
         </div>
         <div style="margin-bottom:16px">
@@ -660,6 +577,7 @@ async function showUserDetails(username) {
 
     modal.classList.add('show');
 
+    // Chart
     try {
         const activityData = await getUserActivity(username, 7);
         const labels = [];
@@ -798,56 +716,26 @@ async function updateLockStatus() {
    ============================================ */
 async function loadVideos() {
     try {
-        const { data, error } = await sb.from('videos').select('*').order('id', { ascending: true });
+        const { data, error } = await sb.from('videos').select('*').order('created_at', { ascending: false });
         if (error) throw error;
-        allVideos = data || [];
-        document.getElementById('videosCount').textContent = allVideos.length;
+        const videos = data || [];
+        document.getElementById('videosCount').textContent = videos.length;
 
         const container = document.getElementById('videosList');
-        if (!allVideos.length) {
+        if (!videos.length) {
             container.innerHTML = '<div class="empty">لا توجد فيديوهات مضافة</div>';
-        } else {
-            container.innerHTML = allVideos.map(v => `
-                <div class="hub-row">
-                    <div class="info">
-                        <div class="title">🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</div>
-                        <div class="sub">
-                            ID: <strong style="color:var(--accent)">${v.id}</strong> • 
-                            ${sanitizeHTML(v.description || '')} • 
-                            ${sanitizeHTML(v.category || '')} • 
-                            <span style="color:${v.locked ? '#ff6678' : '#25D366'}">${v.locked ? '🔒 مقفول' : '🔓 مفتوح'}</span>
-                        </div>
-                    </div>
-                    <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}')">🗑️ حذف</button>
-                </div>
-            `).join('');
+            return;
         }
-
-        // ✅ نحدّث قائمة اختيار الفيديوهات في صفحة الأكواد
-        renderVideoCheckboxList();
-    } catch (e) {
-        console.error('Load videos error:', e);
-    }
-}
-
-function renderVideoCheckboxList() {
-    const container = document.getElementById('ucVideoList');
-    if (!container) return;
-
-    if (!allVideos.length) {
-        container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">مفيش فيديوهات</div>';
-        return;
-    }
-
-    container.innerHTML = allVideos.map(v => `
-        <label class="video-checkbox-item">
-            <input type="checkbox" value="${v.id}" id="vid_${v.id}">
-            <label for="vid_${v.id}">
-                <span>🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</span>
-                <span class="vid-id">ID: ${v.id}</span>
-            </label>
-        </label>
-    `).join('');
+        container.innerHTML = videos.map(v => `
+            <div class="hub-row">
+                <div class="info">
+                    <div class="title">🎬 ${sanitizeHTML(v.title || 'بدون عنوان')}</div>
+                    <div class="sub">${sanitizeHTML(v.description || '')} • ${sanitizeHTML(v.category || '')}</div>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}')">🗑️ حذف</button>
+            </div>
+        `).join('');
+    } catch (e) {}
 }
 
 async function addVideo() {
@@ -881,177 +769,18 @@ async function addVideo() {
 async function deleteVideo(id) {
     if (!confirm('حذف هذا الفيديو؟')) return;
     try {
-        const { error } = await sb.from('videos').delete().eq('id', parseInt(id));
+        const { error } = await sb
+            .from('videos')
+            .delete()
+            .eq('id', parseInt(id));
+        
         if (error) throw error;
         showToast('🗑️ تم حذف الفيديو');
         await loadVideos();
-    } catch (e) {
+    } catch (e) { 
         console.error('Delete error:', e);
-        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌');
+        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌'); 
     }
-}
-
-/* ============================================
-   🎟️ UNLOCK CODES
-   ============================================ */
-async function createUnlockCode() {
-    const code = document.getElementById('ucCode').value.trim().toUpperCase();
-    const duration = parseInt(document.getElementById('ucDuration').value) || 7;
-    const maxUses = parseInt(document.getElementById('ucMaxUses').value) || 5;
-
-    if (!code) { showToast('⚠️ اكتب الكود', '⚠️'); return; }
-
-    // نجمع الفيديوهات المختارة
-    const checkedVideos = [];
-    document.querySelectorAll('#ucVideoList input[type="checkbox"]:checked').forEach(cb => {
-        checkedVideos.push(parseInt(cb.value));
-    });
-
-    if (!checkedVideos.length) { showToast('⚠️ اختار فيديو واحد على الأقل', '⚠️'); return; }
-
-    try {
-        const { data, error } = await sb.rpc('admin_create_unlock_code', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_code: code,
-            p_videos: checkedVideos,
-            p_duration_days: duration,
-            p_max_uses: maxUses
-        });
-
-        if (error) throw error;
-
-        if (data && data.success === false) {
-            showToast('❌ ' + data.message, '❌');
-            return;
-        }
-
-        showToast('✅ تم إنشاء الكود بنجاح');
-        document.getElementById('ucCode').value = '';
-        document.querySelectorAll('#ucVideoList input[type="checkbox"]').forEach(cb => cb.checked = false);
-        await loadUnlockCodes();
-    } catch (e) {
-        console.error('Create code error:', e);
-        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌');
-    }
-}
-
-async function loadUnlockCodes() {
-    try {
-        const { data, error } = await sb.rpc('admin_get_unlock_codes', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password
-        });
-
-        if (error) throw error;
-        const codes = data || [];
-        document.getElementById('unlockCodesCount').textContent = codes.length;
-
-        const container = document.getElementById('unlockCodesList');
-        if (!codes.length) {
-            container.innerHTML = '<div class="empty">لا توجد أكواد بعد</div>';
-            return;
-        }
-
-        container.innerHTML = codes.map(c => {
-            const videosCount = (c.videos || []).length;
-            const usageText = `${c.uses}/${c.max_uses}`;
-            const statusText = c.active ? '🟢 مفعّل' : '🔴 معطّل';
-
-            return `
-                <div class="hub-row">
-                    <div class="info">
-                        <div class="title">
-                            <span class="code-badge">${sanitizeHTML(c.code)}</span>
-                            <span style="font-size:11px;margin-right:8px;color:${c.active ? '#25D366' : '#ff6678'}">${statusText}</span>
-                        </div>
-                        <div class="sub">
-                            🎬 ${videosCount} فيديو • 
-                            📅 ${c.duration_days} أيام • 
-                            👥 ${usageText} استخدام • 
-                            🕐 ${new Date(c.created_at).toLocaleString('ar-EG')}
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:5px;flex-wrap:wrap">
-                        <button class="btn btn-info btn-sm" onclick="copyCode('${sanitizeHTML(c.code)}')">📋 نسخ</button>
-                        <button class="btn ${c.active ? 'btn-warning' : 'btn-success'} btn-sm" onclick="toggleUnlockCode(${c.id})">
-                            ${c.active ? '🔴 تعطيل' : '🟢 تفعيل'}
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUnlockCode(${c.id})">🗑️ حذف</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    } catch (e) {
-        console.error('Load codes error:', e);
-        document.getElementById('unlockCodesList').innerHTML = '<div class="empty">⚠️ تعذر تحميل الأكواد</div>';
-    }
-}
-
-async function toggleUnlockCode(id) {
-    try {
-        const { data, error } = await sb.rpc('admin_toggle_unlock_code', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_code_id: id
-        });
-        if (error) throw error;
-        showToast('✅ تم التعديل');
-        await loadUnlockCodes();
-    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
-}
-
-async function deleteUnlockCode(id) {
-    if (!confirm('حذف هذا الكود؟')) return;
-    try {
-        const { data, error } = await sb.rpc('admin_delete_unlock_code', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_code_id: id
-        });
-        if (error) throw error;
-        showToast('🗑️ تم حذف الكود');
-        await loadUnlockCodes();
-    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
-}
-
-function copyCode(code) {
-    navigator.clipboard.writeText(code).then(() => {
-        showToast('📋 تم نسخ الكود');
-    }).catch(() => {
-        showToast('⚠️ مش قادر أنسخ', '⚠️');
-    });
-}
-
-/* ============================================
-   🔗 MY REFERRAL CODE
-   ============================================ */
-async function loadMyReferralCode() {
-    try {
-        const { data, error } = await sb.rpc('get_my_referral_code', {
-            p_username: currentAdmin.username
-        });
-        if (error) throw error;
-
-        if (data && data.success) {
-            document.getElementById('myReferralCode').textContent = data.code;
-            document.getElementById('myReferralCount').textContent = data.uses || 0;
-        } else {
-            document.getElementById('myReferralCode').textContent = 'مفيش كود';
-        }
-    } catch (e) {
-        document.getElementById('myReferralCode').textContent = '⚠️ خطأ';
-    }
-}
-
-function copyReferralCode() {
-    const code = document.getElementById('myReferralCode').textContent;
-    if (!code || code === 'مفيش كود') { showToast('⚠️ مفيش كود', '⚠️'); return; }
-    navigator.clipboard.writeText(code).then(() => {
-        showToast('📋 تم نسخ كود الدعوة');
-    }).catch(() => {
-        showToast('⚠️ مش قادر أنسخ', '⚠️');
-    });
 }
 
 /* ============================================
@@ -1280,20 +1009,14 @@ function switchTab(name, btn) {
     if (name === 'bans') renderBans();
     if (name === 'locks') renderLocks();
     if (name === 'stats') updateStats();
-    if (name === 'codes') {
-        loadUnlockCodes();
-        renderVideoCheckboxList();
-        loadMyReferralCode();
-    }
-    if (name === 'videos') {
-        renderVideoCheckboxList();
-    }
 }
 
 /* ============================================
    🏠 BACK TO PLATFORM
    ============================================ */
 function backToPlatform() {
+    // ✅ نرجع مباشرة لـ index.html من غير ما نلمس sessionStorage
+    // الأدمن هيفضل مسجل وهيشوف المنصة + زر لوحة التحكم
     window.location.href = './index.html';
 }
 

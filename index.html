@@ -7,47 +7,25 @@
 
     <meta property="og:title" content="SAYODA | CYBER FORCE">
     <meta property="og:description" content="منصة SAYODA | CYBER FORCE التعليمية للأمن السيبراني والـ Ethical Hacking">
-    <meta property="og:image" content="logo.png">
+    <meta property="og:image" content="https://elsayedhasaneisa1-collab.github.io/-SAYODA-CYBER-FORCE/logo.png">
+    <meta property="og:url" content="https://elsayedhasaneisa1-collab.github.io/-SAYODA-CYBER-FORCE/">
     <meta property="og:type" content="website">
     
-    <!-- ✅ PWA Meta Tags -->
-    <meta name="theme-color" content="#020812">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SAYODA">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" href="logo.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-        :root{
-            --bg-primary:#020812;
-            --bg-secondary:rgba(7,19,33,.92);
-            --text-primary:#fff;
-            --text-secondary:#c0d0e0;
-            --text-muted:#60788c;
-            --accent:#19aaff;
-            --accent-dark:#087cff;
-            --border-color:#123d6033;
-            --card-bg:rgba(7,19,33,.85);
-            --danger:#ff3344;
-            --success:#25D366;
-            --gold:#ffd700;
-            --radius:20px;
-            --transition:0.35s cubic-bezier(0.175,0.885,0.32,1.275);
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg-primary:#020812;--bg-secondary:rgba(7,19,33,.92);--text-primary:#fff;--text-secondary:#c0d0e0;--text-muted:#60788c;--accent:#19aaff;--accent-dark:#087cff;--border-color:#123d6033;--card-bg:rgba(7,19,33,.85);--danger:#ff3344;--success:#25D366;--gold:#ffd700;--radius:20px;--transition:0.3s cubic-bezier(0.175,0.885,0.32,1.275)}
         html{font-size:16px;scroll-behavior:smooth}
         body{background:var(--bg-primary);color:var(--text-primary);font-family:'Tajawal',Arial,sans-serif;min-height:100vh;-webkit-user-select:none;user-select:none;overflow-x:hidden}
         body.light-mode{--bg-primary:#f0f4f8;--bg-secondary:rgba(255,255,255,.9);--text-primary:#1a1a2e;--text-secondary:#444;--text-muted:#888;--card-bg:rgba(255,255,255,.9);--border-color:rgba(0,0,0,.1)}
         .hidden{display:none!important}
-        ::-webkit-scrollbar{width:8px}
+        ::-webkit-scrollbar{width:6px}
         ::-webkit-scrollbar-track{background:var(--bg-primary)}
-        ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--accent-dark),var(--accent));border-radius:10px}
+        ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
         .container{width:min(1100px,94%);margin:auto}
         .section{padding:30px 0}
         .section-title h2{font-size:clamp(20px,3vw,28px);font-weight:900}
@@ -60,35 +38,15 @@
         @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
         @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-        @keyframes shimmer{0%{background-position:-1000px 0}100%{background-position:1000px 0}}
-        @keyframes spin{to{transform:rotate(360deg)}}
 
         .glow-text{animation:glow 3s ease-in-out infinite}
-        .video-card{animation:fadeInUp .6s ease-out forwards;opacity:0}
+        .video-card{animation:fadeInUp .5s ease-out forwards;opacity:0}
         .video-card:nth-child(1){animation-delay:.05s}
         .video-card:nth-child(2){animation-delay:.1s}
         .video-card:nth-child(3){animation-delay:.15s}
         .video-card:nth-child(4){animation-delay:.2s}
         .video-card:nth-child(5){animation-delay:.25s}
-        .video-card:nth-child(6){animation-delay:.3s}
         .hero h1{animation:float 4s ease-in-out infinite}
-
-        /* Loading Screen */
-        #loadingScreen{position:fixed;inset:0;z-index:999999;background:radial-gradient(circle at center,#0a1a2e,#020812);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .5s ease-out}
-        #loadingScreen.hide{opacity:0;pointer-events:none}
-        .loader-logo{width:100px;height:100px;border-radius:50%;border:3px solid var(--accent);background:rgba(25,170,255,.1);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 0 60px #19aaff88;animation:pulse 1.5s ease-in-out infinite}
-        .loader-text{color:var(--accent);font-size:18px;font-weight:900;letter-spacing:3px;text-shadow:0 0 20px var(--accent)}
-        .loader-bar{width:200px;height:3px;background:rgba(25,170,255,.2);border-radius:10px;overflow:hidden}
-        .loader-bar::after{content:'';display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:loaderMove 1.5s ease-in-out infinite}
-        @keyframes loaderMove{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
-
-        /* Skeleton */
-        .skeleton-card{background:var(--card-bg);border:1px solid var(--border-color);border-radius:14px;overflow:hidden}
-        .skeleton-thumb{aspect-ratio:16/9;background:linear-gradient(90deg,#0a1a2e 0%,#1a3a5e 50%,#0a1a2e 100%);background-size:1000px 100%;animation:shimmer 1.5s linear infinite}
-        .skeleton-info{padding:12px}
-        .skeleton-title{height:16px;width:80%;margin-bottom:8px;background:linear-gradient(90deg,#0a1a2e 0%,#1a3a5e 50%,#0a1a2e 100%);background-size:1000px 100%;animation:shimmer 1.5s linear infinite;border-radius:6px}
-        .skeleton-text{height:12px;width:100%;margin-bottom:6px;background:linear-gradient(90deg,#0a1a2e 0%,#1a3a5e 50%,#0a1a2e 100%);background-size:1000px 100%;animation:shimmer 1.5s linear infinite;border-radius:6px}
-        .skeleton-text.short{width:60%}
 
         #topProgressBar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent-dark),var(--accent),#00e0ff);z-index:99999;width:0%;transition:width .1s;box-shadow:0 0 10px #19aaffaa}
 
@@ -101,7 +59,7 @@
 
         .sidebar-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:all var(--transition)}
         .sidebar-overlay.active{opacity:1;pointer-events:auto}
-        .sidebar{position:fixed;top:0;right:-100%;width:min(270px,80%);height:100%;z-index:10000;background:rgba(4,13,24,.97);backdrop-filter:blur(16px);border-left:1px solid var(--border-color);padding:18px 14px;transition:all 0.35s cubic-bezier(0.175,0.885,0.32,1.275);overflow-y:auto;display:flex;flex-direction:column}
+        .sidebar{position:fixed;top:0;right:-100%;width:min(270px,80%);height:100%;z-index:10000;background:rgba(4,13,24,.97);backdrop-filter:blur(16px);border-left:1px solid var(--border-color);padding:18px 14px;transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);overflow-y:auto;display:flex;flex-direction:column}
         .sidebar.open{right:0}
         .sidebar-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--border-color);margin-bottom:14px}
         .sidebar-header .brand-text{color:var(--accent);font-size:18px;font-weight:900}
@@ -288,15 +246,8 @@
             .controls-row{gap:6px}
         }
     </style>
-</head> 
+</head>
 <body>
-
-<!-- Loading Screen -->
-<div id="loadingScreen">
-    <div class="loader-logo">🛡️</div>
-    <div class="loader-text">SAYODA</div>
-    <div class="loader-bar"></div>
-</div>
 
 <div id="topProgressBar"></div>
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️</button>
@@ -317,7 +268,6 @@
     <nav class="sidebar-nav">
         <a href="#home" class="active" onclick="closeSidebar()"><span class="icon">🏠</span> الرئيسية</a>
         <a href="#videos" onclick="closeSidebar()"><span class="icon">🎬</span> الفيديوهات</a>
-        <a href="#unlock" onclick="closeSidebar()"><span class="icon">🔓</span> فتح الفيديوهات</a>
         <a href="#forum" onclick="closeSidebar()"><span class="icon">💬</span> المنتدي</a>
         <a href="#leaderboard" onclick="closeSidebar()"><span class="icon">🏆</span> المتصدرين</a>
         <a href="#profile" onclick="closeSidebar()"><span class="icon">👤</span> ملفي</a>
@@ -348,7 +298,6 @@
         </div>
     </header>
 
-    <!-- HERO -->
     <section id="home" class="hero">
         <div>
             <div class="badge">CYBER LEARNING PLATFORM</div>
@@ -396,30 +345,6 @@
         </div>
     </section>
 
-    <!-- VIDEOS -->
-    <section id="videos" class="section">
-        <div class="container">
-            <div class="section-title"><h2>🎬 <span>مكتبة الفيديوهات</span></h2><p>محتوى SAYODA | CYBER FORCE</p></div>
-            <div id="videoGrid" class="video-grid"></div>
-        </div>
-    </section>
-
-    <!-- UNLOCK CODE -->
-    <section id="unlock" class="section">
-        <div class="container">
-            <div class="section-title"><h2>🔓 <span>فتح الفيديوهات</span></h2><p>عندك كود فتح؟ ادخله هنا</p></div>
-            <div class="profile-content" style="text-align:center;padding:24px;">
-                <div style="font-size:48px;margin-bottom:12px;">🎟️</div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:500px;margin:auto;">
-                    <input type="text" id="unlockCodeInput" placeholder="ادخل كود الفتح..." maxlength="30" style="flex:1;min-width:200px;padding:14px 18px;border:1.5px solid var(--border-color);border-radius:14px;background:rgba(2,8,18,.7);color:var(--text-primary);outline:none;font-size:14px;font-family:'Tajawal',Arial,sans-serif;text-transform:uppercase;">
-                    <button onclick="useUnlockCode()" style="padding:14px 24px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#fff;font-weight:900;font-size:14px;cursor:pointer;font-family:'Tajawal',Arial,sans-serif;">🔓 فتح</button>
-                </div>
-                <p id="unlockMsg" style="margin-top:14px;font-size:13px;font-weight:700;min-height:20px;"></p>
-                <div id="myActiveCodes" style="margin-top:20px;"></div>
-            </div>
-        </div>
-    </section>
-
     <!-- FORUM -->
     <section id="forum" class="section">
         <div class="container">
@@ -439,6 +364,14 @@
                 </div>
                 <div id="leaderboardList"></div>
             </div>
+        </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section id="videos" class="section">
+        <div class="container">
+            <div class="section-title"><h2>🎬 <span>مكتبة الفيديوهات</span></h2><p>محتوى SAYODA | CYBER FORCE</p></div>
+            <div id="videoGrid" class="video-grid"></div>
         </div>
     </section>
 
@@ -526,7 +459,8 @@
     <span id="toastMessage"></span>
 </div>
 
-<div id="confettiContainer" class="confetti-container"></div> 
+<div id="confettiContainer" class="confetti-container"></div>
+
 <script>
 /* ============================================
    ☁️ SUPABASE
@@ -534,30 +468,6 @@
 const SUPABASE_URL = 'https://brawrhpvtnzvvrzkguic.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-/* ============================================
-   📱 PWA REGISTER
-   ============================================ */
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('✅ Service Worker registered'))
-            .catch(err => console.warn('❌ Service Worker error:', err));
-    });
-}
-
-/* ============================================
-   📊 LOADING SCREEN
-   ============================================ */
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        const loader = document.getElementById('loadingScreen');
-        if (loader) {
-            loader.classList.add('hide');
-            setTimeout(() => loader.remove(), 500);
-        }
-    }, 800);
-});
 
 /* ============================================
    🛡️ XSS SANITIZE
@@ -593,6 +503,24 @@ function playRewardSound() {
             osc.start(startTime);
             osc.stop(endTime);
         });
+    } catch (e) {}
+}
+
+function playClickSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.value = 800;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        const t = audioCtx.currentTime;
+        gain.gain.setValueAtTime(0.05, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+        osc.start(t);
+        osc.stop(t + 0.1);
     } catch (e) {}
 }
 
@@ -915,7 +843,7 @@ function launchConfetti() {
 }
 
 /* ============================================
-   🔄 SYNC
+   🔄 SYNC — الإصلاح النهائي ✨
    ============================================ */
 async function syncUserData() {
     try {
@@ -924,6 +852,7 @@ async function syncUserData() {
         
         const d = getUserData();
         
+        // ✅ ناخد البيانات الفعلية من المتغيرات العامة (المصدر الحقيقي)
         const realVideoProgress = (videoProgress && Object.keys(videoProgress).length > 0) 
             ? {...videoProgress} 
             : (currentUser.video_progress || currentUser.videoProgress || {});
@@ -937,6 +866,7 @@ async function syncUserData() {
             : (currentUser.ratings || {});
         
         const payload = {
+            // ✅ بيانات التقدم
             xp: d.xp,
             level: d.level,
             level_emoji: d.levelEmoji,
@@ -945,123 +875,23 @@ async function syncUserData() {
             videos_watched: d.videosWatched,
             total_rating: d.totalRating,
             rating_count: d.ratingCount,
+            // ✅ بيانات المشاهدة (المصححة)
             views: realViews,
             ratings: realRatings,
             video_progress: realVideoProgress
         };
         
+        console.log('💾 Syncing payload:');
+        console.log('📊 video_progress being synced:', realVideoProgress);
+        
         const { error } = await sb.from('users').update(payload).eq('username', u);
-        if (error) console.error('❌ Sync error:', error);
+        if (error) {
+            console.error('❌ Sync error:', error);
+        } else {
+            console.log('✅ Synced successfully');
+        }
     } catch (e) {
         console.error('❌ Sync exception:', e);
-    }
-}
-
-/* ============================================
-   🔓 UNLOCK CODE
-   ============================================ */
-async function useUnlockCode() {
-    if (!currentUser || currentUser.isGuest) {
-        showToast('⚠️ يجب تسجيل الدخول', '⚠️');
-        return;
-    }
-    
-    const input = document.getElementById('unlockCodeInput');
-    const msg = document.getElementById('unlockMsg');
-    const code = input.value.trim().toUpperCase();
-    
-    if (!code) {
-        msg.style.color = '#ff3344';
-        msg.textContent = '⚠️ اكتب الكود';
-        return;
-    }
-    
-    msg.style.color = '#19aaff';
-    msg.textContent = '⏳ جاري التحقق...';
-    
-    try {
-        const { data, error } = await sb.rpc('use_unlock_code', {
-            p_username: currentUser.username,
-            p_code: code
-        });
-        
-        if (error) throw error;
-        
-        if (data && data.success) {
-            msg.style.color = '#25D366';
-            msg.textContent = '✅ ' + data.message;
-            input.value = '';
-            showToast('🎉 تم فتح الفيديوهات!', '🎉');
-            playRewardSound();
-            launchConfetti();
-            
-            await refreshUserData();
-        } else {
-            msg.style.color = '#ff3344';
-            msg.textContent = '❌ ' + (data?.message || 'الكود غير صحيح');
-        }
-    } catch (e) {
-        console.error('Unlock error:', e);
-        msg.style.color = '#ff3344';
-        msg.textContent = '❌ حدث خطأ';
-    }
-}
-
-async function refreshUserData() {
-    try {
-        const { data: userData } = await sb
-            .from('users')
-            .select('*')
-            .eq('username', currentUser.username)
-            .maybeSingle();
-        
-        if (userData) {
-            currentUser.unlocked_videos = userData.unlocked_videos || {};
-            currentUser.videos_locked = userData.videos_locked;
-            currentUser.xp = userData.xp;
-            currentUser.badges = userData.badges;
-            renderVideos();
-            renderMyActiveCodes();
-        }
-    } catch (e) {
-        console.error('Refresh error:', e);
-    }
-}
-
-function renderMyActiveCodes() {
-    const container = document.getElementById('myActiveCodes');
-    if (!container || !currentUser || currentUser.isGuest) return;
-    
-    const unlocked = currentUser.unlocked_videos || {};
-    const keys = Object.keys(unlocked);
-    
-    if (!keys.length) {
-        container.innerHTML = '';
-        return;
-    }
-    
-    const latestCode = unlocked.code || keys[keys.length - 1];
-    const data = unlocked[latestCode] || unlocked;
-    const expiresAt = data.expires_at || data.expiresAt;
-    
-    if (expiresAt) {
-        const exp = new Date(expiresAt);
-        const now = new Date();
-        const diffDays = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
-        
-        if (diffDays > 0) {
-            container.innerHTML = `
-                <div style="background:rgba(37,211,102,.1);border:1px solid #25D366;border-radius:12px;padding:12px;">
-                    <div style="color:#25D366;font-weight:900;font-size:14px;">✅ عندك كود مفعّل</div>
-                    <div style="color:var(--text-secondary);font-size:12px;margin-top:4px;">
-                        🎬 ${(data.videos || []).length} فيديو مفتوح
-                    </div>
-                    <div style="color:var(--gold);font-size:11px;margin-top:4px;">
-                        ⏰ باقي ${diffDays} يوم
-                    </div>
-                </div>
-            `;
-        }
     }
 }
 
@@ -1314,11 +1144,13 @@ if (localStorage.getItem('sayoda-theme') === 'light') {
 }
 
 /* ============================================
-   📂 LOAD PROGRESS
+   📂 LOAD PROGRESS — الإصلاح النهائي
    ============================================ */
 function loadProgress() {
+    // ✅ ناخد من كل المصادر الممكنة
     const cached = JSON.parse(sessionStorage.getItem('sayoda_user') || '{}');
     
+    // video_progress: من currentUser (snake_case) أو cached
     const vp1 = currentUser?.video_progress;
     const vp2 = currentUser?.videoProgress;
     const vp3 = cached?.video_progress;
@@ -1336,19 +1168,35 @@ function loadProgress() {
         videoProgress = {};
     }
     
+    // views
     const v = currentUser?.views || cached?.views || {};
     views = (v && typeof v === 'object') ? {...v} : {};
     
+    // ratings
     const r = currentUser?.ratings || cached?.ratings || {};
     ratings = (r && typeof r === 'object') ? {...r} : {};
+    
+    console.log('📂 loadProgress:', {
+        videoProgress,
+        views,
+        ratings,
+        sources: { vp1, vp2, vp3, vp4 }
+    });
 }
 
+/* ============================================
+   💾 SAVE PROGRESS — الإصلاح النهائي
+   ============================================ */
 function saveProgress() {
     if (!currentUser || currentUser.isGuest) return;
+    // ✅ نحفظ في currentUser بالاسمين
     currentUser.video_progress = {...videoProgress};
     currentUser.videoProgress = {...videoProgress};
     currentUser.views = {...views};
     currentUser.ratings = {...ratings};
+    
+    console.log('💾 saveProgress called. videoProgress:', videoProgress);
+    
     syncUserData();
 }
 
@@ -1366,7 +1214,6 @@ function showPlatform() {
     renderVideos();
     updateProfile();
     loadForum();
-    renderMyActiveCodes();
 
     if (currentUser && currentUser.role === 'admin') {
         document.getElementById('adminBadge').style.display = 'inline';
@@ -1422,27 +1269,17 @@ function extractID(input) {
 async function renderVideos() {
     const grid = document.getElementById('videoGrid');
     
-    grid.innerHTML = Array(4).fill(0).map(() => `
-        <div class="skeleton-card">
-            <div class="skeleton-thumb"></div>
-            <div class="skeleton-info">
-                <div class="skeleton-title"></div>
-                <div class="skeleton-text"></div>
-                <div class="skeleton-text short"></div>
-            </div>
-        </div>
-    `).join('');
-    
     try {
+        // ✅ نقرأ من Supabase بدل videos.json
         const { data, error } = await sb
             .from('videos')
             .select('*')
-            .order('id', { ascending: true });
+            .order('id', { ascending: true });;
         
         if (error) throw error;
         
+        // ✅ نحوّل البيانات للشكل اللي index.html بيتوقعه
         videos = (data || []).map(v => ({
-            id: v.id,
             title: v.title || 'بدون عنوان',
             description: v.description || '',
             category: v.category || 'Cybersecurity',
@@ -1475,46 +1312,13 @@ async function renderVideos() {
             visibleCount++;
 
             let isLocked = false;
-
-            if (currentUser && currentUser.role === 'admin') {
-                isLocked = false;
-            } else if (currentUser && currentUser.unlocked_videos) {
-                const unlocked = currentUser.unlocked_videos;
-                const unlockedIds = [];
-                
-                Object.keys(unlocked).forEach(key => {
-                    const data = unlocked[key];
-                    if (data && data.videos && Array.isArray(data.videos)) {
-                        if (data.expires_at) {
-                            const exp = new Date(data.expires_at);
-                            if (exp > new Date()) {
-                                data.videos.forEach(id => unlockedIds.push(String(id)));
-                            }
-                        } else {
-                            data.videos.forEach(id => unlockedIds.push(String(id)));
-                        }
-                    }
-                });
-                
-                if (unlockedIds.includes(String(v.id))) {
-                    isLocked = false;
-                } else {
-                    if (currentUser.videos_locked !== undefined) {
-                        isLocked = currentUser.videos_locked;
-                    } else {
-                        isLocked = true;
-                    }
-                    if (!isLocked) {
-                        isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
-                    }
-                }
-            } else if (currentUser && currentUser.videos_locked !== undefined) {
+            if (currentUser && currentUser.videos_locked !== undefined) {
                 isLocked = currentUser.videos_locked;
-                if (!isLocked) {
-                    isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
-                }
             } else {
                 isLocked = true;
+            }
+            if (!isLocked) {
+                isLocked = i > 0 && (videoProgress[extractID(videos[i-1]?.youtube_id) || ''] || 0) < 30;
             }
 
             return `<div class="video-card ${isLocked ? 'locked' : ''}">
@@ -1568,43 +1372,14 @@ function playCard(el) {
     const index = parseInt(el?.dataset?.index || 0);
     if (!id) return;
 
-    if (currentUser && currentUser.videos_locked && currentUser.role !== 'admin') { 
-        const unlocked = currentUser.unlocked_videos || {};
-        let hasAccess = false;
-        Object.keys(unlocked).forEach(key => {
-            const data = unlocked[key];
-            if (data && data.videos && Array.isArray(data.videos)) {
-                if (data.expires_at) {
-                    const exp = new Date(data.expires_at);
-                    if (exp > new Date() && data.videos.some(v => String(v) === String(videos[index]?.id))) {
-                        hasAccess = true;
-                    }
-                }
-            }
-        });
-        
-        if (!hasAccess) { showRequestModal(); return; }
-    }
+    if (currentUser && currentUser.videos_locked) { showRequestModal(); return; }
 
     if (index > 0) {
         const prevVideo = videos[index - 1];
         const prevId = extractID(prevVideo?.youtube_id) || '';
         if ((videoProgress[prevId] || 0) < 30) {
-            const unlocked = currentUser?.unlocked_videos || {};
-            let prevUnlocked = false;
-            Object.keys(unlocked).forEach(key => {
-                const data = unlocked[key];
-                if (data && data.videos && Array.isArray(data.videos)) {
-                    if (data.expires_at && new Date(data.expires_at) > new Date() && data.videos.some(v => String(v) === String(prevVideo?.id))) {
-                        prevUnlocked = true;
-                    }
-                }
-            });
-            
-            if (!prevUnlocked && currentUser?.role !== 'admin') {
-                showToast('🔒 يجب مشاهدة 30% من الفيديو السابق أولاً.', '🔒');
-                return;
-            }
+            showToast('🔒 يجب مشاهدة 30% من الفيديو السابق أولاً.', '🔒');
+            return;
         }
     }
     openVideo(id, title);
@@ -1637,6 +1412,8 @@ function closeVideo() {
     document.getElementById('videoModal').style.display = 'none';
     document.body.style.overflow = '';
     currentVideoId = null;
+    
+    console.log('💾 Saving progress before close. videoProgress:', videoProgress);
     saveProgress();
     renderVideos();
 }
@@ -1724,7 +1501,7 @@ async function loadTopics(searchTerm = '') {
     content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">⏳ جاري التحميل...</div>';
 
     try {
-        let query = sb.from('forum_topics').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: false }).limit(50);
+        let query = sb.from('forum_topics').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: true }).limit(50);
         const { data: topics, error } = await query;
         if (error) throw error;
 
@@ -2012,6 +1789,7 @@ document.addEventListener('keydown', e => {
                 return;
             }
 
+            // ✅ fallback من sessionStorage
             const cached = JSON.parse(sessionStorage.getItem('sayoda_user') || '{}');
 
             currentUser = { 
@@ -2029,8 +1807,7 @@ document.addEventListener('keydown', e => {
                 banned_features: userData.banned_features || cached.banned_features || [],
                 views: (userData.views && Object.keys(userData.views).length > 0) ? userData.views : (cached.views || {}),
                 ratings: (userData.ratings && Object.keys(userData.ratings).length > 0) ? userData.ratings : (cached.ratings || {}),
-                video_progress: (userData.video_progress && Object.keys(userData.video_progress).length > 0) ? userData.video_progress : (cached.video_progress || {}),
-                unlocked_videos: userData.unlocked_videos || cached.unlocked_videos || {}
+                video_progress: (userData.video_progress && Object.keys(userData.video_progress).length > 0) ? userData.video_progress : (cached.video_progress || {})
             };
 
             isGuest = false;
@@ -2047,6 +1824,7 @@ document.addEventListener('keydown', e => {
                 ratingCount: currentUser.rating_count
             };
 
+            // ✅ نحدّث sessionStorage بالبيانات الحديثة
             try {
                 const updatedSession = {
                     ...cached,
@@ -2066,13 +1844,18 @@ document.addEventListener('keydown', e => {
                     banned_features: currentUser.banned_features,
                     views: currentUser.views,
                     ratings: currentUser.ratings,
-                    video_progress: currentUser.video_progress,
-                    unlocked_videos: currentUser.unlocked_videos
+                    video_progress: currentUser.video_progress
                 };
                 sessionStorage.setItem('sayoda_user', JSON.stringify(updatedSession));
             } catch(e) {
                 console.error('sessionStorage update failed:', e);
             }
+
+            console.log('🔍 currentUser loaded:', {
+                video_progress: currentUser.video_progress,
+                xp: currentUser.xp,
+                badges: currentUser.badges
+            });
 
             document.getElementById('app').classList.remove('hidden');
             document.getElementById('guestBadge').style.display = 'none';
