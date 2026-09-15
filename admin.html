@@ -769,15 +769,18 @@ async function addVideo() {
 async function deleteVideo(id) {
     if (!confirm('حذف هذا الفيديو؟')) return;
     try {
-        const { error } = await sb.rpc('admin_delete_video', {
-            p_username: currentAdmin.username,
-            p_password: currentAdmin.password,
-            p_video_id: id
-        });
+        const { error } = await sb
+            .from('videos')
+            .delete()
+            .eq('id', parseInt(id));
+        
         if (error) throw error;
         showToast('🗑️ تم حذف الفيديو');
         await loadVideos();
-    } catch (e) { showToast('❌ حدث خطأ', '❌'); }
+    } catch (e) { 
+        console.error('Delete error:', e);
+        showToast('❌ ' + (e.message || 'حدث خطأ'), '❌'); 
+    }
 }
 
 /* ============================================
