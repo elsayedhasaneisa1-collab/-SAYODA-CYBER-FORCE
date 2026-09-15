@@ -1274,7 +1274,7 @@ async function renderVideos() {
         const { data, error } = await sb
             .from('videos')
             .select('*')
-            .order('created_at', { ascending: false });
+            .order('id', { ascending: true });;
         
         if (error) throw error;
         
