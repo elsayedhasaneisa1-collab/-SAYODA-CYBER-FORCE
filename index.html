@@ -1501,7 +1501,7 @@ async function loadTopics(searchTerm = '') {
     content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">⏳ جاري التحميل...</div>';
 
     try {
-        let query = sb.from('forum_topics').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: false }).limit(50);
+        let query = sb.from('forum_topics').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: true }).limit(50);
         const { data: topics, error } = await query;
         if (error) throw error;
 
