@@ -1,26 +1,42 @@
 {
-    "name": "SAYODA | CYBER FORCE",
-    "short_name": "SAYODA",
-    "description": "منصة تعلم الأمن السيبراني والـ Ethical Hacking",
-    "start_url": "./index.html",
-    "display": "standalone",
-    "orientation": "portrait",
-    "background_color": "#020812",
-    "theme_color": "#19aaff",
-    "lang": "ar",
-    "dir": "rtl",
-    "icons": [
-        {
-            "src": "logo.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-        {
-            "src": "logo.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-    ]
+  "id": "/",
+  "name": "SAYODA | CYBER FORCE",
+  "short_name": "CYBER FORCE",
+  "description": "منصة SAYODA CYBER FORCE التعليمية للأمن السيبراني",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/login.html",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#020812",
+  "theme_color": "#020812",
+  "categories": ["education", "security"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "الفيديوهات",
+      "short_name": "فيديوهات",
+      "url": "/index.html#videos",
+      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "المتصدرين",
+      "short_name": "المتصدرين",
+      "url": "/index.html#leaderboard",
+      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "المنتدى",
+      "short_name": "المنتدى",
+      "url": "/index.html#forum",
+      "icons": [{ "src": "/logo.png", "sizes": "192x192" }]
+    }
+  ]
 }
