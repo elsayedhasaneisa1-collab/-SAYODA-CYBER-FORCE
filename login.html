@@ -10,9 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ============================================
-           🎨 RESET & BASE
-           ============================================ */
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         html,body{height:100%;font-family:'Cairo',Arial,sans-serif;overflow-x:hidden}
 
@@ -41,14 +38,9 @@
             position:relative;
             overflow:hidden;
             -webkit-user-select:none;
-            -moz-user-select:none;
-            -ms-user-select:none;
             user-select:none;
         }
 
-        /* ============================================
-           🌌 ANIMATED BACKGROUND
-           ============================================ */
         .bg-layer{
             position:fixed;inset:0;z-index:0;
             background:
@@ -83,9 +75,6 @@
             100%{transform:translateY(-10vh) scale(1.2);opacity:0}
         }
 
-        /* ============================================
-           🎴 MAIN LOGIN CARD — IMAGE AS BACKGROUND
-           ============================================ */
         .login-card{
             position:relative;
             z-index:10;
@@ -105,7 +94,6 @@
             to{opacity:1;transform:translateY(0) scale(1)}
         }
 
-        /* الصورة كخلفية للكارت */
         .card-bg{
             position:absolute;
             inset:0;
@@ -117,11 +105,8 @@
             transform:scale(1.05);
             transition:transform 8s ease-in-out;
         }
-        .login-card:hover .card-bg{
-            transform:scale(1.12);
-        }
+        .login-card:hover .card-bg{transform:scale(1.12)}
 
-        /* Overlay داكن فوق الصورة */
         .card-overlay{
             position:absolute;
             inset:0;
@@ -133,10 +118,7 @@
             );
             z-index:1;
             backdrop-filter:blur(2px);
-            -webkit-backdrop-filter:blur(2px);
         }
-
-        /* طبقة إضافية للأمان البصري */
         .card-overlay::after{
             content:'';
             position:absolute;
@@ -146,9 +128,6 @@
                 radial-gradient(circle at 70% 80%, #087cff15, transparent 60%);
         }
 
-        /* ============================================
-           📦 CONTENT
-           ============================================ */
         .card-content{
             position:relative;
             z-index:2;
@@ -158,11 +137,7 @@
         }
         .card-content::-webkit-scrollbar{width:4px}
         .card-content::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
-        .card-content::-webkit-scrollbar-track{background:transparent}
 
-        /* ============================================
-           🛡️ HEADER
-           ============================================ */
         .login-header{text-align:center;margin-bottom:26px}
         .login-logo{
             width:76px;height:76px;
@@ -201,16 +176,12 @@
             color:var(--text-primary);
             font-size:26px;font-weight:900;
             margin-bottom:4px;
-            text-shadow:0 2px 15px rgba(0,0,0,.5);
         }
         .login-subtitle{
             color:var(--text-muted);
             font-size:12px;
         }
 
-        /* ============================================
-           📝 INPUTS — GLASSMORPHISM
-           ============================================ */
         .input-group{
             position:relative;
             margin-bottom:14px;
@@ -222,24 +193,17 @@
             border-radius:14px;
             background:rgba(2,8,18,.55);
             backdrop-filter:blur(10px);
-            -webkit-backdrop-filter:blur(10px);
             color:var(--text-primary);
             font-size:14px;
             font-family:'Cairo',Arial,sans-serif;
             outline:none;
             transition:all var(--transition);
         }
-        .input-group input::placeholder{
-            color:var(--text-muted);
-            font-weight:400;
-        }
+        .input-group input::placeholder{color:var(--text-muted)}
         .input-group input:focus{
             border-color:var(--accent);
             background:rgba(2,8,18,.75);
-            box-shadow:
-                0 0 0 4px #19aaff25,
-                0 0 30px #19aaff55,
-                inset 0 0 20px #19aaff11;
+            box-shadow:0 0 0 4px #19aaff25, 0 0 30px #19aaff55;
             transform:translateY(-1px);
         }
         .input-group .input-icon{
@@ -254,7 +218,6 @@
         .input-group input:focus ~ .input-icon{
             color:var(--accent);
             text-shadow:0 0 12px var(--accent-glow);
-            transform:translateY(-50%) scale(1.1);
         }
         .input-group .toggle-pw{
             position:absolute;
@@ -270,9 +233,6 @@
         }
         .input-group .toggle-pw:hover{color:var(--accent);background:rgba(25,170,255,.1)}
 
-        /* ============================================
-           🔘 BUTTONS
-           ============================================ */
         .btn{
             width:100%;
             padding:15px 20px;
@@ -286,7 +246,6 @@
             position:relative;
             overflow:hidden;
             display:flex;align-items:center;justify-content:center;gap:8px;
-            letter-spacing:.5px;
         }
         .btn:disabled{opacity:.6;cursor:not-allowed}
 
@@ -300,7 +259,6 @@
             transform:translateY(-2px);
             box-shadow:0 15px 50px #087cff99, 0 0 40px #19aaff66;
         }
-        .btn-primary:active:not(:disabled){transform:translateY(0)}
 
         .btn .ripple{
             position:absolute;
@@ -334,12 +292,8 @@
             border-color:var(--accent);
             color:var(--accent);
             background:rgba(25,170,255,.15);
-            box-shadow:0 0 30px #19aaff44;
         }
 
-        /* ============================================
-           🎯 MESSAGES
-           ============================================ */
         .msg{
             font-size:13px;
             text-align:center;
@@ -350,24 +304,14 @@
             padding:0 8px;
             transition:all var(--transition);
         }
-        .msg.error{
-            color:var(--danger);
-            text-shadow:0 0 10px #ff334488;
-            animation:shake .4s;
-        }
-        .msg.success{
-            color:var(--success);
-            text-shadow:0 0 10px #25d36688;
-        }
+        .msg.error{color:var(--danger);text-shadow:0 0 10px #ff334488;animation:shake .4s}
+        .msg.success{color:var(--success);text-shadow:0 0 10px #25d36688}
         @keyframes shake{
             0%,100%{transform:translateX(0)}
             25%{transform:translateX(-6px)}
             75%{transform:translateX(6px)}
         }
 
-        /* ============================================
-           🔗 LINKS
-           ============================================ */
         .link-row{
             display:flex;
             justify-content:space-between;
@@ -383,22 +327,9 @@
             font-weight:700;
             cursor:pointer;
             transition:all var(--transition);
-            position:relative;
         }
-        .link-row a::after{
-            content:'';
-            position:absolute;
-            bottom:-2px;right:0;
-            width:0;height:1px;
-            background:var(--accent);
-            transition:width var(--transition);
-        }
-        .link-row a:hover::after{width:100%}
         .link-row a:hover{text-shadow:0 0 12px var(--accent-glow)}
 
-        /* ============================================
-           📋 REGISTER FORM
-           ============================================ */
         .register-form{
             display:none;
             margin-top:18px;
@@ -416,12 +347,8 @@
             font-size:15px;
             text-align:center;
             margin-bottom:14px;
-            text-shadow:0 0 12px var(--accent-glow);
         }
 
-        /* ============================================
-           🌐 SOCIAL — SVG ICONS
-           ============================================ */
         .social-section{
             margin-top:20px;
             padding-top:18px;
@@ -450,38 +377,14 @@
             transition:all var(--transition);
             position:relative;
             overflow:hidden;
-            box-shadow:0 4px 15px rgba(0,0,0,.3);
         }
-        .social-icon svg{
-            width:20px;height:20px;
-            fill:currentColor;
-            position:relative;
-            z-index:2;
-        }
-        .social-icon::before{
-            content:'';
-            position:absolute;inset:0;
-            background:linear-gradient(135deg, rgba(255,255,255,.2), transparent);
-            opacity:0;
-            transition:opacity var(--transition);
-        }
-        .social-icon:hover{
-            transform:translateY(-5px) scale(1.12);
-        }
-        .social-icon:hover::before{opacity:1}
-
+        .social-icon svg{width:20px;height:20px;fill:currentColor;position:relative;z-index:2}
+        .social-icon:hover{transform:translateY(-5px) scale(1.12)}
         .social-icon.facebook{background:linear-gradient(135deg,#1877f2,#0c5dc7);box-shadow:0 4px 15px #1877f266}
-        .social-icon.facebook:hover{box-shadow:0 10px 30px #1877f299}
         .social-icon.instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);box-shadow:0 4px 15px #dc274366}
-        .social-icon.instagram:hover{box-shadow:0 10px 30px #dc274399}
         .social-icon.tiktok{background:linear-gradient(135deg,#000,#25f4ee,#fe2c55);box-shadow:0 4px 15px #25f4ee66}
-        .social-icon.tiktok:hover{box-shadow:0 10px 30px #fe2c5599}
         .social-icon.telegram{background:linear-gradient(135deg,#0088cc,#006699);box-shadow:0 4px 15px #0088cc66}
-        .social-icon.telegram:hover{box-shadow:0 10px 30px #0088cc99}
 
-        /* ============================================
-           🦶 FOOTER
-           ============================================ */
         .footer{
             text-align:center;
             margin-top:16px;
@@ -491,17 +394,8 @@
             font-size:10px;
             line-height:1.9;
         }
-        .footer a{
-            color:var(--accent);
-            text-decoration:none;
-            font-weight:700;
-            transition:all var(--transition);
-        }
-        .footer a:hover{text-shadow:0 0 12px var(--accent-glow)}
+        .footer a{color:var(--accent);text-decoration:none;font-weight:700}
 
-        /* ============================================
-           ⏳ SPINNER
-           ============================================ */
         .spinner{
             width:16px;height:16px;
             border:2px solid rgba(255,255,255,.3);
@@ -512,66 +406,26 @@
         }
         @keyframes spinAnim{to{transform:rotate(360deg)}}
 
-        /* ============================================
-           📱 RESPONSIVE
-           ============================================ */
         @media (max-width:500px){
-            .login-card{
-                width:94%;
-                border-radius:24px;
-                max-height:94vh;
-            }
+            .login-card{width:94%;border-radius:24px;max-height:94vh}
             .card-content{padding:28px 22px 22px}
             .login-logo{width:64px;height:64px;font-size:32px}
             .login-title{font-size:22px}
-            .login-brand{font-size:11px;letter-spacing:2px}
-            .input-group input{padding:14px 44px 14px 16px;font-size:14px}
-            .btn{padding:14px 18px;font-size:14px}
-            .social-icon{width:38px;height:38px}
-            .social-icon svg{width:18px;height:18px}
+            .input-group input{padding:14px 44px 14px 16px}
         }
-
-        @media (max-width:360px){
-            .card-content{padding:22px 16px 18px}
-            .login-title{font-size:20px}
-        }
-
-        /* ============================================
-           🚫 CONTENT PROTECTION
-           ============================================ */
-        img{
-            -webkit-user-drag:none;
-            user-drag:none;
-            -webkit-touch-callout:none;
-            pointer-events:none;
-        }
-        .card-bg{
-            pointer-events:none;
-        }
-
-        /* ============================================
-           🌞 LIGHT MODE
-           ============================================ */
-        body.light{--text-muted:#444}
     </style>
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg-layer"></div>
 <canvas id="matrixCanvas"></canvas>
 <div class="particles" id="particles"></div>
 
-<!-- Login Card -->
 <div class="login-card">
-
-    <!-- الصورة كخلفية -->
     <div class="card-bg"></div>
     <div class="card-overlay"></div>
 
-    <!-- المحتوى -->
     <div class="card-content">
-
         <div class="login-header">
             <div class="login-logo">🛡️</div>
             <div class="login-brand">SAYODA <span>|</span> CYBER FORCE</div>
@@ -579,7 +433,6 @@
             <div class="login-subtitle">أهلاً بيك تاني 👋</div>
         </div>
 
-        <!-- Login Form -->
         <div id="loginFormContainer">
             <div class="input-group">
                 <input type="text" id="username" placeholder="اسم المستخدم" autocomplete="username" maxlength="30">
@@ -588,7 +441,7 @@
 
             <div class="input-group">
                 <input type="password" id="password" placeholder="كلمة المرور" autocomplete="current-password" maxlength="50">
-                <button type="button" class="toggle-pw" onclick="togglePassword()" title="إظهار/إخفاء">👁️</button>
+                <button type="button" class="toggle-pw" onclick="togglePassword()">👁️</button>
             </div>
 
             <button class="btn btn-primary" id="loginBtn" onclick="login(event)">
@@ -602,12 +455,9 @@
                 <a onclick="forgotPassword()">🔑 نسيت كلمة المرور؟</a>
             </div>
 
-            <button class="btn btn-ghost" onclick="guestLogin()">
-                👤 دخول كضيف
-            </button>
+            <button class="btn btn-ghost" onclick="guestLogin()">👤 دخول كضيف</button>
         </div>
 
-        <!-- Register Form -->
         <div class="register-form" id="registerFormContainer">
             <h3>📝 إنشاء حساب جديد</h3>
 
@@ -618,12 +468,17 @@
 
             <div class="input-group">
                 <input type="password" id="regPassword" placeholder="كلمة المرور" maxlength="50">
-                <button type="button" class="toggle-pw" onclick="togglePassword('regPassword')" title="إظهار/إخفاء">👁️</button>
+                <button type="button" class="toggle-pw" onclick="togglePassword('regPassword')">👁️</button>
             </div>
 
             <div class="input-group">
                 <input type="tel" id="regPhone" placeholder="رقم الجوال (مثال: 01128351702)" maxlength="11" inputmode="numeric">
                 <span class="input-icon">📱</span>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="regReferral" placeholder="🔗 كود الدعوة (اختياري)" maxlength="30" style="text-transform:uppercase">
+                <span class="input-icon">🎟️</span>
             </div>
 
             <button class="btn btn-success" id="registerBtn" onclick="submitRegistration(event)">
@@ -637,47 +492,28 @@
             </div>
         </div>
 
-        <!-- Social -->
         <div class="social-section">
             <div class="social-title">FOLLOW US</div>
             <div class="social-icons">
-
-                <!-- Facebook -->
-                <a href="https://www.facebook.com/share/1EYFi5Aqrk/" target="_blank" rel="noopener" class="social-icon facebook" title="Facebook">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
+                <a href="https://www.facebook.com/share/1EYFi5Aqrk/" target="_blank" rel="noopener" class="social-icon facebook">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 </a>
-
-                <!-- Instagram -->
-                <a href="https://www.instagram.com/sayedhassan.2009" target="_blank" rel="noopener" class="social-icon instagram" title="Instagram">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                    </svg>
+                <a href="https://www.instagram.com/sayedhassan.2009" target="_blank" rel="noopener" class="social-icon instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                 </a>
-
-                <!-- TikTok -->
-                <a href="https://www.tiktok.com/@sayedhasaneisa" target="_blank" rel="noopener" class="social-icon tiktok" title="TikTok">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.61 20.1a6.34 6.34 0 0011.02-4.28v-6.96a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.81-.29z"/>
-                    </svg>
+                <a href="https://www.tiktok.com/@sayedhasaneisa" target="_blank" rel="noopener" class="social-icon tiktok">
+                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.61 20.1a6.34 6.34 0 0011.02-4.28v-6.96a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.81-.29z"/></svg>
                 </a>
-
-                <!-- Telegram -->
-                <a href="https://t.me/sayedhasan_R" target="_blank" rel="noopener" class="social-icon telegram" title="Telegram">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                    </svg>
+                <a href="https://t.me/sayedhasan_R" target="_blank" rel="noopener" class="social-icon telegram">
+                    <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                 </a>
-
             </div>
         </div>
 
         <div class="footer">
             © 2026 SAYODA | CYBER FORCE<br>
-            <a href="https://t.me/sayoda_elgadar" target="_blank" rel="noopener">EL-SAYED HASAN</a>
+            <a href="https://t.me/sayoda_elgadar" target="_blank">EL-SAYED HASAN</a>
         </div>
-
     </div>
 </div>
 
@@ -690,82 +526,28 @@ const SUPABASE_KEY = 'sb_publishable_Q8fBS3nVZqgvfd6diaul8A_cMvHUFtN';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* ============================================
-   🚫 CONTENT PROTECTION — منع تنزيل المحتوى
+   🚫 CONTENT PROTECTION
    ============================================ */
-// منع Right Click
-document.addEventListener('contextmenu', e => {
-    e.preventDefault();
-    return false;
-});
-
-// منع Keyboard shortcuts
+document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e => {
-    // F12 — Developer Tools
-    if (e.key === 'F12' || e.keyCode === 123) {
-        e.preventDefault();
-        return false;
-    }
-    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C — DevTools
-    if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) {
-        e.preventDefault();
-        return false;
-    }
-    // Ctrl+U — View Source
-    if (e.ctrlKey && ['U','u'].includes(e.key)) {
-        e.preventDefault();
-        return false;
-    }
-    // Ctrl+S — Save Page
-    if (e.ctrlKey && ['S','s'].includes(e.key)) {
-        e.preventDefault();
-        return false;
-    }
-    // Ctrl+P — Print
-    if (e.ctrlKey && ['P','p'].includes(e.key)) {
-        e.preventDefault();
-        return false;
-    }
-    // Ctrl+C / Ctrl+X / Ctrl+A — Copy/Cut/Select All
-    if (e.ctrlKey && ['C','c','X','x','A','a'].includes(e.key)) {
-        e.preventDefault();
-        return false;
-    }
+    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) { e.preventDefault(); return false; }
+    if (e.ctrlKey && ['U','u','S','s','P','p','C','c','X','x','A','a'].includes(e.key)) { e.preventDefault(); return false; }
 });
-
-// منع سحب الصور
 document.addEventListener('dragstart', e => {
-    if (e.target.tagName === 'IMG' || e.target.classList.contains('card-bg')) {
-        e.preventDefault();
-        return false;
-    }
+    if (e.target.tagName === 'IMG') e.preventDefault();
 });
-
-// منع تحديد النص
 document.addEventListener('selectstart', e => {
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        return false;
-    }
-});
-
-// منع PrintScreen (احتياطي)
-window.addEventListener('keyup', e => {
-    if (e.key === 'PrintScreen') {
-        navigator.clipboard.writeText('');
-    }
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
 });
 
 /* ============================================
-   🛡️ SECURITY: SANITIZE
+   🛡️ SECURITY
    ============================================ */
 function sanitize(input) {
     if (input === null || input === undefined) return '';
-    return String(input)
-        .replace(/[<>]/g, '')
-        .replace(/[\u0000-\u001F]/g, '')
-        .trim();
+    return String(input).replace(/[<>]/g, '').replace(/[\u0000-\u001F]/g, '').trim();
 }
-
 function hasSQLInjection(str) {
     const patterns = [
         /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/i,
@@ -779,11 +561,7 @@ function hasSQLInjection(str) {
 /* ============================================
    🚫 RATE LIMITING
    ============================================ */
-const RATE_LIMIT = {
-    maxAttempts: 5,
-    windowMs: 60 * 1000,
-    key: 'sayoda_login_attempts'
-};
+const RATE_LIMIT = { maxAttempts: 5, windowMs: 60000, key: 'sayoda_login_attempts' };
 
 function checkRateLimit() {
     try {
@@ -791,16 +569,14 @@ function checkRateLimit() {
         const now = Date.now();
         if (now - data.first > RATE_LIMIT.windowMs) {
             localStorage.setItem(RATE_LIMIT.key, JSON.stringify({count:0, first:now}));
-            return {ok:true, remaining: RATE_LIMIT.maxAttempts};
+            return {ok:true};
         }
         if (data.count >= RATE_LIMIT.maxAttempts) {
             const waitSec = Math.ceil((RATE_LIMIT.windowMs - (now - data.first)) / 1000);
-            return {ok:false, remaining:0, waitSec};
+            return {ok:false, waitSec};
         }
-        return {ok:true, remaining: RATE_LIMIT.maxAttempts - data.count};
-    } catch(e) {
-        return {ok:true, remaining: RATE_LIMIT.maxAttempts};
-    }
+        return {ok:true};
+    } catch(e) { return {ok:true}; }
 }
 
 function recordAttempt() {
@@ -823,20 +599,18 @@ function resetRateLimit() {
 /* ============================================
    ✨ UI HELPERS
    ============================================ */
-function showMsg(elementId, text, type = 'error') {
-    const el = document.getElementById(elementId);
+function showMsg(id, text, type = 'error') {
+    const el = document.getElementById(id);
     if (!el) return;
     el.textContent = text;
     el.className = 'msg ' + type;
 }
-
-function clearMsg(elementId) {
-    const el = document.getElementById(elementId);
+function clearMsg(id) {
+    const el = document.getElementById(id);
     if (!el) return;
     el.textContent = '';
     el.className = 'msg';
 }
-
 function togglePassword(fieldId = 'password') {
     const input = document.getElementById(fieldId);
     if (!input) return;
@@ -850,9 +624,6 @@ function togglePassword(fieldId = 'password') {
     }
 }
 
-/* ============================================
-   💫 RIPPLE
-   ============================================ */
 function createRipple(e) {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
@@ -865,10 +636,7 @@ function createRipple(e) {
     btn.appendChild(ripple);
     setTimeout(() => ripple.remove(), 600);
 }
-
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', createRipple);
-});
+document.querySelectorAll('.btn').forEach(btn => btn.addEventListener('click', createRipple));
 
 /* ============================================
    🚪 LOGIN
@@ -912,11 +680,11 @@ async function login(e) {
 
     try {
         const { data: userData, error } = await sb
-    .from('users')
-    .select('*')
-    .eq('username', u)
-    .eq('password', p)
-    .maybeSingle();
+            .from('users')
+            .select('*')
+            .eq('username', u)
+            .eq('password', p)
+            .maybeSingle();
 
         if (error) {
             showMsg('loginMsg', '❌ خطأ في الاتصال. حاول تاني.', 'error');
@@ -938,27 +706,30 @@ async function login(e) {
         resetRateLimit();
 
         const session = {
-    username: sanitize(userData.username),
-    role: sanitize(userData.role || 'user'),
-    active: userData.active !== false,
-    phone: sanitize(userData.phone || ''),
-    xp: Number(userData.xp || 0),
-    level: sanitize(userData.level || 'مبتدئ'),
-    level_emoji: sanitize(userData.level_emoji || '🟢'),
-    streak: Number(userData.streak || 0),
-    badges: Array.isArray(userData.badges) ? userData.badges : [],
-    videos_watched: Array.isArray(userData.videos_watched) ? userData.videos_watched : [],
-    total_rating: Number(userData.total_rating || 0),
-    rating_count: Number(userData.rating_count || 0),
-    videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true,
-    banned_features: Array.isArray(userData.banned_features) ? userData.banned_features : [],
-    views: userData.views || {},
-    ratings: userData.ratings || {},
-    video_progress: userData.video_progress || {},
-    last_login: userData.last_login || null,
-    loginAt: Date.now()
-};
-sessionStorage.setItem('sayoda_user', JSON.stringify(session));
+            username: sanitize(userData.username),
+            role: sanitize(userData.role || 'user'),
+            active: userData.active !== false,
+            phone: sanitize(userData.phone || ''),
+            xp: Number(userData.xp || 0),
+            level: sanitize(userData.level || 'مبتدئ'),
+            level_emoji: sanitize(userData.level_emoji || '🟢'),
+            streak: Number(userData.streak || 0),
+            badges: Array.isArray(userData.badges) ? userData.badges : [],
+            videos_watched: Array.isArray(userData.videos_watched) ? userData.videos_watched : [],
+            total_rating: Number(userData.total_rating || 0),
+            rating_count: Number(userData.rating_count || 0),
+            videos_locked: userData.videos_locked !== undefined ? userData.videos_locked : true,
+            banned_features: Array.isArray(userData.banned_features) ? userData.banned_features : [],
+            views: userData.views || {},
+            ratings: userData.ratings || {},
+            video_progress: userData.video_progress || {},
+            unlocked_videos: userData.unlocked_videos || {},
+            referred_by: userData.referred_by || null,
+            referral_count: Number(userData.referral_count || 0),
+            last_login: userData.last_login || null,
+            loginAt: Date.now()
+        };
+        sessionStorage.setItem('sayoda_user', JSON.stringify(session));
 
         try {
             await sb.rpc('update_last_login', { p_username: u });
@@ -1019,18 +790,20 @@ async function submitRegistration(e) {
     const uRaw = document.getElementById('regUsername').value;
     const pRaw = document.getElementById('regPassword').value;
     const phRaw = document.getElementById('regPhone').value;
+    const refRaw = document.getElementById('regReferral').value;
     const btn = document.getElementById('registerBtn');
     const btnText = document.getElementById('registerBtnText');
     clearMsg('registerMsg');
 
     if (!uRaw || !pRaw || !phRaw) {
-        showMsg('registerMsg', '⚠️ املأ جميع الحقول.', 'error');
+        showMsg('registerMsg', '⚠️ املأ جميع الحقول المطلوبة.', 'error');
         return;
     }
 
     const u = sanitize(uRaw);
     const p = pRaw;
     const ph = sanitize(phRaw).replace(/\s/g, '');
+    const refCode = sanitize(refRaw).toUpperCase().trim();
 
     if (u.length < 3) {
         showMsg('registerMsg', '⚠️ اسم المستخدم 3 أحرف على الأقل.', 'error');
@@ -1086,13 +859,32 @@ async function submitRegistration(e) {
 
         if (insertError) throw insertError;
 
+        // ✅ استخدام كود الدعوة لو موجود
+        if (refCode) {
+            try {
+                const { data: refResult, error: refError } = await sb.rpc('use_referral_code', {
+                    p_new_username: u,
+                    p_code: refCode
+                });
+                if (refError) {
+                    console.warn('Referral error:', refError);
+                } else if (refResult && refResult.success) {
+                    console.log('✅ Referral applied:', refResult);
+                } else {
+                    console.warn('Referral failed:', refResult?.message);
+                }
+            } catch (e) {
+                console.warn('Referral exception:', e);
+            }
+        }
+
         try {
             fetch('https://api.telegram.org/bot8655357261:AAFPVQZEi1F4eqeKRDBDGK-kM9rGXciVqVU/sendMessage', {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
                     chat_id: '7114350905',
-                    text: `🔐 <b>حساب جديد</b>\n👤 ${u}\n📱 ${ph}`,
+                    text: `🔐 <b>حساب جديد</b>\n👤 ${u}\n📱 ${ph}${refCode ? `\n🔗 كود دعوة: ${refCode}` : ''}`,
                     parse_mode: 'HTML'
                 })
             }).catch(()=>{});
@@ -1101,26 +893,29 @@ async function submitRegistration(e) {
         showMsg('registerMsg', '✅ تم إنشاء حسابك! جاري التحويل...', 'success');
 
         sessionStorage.setItem('sayoda_user', JSON.stringify({
-    username: u,
-    role: 'user',
-    active: true,
-    phone: ph,
-    xp: 0,
-    level: 'مبتدئ',
-    level_emoji: '🟢',
-    streak: 0,
-    badges: [],
-    videos_watched: [],
-    total_rating: 0,
-    rating_count: 0,
-    videos_locked: true,
-    banned_features: [],
-    views: {},
-    ratings: {},
-    video_progress: {},
-    last_login: null,
-    loginAt: Date.now()
-}));
+            username: u,
+            role: 'user',
+            active: true,
+            phone: ph,
+            xp: refCode ? 50 : 0,
+            level: 'مبتدئ',
+            level_emoji: '🟢',
+            streak: 0,
+            badges: [],
+            videos_watched: [],
+            total_rating: 0,
+            rating_count: 0,
+            videos_locked: true,
+            banned_features: [],
+            views: {},
+            ratings: {},
+            video_progress: {},
+            unlocked_videos: {},
+            referred_by: null,
+            referral_count: 0,
+            last_login: null,
+            loginAt: Date.now()
+        }));
 
         setTimeout(() => { window.location.href = './index.html'; }, 1000);
 
@@ -1148,6 +943,9 @@ document.getElementById('password')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') login();
 });
 document.getElementById('regPhone')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('regReferral').focus();
+});
+document.getElementById('regReferral')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') submitRegistration();
 });
 
