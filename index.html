@@ -1266,10 +1266,28 @@ function extractID(input) {
 /* ============================================
    🎬 RENDER VIDEOS
    ============================================ */
-function renderVideos() {
+async function renderVideos() {
     const grid = document.getElementById('videoGrid');
-    fetch('videos.json', { cache: 'no-store' }).then(res => res.json()).then(data => {
-        videos = data.videos || [];
+    
+    try {
+        // ✅ نقرأ من Supabase بدل videos.json
+        const { data, error } = await sb
+            .from('videos')
+            .select('*')
+            .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        
+        // ✅ نحوّل البيانات للشكل اللي index.html بيتوقعه
+        videos = (data || []).map(v => ({
+            title: v.title || 'بدون عنوان',
+            description: v.description || '',
+            category: v.category || 'Cybersecurity',
+            youtube_id: v.youtube_id || v.youtube_url || '',
+            thumbnail: v.thumbnail || 'sayed.png',
+            locked: v.locked !== undefined ? v.locked : true
+        }));
+        
         if (!videos.length) {
             grid.innerHTML = '<div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--text-muted);">📹 لا توجد فيديوهات.</div>';
             return;
@@ -1331,9 +1349,10 @@ function renderVideos() {
                 <a href="login.html" style="display:inline-block;margin-top:12px;padding:10px 24px;border-radius:30px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-weight:bold;text-decoration:none;">📝 إنشاء حساب</a>
             </div>`;
         }
-    }).catch(() => {
+    } catch (err) {
+        console.error('❌ Error loading videos:', err);
         grid.innerHTML = '<div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--text-muted);">⚠️ تعذر تحميل الفيديوهات.</div>';
-    });
+    }
 }
 
 function rateVideo(id, rating) {
